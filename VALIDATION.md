@@ -1,3 +1,19 @@
+# Current validation — 0.1.0b6
+
+Reviewed on 13 November 2026 for Marketplace submission.
+
+- Public repository with a single `custom_components/f1_paddock` integration, root `hacs.json`, MIT license, description, topics and Issues enabled.
+- HACS, hassfest and manual-package checks passed without ignored checks before the beta 6 release: [validation run](https://github.com/GOG23-Software-Studio/f1-paddock/actions/runs/43470052377).
+- The [beta 6 release](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b6) was published after validation, with the manual ZIP and SHA256. Its installer workflow passed.
+- Subsequent README/banner commits also passed repository validation. They do not change the immutable beta 6 installer.
+- [Catalogue request #14100](https://github.com/hacs/default/pull/14100) is open. Initial catalogue checks passed; additional checks shown as skipped are not claimed as passed. No maintainer review or acceptance is claimed.
+- HA installation evidence below refers to earlier installed betas. It does not claim beta 6 was installed in the household instance.
+- Real live-session validation and third-party permissions remain pending. Technical validation is not legal clearance; see [publication review](PUBLICATION_REVIEW.md).
+
+## Historical evidence
+
+The following entries describe their original versions and publication status at the time. Statements about private-repository checks are historical, not the current status.
+
 # Validación de 0.1.0b5
 
 - 27 pruebas Python y 14 pruebas JavaScript correctas; dos comprobaciones adicionales de empaquetado con unittest (solo biblioteca estándar).

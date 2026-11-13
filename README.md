@@ -10,6 +10,11 @@ A project by [GOG23 Software Studio](https://github.com/GOG23-Software-Studio) �
 
 **Development beta 0.1.0b6 · public repository · Marketplace catalogue submission pending.**
 
+[![Validation](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml/badge.svg)](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml)
+[![Open in Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=GOG23-Software-Studio&repository=f1-paddock&category=integration)
+
+The installation button adds this repository by link while catalogue review is pending; it does not indicate catalogue acceptance.
+
 A Home Assistant integration with twelve independent dashboard cards and an optional complete panel, following the visual style of MotoGP Paddock. Choose your favorite driver to follow their portrait, race number, team, championship position and session timing. The bundled cards register automatically; no separate frontend download is required.
 
 > **Third-party permissions remain unresolved.** The project uses official F1 fonts, photographs, number artwork, circuit maps and data services. The original FP project logo does not grant rights to these resources. Read the [publication review](PUBLICATION_REVIEW.md) and [data notices](custom_components/f1_paddock/DATA_LICENSE.md). This is an independent community project, with no official Formula 1 affiliation or endorsement.
@@ -167,6 +172,8 @@ The owner authorized public publication and Marketplace submission. [Request #14
 ## Support and contribution
 
 Report reproducible bugs or feature suggestions through [Issues](https://github.com/GOG23-Software-Studio/f1-paddock/issues). Include the HA version and affected session; never post credentials, private URLs or household configuration.
+
+See the [contribution guide](CONTRIBUTING.md) for checks and reporting guidance.
 
 Original code is licensed under [MIT](LICENSE). Third-party media and data rights are separate. This project has no official Formula 1 affiliation or endorsement.
 
