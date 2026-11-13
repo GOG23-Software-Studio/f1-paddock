@@ -22,7 +22,7 @@ class PackagingChecks(unittest.TestCase):
             root = Path(directory)
             for name in ("custom_components", "examples"):
                 shutil.copytree(ROOT / name, root / name, ignore=shutil.ignore_patterns("__pycache__"))
-            for name in ("README.md", "SOURCES.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "VALIDATION.md", "hacs.json"):
+            for name in ("README.md", "SOURCES.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "VALIDATION.md", "PUBLICATION_REVIEW.md", "hacs.json"):
                 shutil.copy2(ROOT / name, root / name)
             (root / ".local").mkdir()
             (root / ".local" / "secret.txt").write_text("excluded")

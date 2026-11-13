@@ -51,7 +51,7 @@ def package(root=ROOT, tag=None):
         for path in base.rglob("*"):
             if path.is_file() and not path.is_symlink() and "__pycache__" not in path.parts and path.suffix != ".pyc":
                 files.append(path)
-    for name in ("README.md", "SOURCES.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "VALIDATION.md", "hacs.json"):
+    for name in ("README.md", "SOURCES.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "VALIDATION.md", "PUBLICATION_REVIEW.md", "hacs.json"):
         files.append(root / name)
     dist = root / "dist"
     dist.mkdir(exist_ok=True)
