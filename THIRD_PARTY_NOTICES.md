@@ -4,7 +4,7 @@ F1 Paddock es un proyecto comunitario independiente. No está afiliado ni respal
 
 La tipografía F1 Bold, los retratos, los gráficos de dorsales, los mapas de circuitos y las marcas pertenecen a sus respectivos titulares. Su presencia en una URL pública no concede permiso general de redistribución. El ZIP incluye referencias y procedencia, no los archivos gráficos o tipográficos descargados para la revisión privada. Las copias de `.local/assets` y las capturas son material privado de prueba, excluido del paquete instalable. Una publicación pública requiere revisar los derechos aplicables.
 
-Los datos deportivos proceden de Jolpica; OpenF1 se utilizó para comprobar fuentes durante el desarrollo. Se conservan enlaces de atribución y se evitan consultas por tarjeta. Revisar las condiciones y límites vigentes de cada proveedor antes de distribuir.
+Los datos deportivos proceden de Jolpica, del flujo directo F1 y de OpenF1 para el historial de boxes. Las condiciones de datos Jolpica son CC BY-NC-SA 4.0 para uso no comercial; véase `custom_components/f1_paddock/DATA_LICENSE.md`. No se extiende MIT a datos de terceros. La publicación pública permanece en espera de resolver los puntos de `PUBLICATION_REVIEW.md`.
 
 La lógica de registro de recursos está adaptada de MotoGP Paddock, del mismo proyecto GOG23 Software Studio, bajo licencia MIT. La tarjeta FormulaOne Card se consultó como referencia de URLs y funcionamiento, sin copiar su implementación.
 

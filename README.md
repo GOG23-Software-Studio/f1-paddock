@@ -6,6 +6,8 @@ Beta funcional de GOG23 Software Studio. Una integración propia de Home Assista
 
 Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de dorsales y planos detallados originales con sus zonas. Son recursos de terceros servidos por Formula1.com; el proyecto no es una integración oficial de Formula 1.
 
+> **Publicación pública en espera:** la revisión ha identificado recursos oficiales y permisos de datos pendientes. Consulta [la revisión previa](PUBLICATION_REVIEW.md). El logo FP propio ya está incluido; esto no autoriza los recursos de terceros.
+
 ## Descarga y estado
 
 [Descargar la release 0.1.0b5](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b5). Utiliza el archivo **f1-paddock-0.1.0b5.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
