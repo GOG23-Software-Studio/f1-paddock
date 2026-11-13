@@ -1,18 +1,18 @@
 <p><img src="custom_components/f1_paddock/brand/icon@2x.png" alt="Logo de F1 Paddock" width="128" height="128"></p>
 
-# F1 Paddock · 0.1.0b5
+# F1 Paddock · 0.1.0b6
 
 Beta funcional de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
 
 Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de dorsales y planos detallados originales con sus zonas. Son recursos de terceros servidos por Formula1.com; el proyecto no es una integración oficial de Formula 1.
 
-> **Publicación pública en espera:** la revisión ha identificado recursos oficiales y permisos de datos pendientes. Consulta [la revisión previa](PUBLICATION_REVIEW.md). El logo FP propio ya está incluido; esto no autoriza los recursos de terceros.
+> **Permisos de terceros pendientes:** la revisión ha identificado recursos oficiales y permisos de datos pendientes. Consulta [la revisión previa](PUBLICATION_REVIEW.md). El logo FP propio ya está incluido; esto no autoriza los recursos de terceros.
 
 ## Descarga y estado
 
-[Descargar la release 0.1.0b5](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b5). Utiliza el archivo **f1-paddock-0.1.0b5.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
+[Descargar la release 0.1.0b6](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b6). Utiliza el archivo **f1-paddock-0.1.0b6.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
 
-Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **pre-release**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El formato está preparado para HACS como repositorio personalizado. Mientras el repositorio sea privado, la instalación y actualización deben seguir siendo manuales: HACS solo admite repositorios públicos.
+Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **pre-release**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La inclusión en el catálogo general está pendiente de revisión.
 
 ## Capturas
 
@@ -48,27 +48,27 @@ Los recursos visuales se han comprobado para **2026**: 23 mapas y 22 fotos/dorsa
 
 La temporada se elige al instalar; esta beta no cambia de año automáticamente. El catálogo de pilotos requiere que ya existan clasificaciones publicadas. La preferencia y el GP seleccionado se conservan en HA; la caché de datos todavía es de memoria y no constituye un archivo permanente.
 
-## Instalación y actualización desde HACS
+## Instalación y actualización desde Marketplace
 
-**Estado actual: preparado, pendiente de hacer público el repositorio con autorización del propietario.** HACS no puede leer repositorios privados, aunque tu cuenta de GitHub tenga acceso. No se ha cambiado la visibilidad del proyecto.
+El repositorio es público. La inclusión en el catálogo general está pendiente de revisión; publicarlo en GitHub no lo incorpora automáticamente al buscador.
 
-Cuando el repositorio sea público:
+1. En Home Assistant 2026.11 o posterior, abre **Ajustes → Marketplace → Añadir desde enlace** y conecta GitHub si se solicita.
+2. Añade `https://github.com/GOG23-Software-Studio/f1-paddock`.
+3. Activa **Pre-release** en la página del dispositivo del repositorio para instalar esta beta; esa entidad puede estar deshabilitada inicialmente.
+4. Instala F1 Paddock, reinicia Home Assistant y recarga el navegador o la aplicación.
+5. En la primera instalación, añade **F1 Paddock** desde **Ajustes → Dispositivos y servicios**. Si ya estaba instalada manualmente, conserva la integración y sus entidades.
 
-1. Abre **HACS → menú ⋮ → Repositorios personalizados**.
-2. Añade `https://github.com/GOG23-Software-Studio/f1-paddock` con tipo **Integración**.
-3. Abre **F1 Paddock** y descarga la versión deseada. Para `0.1.0b5`, selecciona la pre-release en el selector de versiones/betas disponible en tu versión de HACS.
-4. Reinicia Home Assistant y recarga el navegador o la aplicación.
-5. Si es tu primera instalación, añade **F1 Paddock** desde **Ajustes → Dispositivos y servicios**. Si ya la instalaste manualmente, conserva la misma integración y sus entidades; no hace falta recrearlas.
+En instalaciones anteriores con HACS, añade el mismo enlace desde **Repositorios personalizados**, categoría **Integración**, y selecciona la pre-release.
 
-Para actualizar, utiliza la actualización de F1 Paddock en HACS, reinicia HA y recarga el navegador. Se conserva el dominio `f1_paddock`, las preferencias y el recurso de tarjetas: no instales una segunda copia de la tarjeta. Guarda siempre una copia de seguridad antes de actualizar.
+Las actualizaciones se ofrecen mediante la entidad de actualización del repositorio. Guarda una copia de seguridad antes de actualizar, reinicia HA y recarga el navegador. Se conservan el dominio `f1_paddock` y las preferencias.
 
-HACS instala la carpeta `custom_components/f1_paddock` desde la etiqueta de la release; **no utiliza el ZIP manual adjunto**. `hacs.json` oculta la rama de desarrollo para ofrecer versiones publicadas. Esta preparación no equivale a estar incluido en el catálogo oficial: se incluye una marca local propia para HA/HACS; la solicitud de inclusión en el catálogo oficial queda fuera de esta beta.
+Marketplace/HACS instala `custom_components/f1_paddock` desde la etiqueta publicada, sin utilizar el ZIP manual adjunto. No instales una segunda copia de las tarjetas.
 
-Requisitos y limitación de privacidad: [estructura de integraciones](https://hacs.dev/docs/publish/integration/), [repositorios privados](https://hacs.dev/docs/faq/private_repositories/).
+Documentación: [Marketplace](https://www.home-assistant.io/integrations/marketplace/) y [proceso de inclusión en el catálogo](https://contributors.home-assistant.io/marketplace/guides/catalog/).
 
 ## Instalación manual en Home Assistant
 
-Paquete: `dist/f1-paddock-0.1.0b5.zip`.
+Paquete: `dist/f1-paddock-0.1.0b6.zip`.
 
 1. Guarda una copia de seguridad de tu configuración.
 2. Extrae el ZIP y copia **solo** `custom_components/f1_paddock` dentro de `/config/custom_components/`.

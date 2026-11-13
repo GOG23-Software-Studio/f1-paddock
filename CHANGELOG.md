@@ -1,3 +1,10 @@
+## 0.1.0b6 · 2026-11-13
+
+- Repositorio público y preparación de la solicitud al catálogo de Marketplace.
+- Validación HACS completa sin omitir comprobaciones y guía de instalación actualizada.
+- Atribución de datos y revisión de permisos de terceros incluidas en el instalador; los permisos pendientes siguen documentados.
+- Conserva las funciones de beta 5. La verificación durante una sesión real sigue pendiente.
+
 # Cambios
 
 ## 0.1.0b5 · 2026-11-13

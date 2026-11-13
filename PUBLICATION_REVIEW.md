@@ -1,6 +1,6 @@
 # Revisión previa a publicación pública
 
-Revisada el 13 de noviembre de 2026. **Estado: mantener privado; no es una autorización jurídica ni una garantía de ausencia de infracciones.**
+Revisada el 13 de noviembre de 2026. **Estado: publicación pública autorizada por el propietario el 13 de noviembre de 2026; los permisos de terceros siguen pendientes. Esta autorización de publicación no es una autorización jurídica ni una garantía de ausencia de infracciones.**
 
 ## Identidad y recursos visuales
 
@@ -22,4 +22,4 @@ Se mantiene el apoyo voluntario solicitado, sin venta de acceso ni funciones de 
 
 La estructura HACS, hassfest y las pruebas técnicas no validan propiedad intelectual, licencias ni permisos de datos. No se ha encontrado una autorización específica para los recursos oficiales en el repositorio. Los permisos de código propio y recursos/data de terceros deben mantenerse separados.
 
-No se hará público el repositorio ni se enviarán solicitudes de licencia sin instrucciones expresas del propietario. Opciones: una edición para distribución con identidad y recursos licenciados, o autorización escrita de los titulares pertinentes. No se ha sustituido silenciosamente la fuente ni se han retirado funciones de la versión doméstica.
+El propietario ha autorizado hacer público el repositorio y solicitar su inclusión en Marketplace. No se han obtenido nuevas licencias ni se han enviado solicitudes de licencia. Opciones: una edición para distribución con identidad y recursos licenciados, o autorización escrita de los titulares pertinentes. No se ha sustituido silenciosamente la fuente ni se han retirado funciones de la versión doméstica.
