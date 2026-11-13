@@ -1,4 +1,4 @@
-<p><img src="custom_components/f1_paddock/brand/icon@2x.png" alt="F1 Paddock logo" width="128" height="128"></p>
+![F1 Paddock · GOG23 Software Studio](docs/studio-banner.png)
 
 # F1 Paddock
 

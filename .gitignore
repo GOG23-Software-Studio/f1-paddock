@@ -19,3 +19,5 @@ dist/
 !docs/branding/
 docs/branding/*
 !docs/branding/f1-paddock-original.png
+
+!docs/studio-banner.png
