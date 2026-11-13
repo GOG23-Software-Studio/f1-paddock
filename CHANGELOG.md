@@ -6,6 +6,7 @@
 - Empaquetado de releases sin dependencias de HA, con versión de etiqueta comprobada y ZIP/SHA256 reproducibles.
 - Flujos de comprobación y adjuntos automáticos para releases futuras; instrucciones para migrar desde instalación manual.
 - Buy Me a Coffee en el README y botón de patrocinio de GitHub.
+- Logo propio FP con iconos locales de 256 y 512 px para Home Assistant y HACS.
 - El repositorio se mantiene privado: HACS requiere hacerlo público antes de utilizarlo. No se modifica la instalación de HA ni la release 0.1.0b4.
 
 

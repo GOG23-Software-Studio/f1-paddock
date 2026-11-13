@@ -15,3 +15,7 @@ docs/screenshots/*
 preview/snapshot.json
 # Paquetes generados: se distribuyen como adjuntos de las releases
 dist/
+
+!docs/branding/
+docs/branding/*
+!docs/branding/f1-paddock-original.png

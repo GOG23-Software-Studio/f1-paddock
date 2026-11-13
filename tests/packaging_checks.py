@@ -32,6 +32,8 @@ class PackagingChecks(unittest.TestCase):
                 self.assertIn("custom_components/f1_paddock/manifest.json", names)
                 self.assertIn("custom_components/f1_paddock/www/f1-paddock-card.js", names)
                 self.assertIn("custom_components/f1_paddock/translations/es.json", names)
+                self.assertIn("custom_components/f1_paddock/brand/icon.png", names)
+                self.assertIn("custom_components/f1_paddock/brand/icon@2x.png", names)
                 self.assertFalse(any(n.startswith((".local/", "docs/", "tests/", "preview/")) for n in names))
                 self.assertFalse(any("__pycache__" in n for n in names))
             previous = archive.read_bytes()

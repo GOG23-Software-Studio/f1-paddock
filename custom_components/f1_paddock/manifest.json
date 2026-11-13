@@ -10,10 +10,10 @@
     "http",
     "lovelace"
   ],
+  "documentation": "https://github.com/GOG23-Software-Studio/f1-paddock",
   "integration_type": "service",
   "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/GOG23-Software-Studio/f1-paddock/issues",
   "requirements": [],
-  "version": "0.1.0b5",
-  "documentation": "https://github.com/GOG23-Software-Studio/f1-paddock",
-  "issue_tracker": "https://github.com/GOG23-Software-Studio/f1-paddock/issues"
+  "version": "0.1.0b5"
 }

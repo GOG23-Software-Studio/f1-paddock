@@ -1,3 +1,5 @@
+<p><img src="custom_components/f1_paddock/brand/icon@2x.png" alt="Logo de F1 Paddock" width="128" height="128"></p>
+
 # F1 Paddock · 0.1.0b5
 
 Beta funcional de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
@@ -58,7 +60,7 @@ Cuando el repositorio sea público:
 
 Para actualizar, utiliza la actualización de F1 Paddock en HACS, reinicia HA y recarga el navegador. Se conserva el dominio `f1_paddock`, las preferencias y el recurso de tarjetas: no instales una segunda copia de la tarjeta. Guarda siempre una copia de seguridad antes de actualizar.
 
-HACS instala la carpeta `custom_components/f1_paddock` desde la etiqueta de la release; **no utiliza el ZIP manual adjunto**. `hacs.json` oculta la rama de desarrollo para ofrecer versiones publicadas. Esta preparación no equivale a estar incluido en el catálogo oficial: la validación de marca y la solicitud de inclusión pública quedan fuera de esta beta.
+HACS instala la carpeta `custom_components/f1_paddock` desde la etiqueta de la release; **no utiliza el ZIP manual adjunto**. `hacs.json` oculta la rama de desarrollo para ofrecer versiones publicadas. Esta preparación no equivale a estar incluido en el catálogo oficial: se incluye una marca local propia para HA/HACS; la solicitud de inclusión en el catálogo oficial queda fuera de esta beta.
 
 Requisitos y limitación de privacidad: [estructura de integraciones](https://hacs.dev/docs/publish/integration/), [repositorios privados](https://hacs.dev/docs/faq/private_repositories/).
 
@@ -162,4 +164,4 @@ F1 Paddock es gratuito. Si te resulta útil y quieres apoyar el tiempo dedicado 
 2. Ejecuta `python tools/package_release.py --tag VERSION` y las comprobaciones. La etiqueta debe coincidir exactamente con `manifest.version`; el empaquetador no necesita HA ni acceso de red.
 3. Publica una release con esa etiqueta; el flujo **Attach manual installer to release** construye y adjunta el ZIP y SHA256 desde el código etiquetado. Mantén la marca de pre-release mientras siga siendo beta.
 
-Las comprobaciones automáticas incluyen límites del paquete y hassfest. El trabajo de HACS se ejecuta solo cuando el repositorio es público; omite la comprobación de marca porque se prepara como repositorio personalizado, no como entrada del catálogo oficial.
+Las comprobaciones automáticas incluyen límites del paquete y hassfest. El trabajo de HACS se ejecuta solo cuando el repositorio es público e incluye la comprobación de la marca local. El logo FP es propio de este proyecto; el logotipo oficial F1 de la cabecera conserva su atribución separada.

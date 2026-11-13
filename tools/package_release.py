@@ -37,7 +37,7 @@ def validate(root=ROOT, tag=None):
     if integrations != ["f1_paddock"]:
         raise ValueError("Exactly one integration per repository is required")
     for name in ("__init__.py", "config_flow.py", "strings.json", "assets.json", "translations/es.json",
-                 "translations/en.json", "www/f1-paddock-card.js"):
+                 "translations/en.json", "www/f1-paddock-card.js", "brand/icon.png", "brand/icon@2x.png"):
         if not (component / name).is_file():
             raise ValueError(f"Missing runtime file: {name}")
     return version
