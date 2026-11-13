@@ -13,7 +13,5 @@ docs/screenshots/*
 !docs/screenshots/overview.png
 !docs/screenshots/timing-simulation.png
 preview/snapshot.json
-# Solo el paquete instalable vigente
-dist/*
-!dist/f1-paddock-0.1.0b4.zip
-!dist/f1-paddock-0.1.0b4.zip.sha256
+# Paquetes generados: se distribuyen como adjuntos de las releases
+dist/

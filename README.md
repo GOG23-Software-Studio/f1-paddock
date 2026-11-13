@@ -1,4 +1,4 @@
-# F1 Paddock · 0.1.0b4
+# F1 Paddock · 0.1.0b5
 
 Beta funcional de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
 
@@ -6,9 +6,9 @@ Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de do
 
 ## Descarga y estado
 
-[Descargar la release 0.1.0b4](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b4). Utiliza el archivo **f1-paddock-0.1.0b4.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
+[Descargar la release 0.1.0b5](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b5). Utiliza el archivo **f1-paddock-0.1.0b5.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
 
-Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **pre-release**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. Instalación manual; esta versión no incluye distribución por HACS.
+Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **pre-release**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El formato está preparado para HACS como repositorio personalizado. Mientras el repositorio sea privado, la instalación y actualización deben seguir siendo manuales: HACS solo admite repositorios públicos.
 
 ## Capturas
 
@@ -44,9 +44,27 @@ Los recursos visuales se han comprobado para **2026**: 23 mapas y 22 fotos/dorsa
 
 La temporada se elige al instalar; esta beta no cambia de año automáticamente. El catálogo de pilotos requiere que ya existan clasificaciones publicadas. La preferencia y el GP seleccionado se conservan en HA; la caché de datos todavía es de memoria y no constituye un archivo permanente.
 
-## Instalación en Home Assistant
+## Instalación y actualización desde HACS
 
-Paquete: `dist/f1-paddock-0.1.0b4.zip`.
+**Estado actual: preparado, pendiente de hacer público el repositorio con autorización del propietario.** HACS no puede leer repositorios privados, aunque tu cuenta de GitHub tenga acceso. No se ha cambiado la visibilidad del proyecto.
+
+Cuando el repositorio sea público:
+
+1. Abre **HACS → menú ⋮ → Repositorios personalizados**.
+2. Añade `https://github.com/GOG23-Software-Studio/f1-paddock` con tipo **Integración**.
+3. Abre **F1 Paddock** y descarga la versión deseada. Para `0.1.0b5`, selecciona la pre-release en el selector de versiones/betas disponible en tu versión de HACS.
+4. Reinicia Home Assistant y recarga el navegador o la aplicación.
+5. Si es tu primera instalación, añade **F1 Paddock** desde **Ajustes → Dispositivos y servicios**. Si ya la instalaste manualmente, conserva la misma integración y sus entidades; no hace falta recrearlas.
+
+Para actualizar, utiliza la actualización de F1 Paddock en HACS, reinicia HA y recarga el navegador. Se conserva el dominio `f1_paddock`, las preferencias y el recurso de tarjetas: no instales una segunda copia de la tarjeta. Guarda siempre una copia de seguridad antes de actualizar.
+
+HACS instala la carpeta `custom_components/f1_paddock` desde la etiqueta de la release; **no utiliza el ZIP manual adjunto**. `hacs.json` oculta la rama de desarrollo para ofrecer versiones publicadas. Esta preparación no equivale a estar incluido en el catálogo oficial: la validación de marca y la solicitud de inclusión pública quedan fuera de esta beta.
+
+Requisitos y limitación de privacidad: [estructura de integraciones](https://hacs.dev/docs/publish/integration/), [repositorios privados](https://hacs.dev/docs/faq/private_repositories/).
+
+## Instalación manual en Home Assistant
+
+Paquete: `dist/f1-paddock-0.1.0b5.zip`.
 
 1. Guarda una copia de seguridad de tu configuración.
 2. Extrae el ZIP y copia **solo** `custom_components/f1_paddock` dentro de `/config/custom_components/`.
@@ -130,3 +148,18 @@ Los retratos de las tablas utilizan ahora un encuadre de la cara, de 48 × 58 px
 El favorito se identifica con fondo destacado, etiqueta «Tu piloto» y `aria-current`. Las marcas explícitas `OverallFastest` / `PersonalFastest` del flujo F1 controlan el morado (mejor de sesión), verde (mejora personal) y amarillo (sin mejora personal) de sectores y última vuelta. La ausencia de marcas deja el dato neutro; no se comparan sectores de vueltas distintas para inventar récords. La columna de mejor vuelta destaca el menor tiempo válido entre los mejores tiempos publicados.
 
 Las tarjetas de sesión muestran por separado la hora y antigüedad del dato F1 y la recepción de datos de tiempos en HA. Los latidos de conexión no actualizan esta última hora. Una sesión finalizada conserva su etiqueta aunque HA acabe de descargarla.
+
+
+## Apoyar el desarrollo
+
+F1 Paddock es gratuito. Si te resulta útil y quieres apoyar el tiempo dedicado al proyecto, puedes [invitarme a un café](https://www.buymeacoffee.com/oyogor). El apoyo es opcional y no desbloquea funciones.
+
+<a href="https://www.buymeacoffee.com/oyogor" target="_blank" rel="noopener noreferrer"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" height="60" width="217"></a>
+
+## Publicación de nuevas versiones
+
+1. Actualiza `manifest.json`, `const.py`, el encabezado de la tarjeta y las notas de versión.
+2. Ejecuta `python tools/package_release.py --tag VERSION` y las comprobaciones. La etiqueta debe coincidir exactamente con `manifest.version`; el empaquetador no necesita HA ni acceso de red.
+3. Publica una release con esa etiqueta; el flujo **Attach manual installer to release** construye y adjunta el ZIP y SHA256 desde el código etiquetado. Mantén la marca de pre-release mientras siga siendo beta.
+
+Las comprobaciones automáticas incluyen límites del paquete y hassfest. El trabajo de HACS se ejecuta solo cuando el repositorio es público; omite la comprobación de marca porque se prepara como repositorio personalizado, no como entrada del catálogo oficial.

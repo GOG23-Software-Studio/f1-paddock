@@ -1,9 +1,7 @@
 """Build the private beta, HA examples and a real-data preview."""
 import asyncio
-import hashlib
 import json
 import sys
-import zipfile
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -11,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from custom_components.f1_paddock.coordinator import F1Coordinator  # noqa: E402
 from custom_components.f1_paddock.live import F1LiveState  # noqa: E402
+from tools.package_release import package  # noqa: E402
 
 COMPONENT = ROOT / "custom_components" / "f1_paddock"
 FIX = ROOT / "tests" / "fixtures"
@@ -68,18 +67,7 @@ async def build():
              "grid_options": {"columns": "full" if span == 3 else 12, "rows": "auto"}} for key in keys]})
     (examples / "sections-view.json").write_text(json.dumps(view, indent=2, ensure_ascii=False), encoding="utf-8")
     (examples / "sections-view.yaml").write_text(json.dumps(view, indent=2, ensure_ascii=False), encoding="utf-8")
-    dist = ROOT / "dist"
-    dist.mkdir(exist_ok=True)
-    archive = dist / "f1-paddock-0.1.0b4.zip"
-    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as package:
-        for base in [ROOT / "custom_components", examples]:
-            for path in sorted(base.rglob("*")):
-                if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc":
-                    package.write(path, path.relative_to(ROOT))
-        for name in ["README.md", "SOURCES.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "VALIDATION.md", "source-audit.json", "asset-audit.json", "official-drivers-audit.json", "live-validation.json"]:
-            if (ROOT / name).exists():
-                package.write(ROOT / name, name)
-    (dist / (archive.name + ".sha256")).write_text(hashlib.sha256(archive.read_bytes()).hexdigest() + "  " + archive.name + "\n")
+    archive = package()
     print(f"Built {archive.name}: {archive.stat().st_size} bytes; {len(snapshot['calendar'])} GPs; {len(snapshot['standings'])} drivers")
 
 

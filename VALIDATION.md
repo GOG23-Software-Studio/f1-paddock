@@ -1,3 +1,12 @@
+# Validación de 0.1.0b5
+
+- 27 pruebas Python y 14 pruebas JavaScript correctas; dos comprobaciones adicionales de empaquetado con unittest (solo biblioteca estándar).
+- Se comprueba etiqueta/versión, presencia de traducciones y tarjeta, exclusión de datos privados y cachés y paquetes idénticos al repetir la construcción o cambiar finales de línea.
+- HACS usa la estructura fuente estándar `custom_components/f1_paddock`, no el ZIP adjunto para instalación manual. Manifiesto con documentación y seguimiento de incidencias; mínimo declarado HA 2026.11.1.
+- Preparación para repositorio personalizado. HACS no soporta repositorios privados; la comprobación HACS remota se omite expresamente mientras siga privado. La instalación desde HACS queda pendiente de autorización para hacer público el repositorio y de validación posterior. No se ha modificado la instancia HA.
+
+## Validación anterior
+
 # Validación de 0.1.0b4
 
 - 27 pruebas Python y 14 pruebas JavaScript correctas; Ruff sin errores.

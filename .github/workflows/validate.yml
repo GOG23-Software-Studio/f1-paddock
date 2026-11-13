@@ -1,0 +1,35 @@
+name: Validate integration and release package
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14'
+      - name: Validate metadata and build manual installer
+        run: python tools/package_release.py
+      - name: Test package boundaries and version matching
+        run: python -m unittest discover -s tests -p 'packaging_checks.py'
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: home-assistant/actions/hassfest@master
+  hacs:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: brands
+          comment: false

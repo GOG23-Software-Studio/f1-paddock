@@ -1,7 +1,7 @@
 """F1 Paddock beta constants."""
 DOMAIN = "f1_paddock"
 NAME = "F1 Paddock"
-VERSION = "0.1.0b4"
+VERSION = "0.1.0b5"
 CONF_SEASON = "season"
 CONF_FAVORITE = "favorite_driver_id"
 CONF_ROUND = "result_round"
