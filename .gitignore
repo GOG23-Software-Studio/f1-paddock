@@ -7,7 +7,11 @@ __pycache__/
 .ruff_cache/
 
 # Capturas privadas y copia de datos generada para la vista previa
-docs/
+docs/*
+!docs/screenshots/
+docs/screenshots/*
+!docs/screenshots/overview.png
+!docs/screenshots/timing-simulation.png
 preview/snapshot.json
 # Solo el paquete instalable vigente
 dist/*

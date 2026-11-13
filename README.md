@@ -1,8 +1,24 @@
 # F1 Paddock · 0.1.0b4
 
-Primera beta privada de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
+Beta funcional de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
 
 Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de dorsales y planos detallados originales con sus zonas. Son recursos de terceros servidos por Formula1.com; el proyecto no es una integración oficial de Formula 1.
+
+## Descarga y estado
+
+[Descargar la release 0.1.0b4](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b4). Utiliza el archivo **f1-paddock-0.1.0b4.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
+
+Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **pre-release**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. Instalación manual; esta versión no incluye distribución por HACS.
+
+## Capturas
+
+Vista general con una muestra deportiva capturada; no es una sesión en directo. El aviso de antigüedad corresponde a esa muestra. No se muestra el panel ni información doméstica de ninguna instalación.
+
+![Vista general de F1 Paddock](docs/screenshots/overview.png)
+
+Tiempos, sectores y piloto favorito en una **simulación con datos inventados**. Sirve para mostrar los colores y el diseño; no acredita funcionamiento en carrera.
+
+![Colores y piloto favorito en la simulación](docs/screenshots/timing-simulation.png)
 
 ## Qué funciona
 
