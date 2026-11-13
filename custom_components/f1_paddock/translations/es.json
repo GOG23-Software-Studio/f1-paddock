@@ -1,0 +1,39 @@
+{
+  "title": "F1 Paddock",
+  "config": {
+    "step": {
+      "user": {
+        "title": "F1 Paddock",
+        "description": "Resultados publicados, calendario y campeonato de F1. Tiempos y neumáticos mediante la fuente pública de F1; los tiempos detallados de boxes se muestran cuando están publicados.",
+        "data": {
+          "season": "Temporada"
+        }
+      },
+      "driver": {
+        "title": "Elige tu piloto",
+        "data": {
+          "favorite_driver_id": "Piloto favorito"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se pudo consultar la fuente pública. Inténtalo más tarde.",
+      "no_calendar": "El calendario de esta temporada todavía no está publicado.",
+      "no_drivers": "La clasificación de pilotos todavía no está publicada.",
+      "invalid_driver": "Selecciona un piloto de la lista."
+    },
+    "abort": {
+      "already_configured": "Esta temporada ya está configurada."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Piloto favorito",
+        "data": {
+          "favorite_driver_id": "Piloto favorito"
+        }
+      }
+    }
+  }
+}

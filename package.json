@@ -1,0 +1,1 @@
+{"name":"f1-paddock","version":"0.1.0-beta.4","private":true,"type":"module","scripts":{"test":"node --test tests/card.test.mjs"},"devDependencies":{"jsdom":"^27.0.0"}}

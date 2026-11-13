@@ -1,0 +1,39 @@
+{
+  "checked_at": "2026-11-12T18:20:44.039077+00:00",
+  "gps": 23,
+  "drivers": 25,
+  "official_number_graphics": 22,
+  "latest_result_round": 20,
+  "warnings": [],
+  "requests": 7,
+  "sources": {
+    "2026": {
+      "provider": "Jolpica",
+      "received_at": "2026-11-12T18:20:37.334215+00:00"
+    },
+    "2026/driverStandings": {
+      "provider": "Jolpica",
+      "received_at": "2026-11-12T18:20:38.658196+00:00"
+    },
+    "2026/constructorStandings": {
+      "provider": "Jolpica",
+      "received_at": "2026-11-12T18:20:39.673718+00:00"
+    },
+    "2026/last/results": {
+      "provider": "Jolpica",
+      "received_at": "2026-11-12T18:20:40.731307+00:00"
+    },
+    "2026/20/results": {
+      "provider": "Jolpica",
+      "received_at": "2026-11-12T18:20:41.822569+00:00"
+    },
+    "2026/20/qualifying": {
+      "provider": "Jolpica",
+      "received_at": "2026-11-12T18:20:42.945965+00:00"
+    },
+    "2026/20/sprint": {
+      "provider": "Jolpica",
+      "received_at": "2026-11-12T18:20:44.038894+00:00"
+    }
+  }
+}

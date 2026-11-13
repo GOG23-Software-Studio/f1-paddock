@@ -1,0 +1,22 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>F1 Paddock · Prueba de sesión</title><style>body{margin:0;background:#101214;color:#edf2fa;font-family:Arial,sans-serif}header{padding:16px 28px;border-bottom:1px solid #ffffff16;color:#a8b8cb;font-size:12px;display:flex;justify-content:space-between;gap:12px}header strong{color:#fff}main{max-width:1650px;margin:24px auto;padding:0 24px}button{color:inherit;background:#1d2b38;border:1px solid #ffffff30;border-radius:6px;padding:8px;cursor:pointer}@media(max-width:650px){header{display:block;line-height:1.8}main{padding:0 12px;margin-top:12px}}@font-face{font-family:F1Paddock;src:url("/preview-assets/Formula1-Bold.woff") format("woff");font-display:swap}</style></head><body><header><span><strong>GOG23 Software Studio · F1 Paddock</strong> · 0.1.0b4</span><span>Muestra real capturada · No es una sesión en directo</span></header><main><f1-paddock-card></f1-paddock-card></main><script type="module">
+import '/component/f1-paddock-card.js';
+const snapshot=await(await fetch('/snapshot.json')).json();
+const params=new URLSearchParams(location.search);
+if(params.has('simulation')){
+ document.querySelector('header span:last-child').textContent='SIMULACIÓN TEMPORAL · Datos inventados · Sin conexión a Home Assistant';
+ if(params.has('focus')){
+  const rows=snapshot.timing.rows,driver=rows.find(d=>d.id==='alonso');
+  if(driver)snapshot.timing.rows=[rows.find(d=>d.id!==driver.id),driver,...rows.filter(d=>d.id!==driver.id).slice(1)];
+ }
+}
+const entity='sensor.f1_paddock_dashboard',favorite='select.f1_paddock_favorite_driver',round='select.f1_paddock_result_gp';
+const card=document.querySelector('f1-paddock-card');
+const states={
+ [entity]:{entity_id:entity,state:snapshot.event?.name||'season_finished',attributes:{snapshot,favorite_id:'alonso',favorite_entity:favorite,round_entity:round,friendly_name:'F1 Paddock Dashboard'}},
+ [favorite]:{entity_id:favorite,state:'Fernando Alonso',attributes:{options:snapshot.drivers.map(d=>d.name)}},
+ [round]:{entity_id:round,state:`R${snapshot.result_round} · ${snapshot.calendar.find(c=>c.round===snapshot.result_round).name}`,attributes:{options:snapshot.calendar.map(c=>`R${c.round} · ${c.name}`)}}
+};
+const hass={states,async callService(domain,action,data){if(data.entity_id===favorite){states[favorite]={...states[favorite],state:data.option};states[entity]={...states[entity],attributes:{...states[entity].attributes,favorite_id:snapshot.drivers.find(d=>d.name===data.option).id}};}else{throw new Error('La vista previa solo incluye los resultados del GP capturado.');}card.hass=hass;}};
+card.setConfig({entity,card_type:params.has('simulation')?'simulation':'dashboard',table_height:430});card.hass=hass;
+window.previewReady=true;
+</script></body></html>

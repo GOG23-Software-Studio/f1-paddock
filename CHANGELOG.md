@@ -1,0 +1,35 @@
+# Cambios
+
+## 0.1.0b4 · 2026-11-12
+
+- Piloto favorito destacado con etiqueta, fondo y señal accesible en todas las tablas.
+- Colores de sectores y última vuelta según las marcas explícitas del flujo F1; mejor vuelta de sesión calculada entre mejores vueltas publicadas. Sin marca, sin color de rendimiento.
+- Hora y antigüedad del dato F1 separadas de su recepción de tiempos en Home Assistant; los latidos no rejuvenecen los tiempos.
+- Fuente F1 registrada en el documento para compatibilidad con Chromium y Paddock en negrita cursiva.
+
+
+## 0.1.0b3 · 2026-11-12
+
+- Simulación local de diez pasos con tiempos, sectores, neumáticos, paradas, adelantamiento, pérdida de señal y reconexión; nunca escribe sensores ni resultados.
+- Controles para iniciar, pausar, avanzar y reiniciar; parada automática al salir de la vista.
+- Retratos de tabla ampliados y encuadrados en la cara a partir de las fotografías oficiales.
+
+
+## 0.1.0b2 · 2026-11-12
+
+- Corregido el salto al principio: actualización incremental del contenido y filtrado de cambios de entidades ajenas.
+- Fuente pública F1 SignalR para tiempos, sectores, vueltas, neumáticos, tandas y contador de paradas.
+- Historial de boxes OpenF1 después de la sesión, separando tiempo detenido y tiempo en pit lane.
+- Tres tarjetas nuevas: tiempos, neumáticos y paradas.
+- Etiquetas de directo, sesión finalizada y lectura antigua; aislamiento de sesión y reconexión con espera.
+
+## 0.1.0b1 · 2026-11-12
+
+- Primera beta privada de F1 Paddock, con integración de HA y tarjetas propias.
+- Fuentes comprobadas con peticiones reales y muestras fechadas.
+- Calendario, próxima sesión, programa, circuito, piloto, último podio, campeonatos y resultados por GP.
+- Logotipo oficial F1 en la cabecera.
+- F1 Bold; 23 mapas detallados; 22 fotos actuales y 22 gráficos oficiales de dorsales.
+- Selección persistente de piloto y GP, caché compartida, espera ante límites y mensajes de datos ausentes.
+- Ejemplos de instalación y vista de prueba con datos reales capturados.
+- Directo, libres, estrategia e histórico de evolución todavía pendientes.

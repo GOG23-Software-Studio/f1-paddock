@@ -1,0 +1,70 @@
+{
+  "checked_at": "2026-11-12T17:59:27.778437+00:00",
+  "checks": [
+    {
+      "name": "calendar",
+      "url": "https://api.jolpi.ca/ergast/f1/2026.json?limit=100",
+      "status": 200,
+      "bytes": 14293
+    },
+    {
+      "name": "standings",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/driverStandings.json?limit=100",
+      "status": 200,
+      "bytes": 10966
+    },
+    {
+      "name": "constructors",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/constructorStandings.json?limit=100",
+      "status": 200,
+      "bytes": 2505
+    },
+    {
+      "name": "last_race",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/last/results.json?limit=100",
+      "status": 200,
+      "bytes": 13127
+    },
+    {
+      "name": "qualifying",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/last/qualifying.json?limit=100",
+      "status": 200,
+      "bytes": 9973
+    },
+    {
+      "name": "sprint",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/last/sprint.json?limit=100",
+      "status": 200,
+      "bytes": 191
+    },
+    {
+      "name": "f1_static_index",
+      "url": "https://livetiming.formula1.com/static/2026/Index.json",
+      "error": "HTTP Error 401: Unauthorized"
+    },
+    {
+      "name": "openf1_sessions",
+      "url": "https://api.openf1.org/v1/sessions?year=2026&session_name=Race",
+      "status": 200,
+      "bytes": 8986
+    },
+    {
+      "name": "openf1_drivers",
+      "url": "https://api.openf1.org/v1/drivers?session_key=11412",
+      "status": 200,
+      "bytes": 9025
+    },
+    {
+      "name": "formulaone_repo",
+      "url": "https://api.github.com/repos/marcokreeft87/formulaone-card",
+      "status": 200,
+      "bytes": 5861
+    },
+    {
+      "name": "formulaone_tree",
+      "url": "https://api.github.com/repos/marcokreeft87/formulaone-card/git/trees/main?recursive=1",
+      "status": 200,
+      "bytes": 28302
+    }
+  ]
+}

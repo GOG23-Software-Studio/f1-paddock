@@ -1,0 +1,141 @@
+{
+  "title": "F1 Paddock · beta",
+  "path": "f1-paddock-beta",
+  "icon": "mdi:flag-checkered",
+  "type": "sections",
+  "max_columns": 3,
+  "sections": [
+    {
+      "type": "grid",
+      "column_span": 3,
+      "cards": [
+        {
+          "type": "custom:f1-paddock-next-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": "full",
+            "rows": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 1,
+      "cards": [
+        {
+          "type": "custom:f1-paddock-circuit-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        },
+        {
+          "type": "custom:f1-paddock-programme-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        },
+        {
+          "type": "custom:f1-paddock-results-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 1,
+      "cards": [
+        {
+          "type": "custom:f1-paddock-driver-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        },
+        {
+          "type": "custom:f1-paddock-timing-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        },
+        {
+          "type": "custom:f1-paddock-tyres-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        },
+        {
+          "type": "custom:f1-paddock-standings-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 1,
+      "cards": [
+        {
+          "type": "custom:f1-paddock-podium-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        },
+        {
+          "type": "custom:f1-paddock-pits-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        },
+        {
+          "type": "custom:f1-paddock-constructors-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        },
+        {
+          "type": "custom:f1-paddock-calendar-card",
+          "entity": "sensor.f1_paddock_dashboard",
+          "table_height": 430,
+          "grid_options": {
+            "columns": 12,
+            "rows": "auto"
+          }
+        }
+      ]
+    }
+  ]
+}

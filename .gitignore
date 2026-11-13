@@ -1,0 +1,15 @@
+.local/
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Capturas privadas y copia de datos generada para la vista previa
+docs/
+preview/snapshot.json
+# Solo el paquete instalable vigente
+dist/*
+!dist/f1-paddock-0.1.0b4.zip
+!dist/f1-paddock-0.1.0b4.zip.sha256

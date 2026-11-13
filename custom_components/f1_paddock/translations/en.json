@@ -1,0 +1,39 @@
+{
+  "title": "F1 Paddock",
+  "config": {
+    "step": {
+      "user": {
+        "title": "F1 Paddock",
+        "description": "Published F1 results, calendar and standings. Public F1 timing and tyres; detailed pit times are shown when published.",
+        "data": {
+          "season": "Season"
+        }
+      },
+      "driver": {
+        "title": "Choose your driver",
+        "data": {
+          "favorite_driver_id": "Favorite driver"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to read the public data source. Try again later.",
+      "no_calendar": "Calendar not published for this season.",
+      "no_drivers": "Driver standings not published yet.",
+      "invalid_driver": "Choose a listed driver."
+    },
+    "abort": {
+      "already_configured": "This season is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Favorite driver",
+        "data": {
+          "favorite_driver_id": "Favorite driver"
+        }
+      }
+    }
+  }
+}

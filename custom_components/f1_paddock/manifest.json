@@ -1,0 +1,11 @@
+{
+  "domain": "f1_paddock",
+  "name": "F1 Paddock",
+  "codeowners": ["@oyogor1985"],
+  "config_flow": true,
+  "dependencies": ["frontend", "http", "lovelace"],
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "requirements": [],
+  "version": "0.1.0b4"
+}

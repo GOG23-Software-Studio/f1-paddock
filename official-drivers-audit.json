@@ -1,0 +1,168 @@
+[
+  {
+    "driver": "Andrea Kimi Antonelli",
+    "page": "https://www.formula1.com/en/drivers/kimi-antonelli",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Max Verstappen",
+    "page": "https://www.formula1.com/en/drivers/max-verstappen",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "George Russell",
+    "page": "https://www.formula1.com/en/drivers/george-russell",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Lewis Hamilton",
+    "page": "https://www.formula1.com/en/drivers/lewis-hamilton",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Charles Leclerc",
+    "page": "https://www.formula1.com/en/drivers/charles-leclerc",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Lando Norris",
+    "page": "https://www.formula1.com/en/drivers/lando-norris",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Oscar Piastri",
+    "page": "https://www.formula1.com/en/drivers/oscar-piastri",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Isack Hadjar",
+    "page": "https://www.formula1.com/en/drivers/isack-hadjar",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Liam Lawson",
+    "page": "https://www.formula1.com/en/drivers/liam-lawson",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Pierre Gasly",
+    "page": "https://www.formula1.com/en/drivers/pierre-gasly",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Arvid Lindblad",
+    "page": "https://www.formula1.com/en/drivers/arvid-lindblad",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Franco Colapinto",
+    "page": "https://www.formula1.com/en/drivers/franco-colapinto",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Oliver Bearman",
+    "page": "https://www.formula1.com/en/drivers/oliver-bearman",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Gabriel Bortoleto",
+    "page": "https://www.formula1.com/en/drivers/gabriel-bortoleto",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Nico Hülkenberg",
+    "page": "https://www.formula1.com/en/drivers/nico-hulkenberg",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Esteban Ocon",
+    "status": "not_in_current_official_directory"
+  },
+  {
+    "driver": "Fernando Alonso",
+    "page": "https://www.formula1.com/en/drivers/fernando-alonso",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Carlos Sainz",
+    "page": "https://www.formula1.com/en/drivers/carlos-sainz",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Alexander Albon",
+    "page": "https://www.formula1.com/en/drivers/alexander-albon",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Yuki Tsunoda",
+    "status": "not_in_current_official_directory"
+  },
+  {
+    "driver": "Ryo Hirakawa",
+    "status": "not_in_current_official_directory"
+  },
+  {
+    "driver": "Lance Stroll",
+    "page": "https://www.formula1.com/en/drivers/lance-stroll",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Valtteri Bottas",
+    "page": "https://www.formula1.com/en/drivers/valtteri-bottas",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Sergio Pérez",
+    "page": "https://www.formula1.com/en/drivers/sergio-perez",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  },
+  {
+    "driver": "Rafael Camara",
+    "page": "https://www.formula1.com/en/drivers/rafael-camara",
+    "number": true,
+    "photo": true,
+    "status": "verified"
+  }
+]

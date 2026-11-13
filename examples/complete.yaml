@@ -1,0 +1,2 @@
+type: custom:f1-paddock-card
+entity: sensor.f1_paddock_dashboard
