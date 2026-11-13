@@ -8,7 +8,7 @@ A project by [GOG23 Software Studio](https://github.com/GOG23-Software-Studio) �
 
 [Installation](#installation) · [Independent cards](#independent-cards) · [Screenshots](#screenshots) · [How it works](#how-it-works) · [Issues](https://github.com/GOG23-Software-Studio/f1-paddock/issues)
 
-**Development beta 0.1.0b6 · public repository · Marketplace catalogue submission pending.**
+**Development beta 0.1.0b7 · public repository · Marketplace catalogue submission pending.**
 
 [![Validation](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml/badge.svg)](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml)
 [![Open in Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=GOG23-Software-Studio&repository=f1-paddock&category=integration)
@@ -62,7 +62,7 @@ For older HACS installations, add the same URL under **Custom repositories**, ca
 
 ### Local installation
 
-Download [release 0.1.0b6](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b6) and use **f1-paddock-0.1.0b6.zip**. The “Source code” downloads contain the whole repository.
+Download [release 0.1.0b7](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b7) and use **f1-paddock-0.1.0b7.zip**. The “Source code” downloads contain the whole repository.
 
 1. Back up your configuration.
 2. Extract the ZIP and copy only `custom_components/f1_paddock` into HA's `/config/custom_components/`.
@@ -144,7 +144,7 @@ python -m pytest
 python -m ruff check custom_components tests tools
 npm install --ignore-scripts
 npm test
-python tools/package_release.py --tag 0.1.0b6
+python tools/package_release.py --tag 0.1.0b7
 python -m unittest discover -s tests -p packaging_checks.py
 ```
 
@@ -197,7 +197,7 @@ Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de do
 
 ### Descarga y estado
 
-[Descargar la release 0.1.0b6](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b6). Utiliza el archivo **f1-paddock-0.1.0b6.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
+[Descargar la release 0.1.0b7](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0b7). Utiliza el archivo **f1-paddock-0.1.0b7.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
 
 Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **pre-release**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La [solicitud de inclusión en el catálogo general #14100](https://github.com/hacs/default/pull/14100) está pendiente de revisión.
 
@@ -255,7 +255,7 @@ Documentación: [Marketplace](https://www.home-assistant.io/integrations/marketp
 
 ### Instalación manual en Home Assistant
 
-Paquete: `dist/f1-paddock-0.1.0b6.zip`.
+Paquete: `dist/f1-paddock-0.1.0b7.zip`.
 
 1. Guarda una copia de seguridad de tu configuración.
 2. Extrae el ZIP y copia **solo** `custom_components/f1_paddock` dentro de `/config/custom_components/`.

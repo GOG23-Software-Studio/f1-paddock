@@ -1,3 +1,13 @@
+# Changelog / Cambios
+
+## 0.1.0b7 · 2026-11-13
+
+- English-first README with Spanish documentation and MotoGP-style navigation and structure.
+- Original FP logo banner in the README and manual installer.
+- Marketplace installation button, contribution guide and bug/feature issue templates.
+- Updated publication status, validation evidence and third-party notices.
+- Documentation and packaging release; sporting behavior is unchanged. Real live-session validation remains pending.
+
 ## 0.1.0b6 · 2026-11-13
 
 - Repositorio público y preparación de la solicitud al catálogo de Marketplace.
@@ -5,7 +15,6 @@
 - Atribución de datos y revisión de permisos de terceros incluidas en el instalador; los permisos pendientes siguen documentados.
 - Conserva las funciones de beta 5. La verificación durante una sesión real sigue pendiente.
 
-# Cambios
 
 ## 0.1.0b5 · 2026-11-13
 

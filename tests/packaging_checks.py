@@ -22,7 +22,8 @@ class PackagingChecks(unittest.TestCase):
             root = Path(directory)
             for name in ("custom_components", "examples"):
                 shutil.copytree(ROOT / name, root / name, ignore=shutil.ignore_patterns("__pycache__"))
-            for name in ("README.md", "SOURCES.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "VALIDATION.md", "PUBLICATION_REVIEW.md", "hacs.json"):
+            for name in ("README.md", "SOURCES.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "VALIDATION.md", "PUBLICATION_REVIEW.md", "CONTRIBUTING.md", "hacs.json", "docs/studio-banner.png"):
+                (root / name).parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(ROOT / name, root / name)
             (root / ".local").mkdir()
             (root / ".local" / "secret.txt").write_text("excluded")
@@ -34,7 +35,10 @@ class PackagingChecks(unittest.TestCase):
                 self.assertIn("custom_components/f1_paddock/translations/es.json", names)
                 self.assertIn("custom_components/f1_paddock/brand/icon.png", names)
                 self.assertIn("custom_components/f1_paddock/brand/icon@2x.png", names)
-                self.assertFalse(any(n.startswith((".local/", "docs/", "tests/", "preview/")) for n in names))
+                self.assertIn("docs/studio-banner.png", names)
+                self.assertIn("CONTRIBUTING.md", names)
+                self.assertFalse(any(n.startswith((".local/", "tests/", "preview/")) for n in names))
+                self.assertEqual([n for n in names if n.startswith("docs/")], ["docs/studio-banner.png"])
                 self.assertFalse(any("__pycache__" in n for n in names))
             previous = archive.read_bytes()
             self.assertEqual(PACKAGE.package(root).read_bytes(), previous)

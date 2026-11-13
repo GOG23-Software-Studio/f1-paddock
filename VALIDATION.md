@@ -1,3 +1,9 @@
+# Release 0.1.0b7 preparation
+
+This release updates documentation and packaging, including the bilingual README, project banner, contribution guide and issue templates. Runtime behavior is unchanged apart from the version identifier. The installer now includes only the project-owned `docs/studio-banner.png` from `docs/`; third-party screenshots and local/private media remain excluded. Packaging tests check that boundary and deterministic output.
+
+HACS, hassfest and packaging must pass on the release commit before publication. Validation-run links are recorded in the GitHub release and catalogue request after completion. The historical beta 6 evidence below remains attributed to beta 6.
+
 # Current validation — 0.1.0b6
 
 Reviewed on 13 November 2026 for Marketplace submission.

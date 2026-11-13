@@ -1,4 +1,4 @@
-/** F1 Paddock 0.1.0b6. HA provides data; cards never poll external providers. */
+/** F1 Paddock 0.1.0b7. HA provides data; cards never poll external providers. */
 export const escapeHTML = v => String(v ?? '—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const safeAsset = value => {
   if (typeof value !== 'string') return '';

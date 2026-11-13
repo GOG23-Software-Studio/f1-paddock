@@ -15,7 +15,7 @@ python -m pytest
 python -m ruff check custom_components tests tools
 npm install --ignore-scripts
 npm test
-python tools/package_release.py --tag 0.1.0b6
+python tools/package_release.py --tag 0.1.0b7
 python -m unittest discover -s tests -p packaging_checks.py
 ```
 
