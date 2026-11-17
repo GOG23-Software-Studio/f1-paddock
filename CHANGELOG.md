@@ -1,5 +1,12 @@
 # Changelog / Cambios
 
+## 0.1.0 · 2026-11-17
+
+- First normal (non-prerelease) GitHub release for installation with default Marketplace/HACS settings, as requested in catalogue review.
+- Version identifiers and installation instructions updated from 0.1.0b7. No sporting runtime behavior changes.
+- Existing integration identity, entities, favorite selection and dashboard configuration are preserved.
+- Real live-session validation and third-party permissions remain documented as pending.
+
 ## 0.1.0b7 · 2026-11-13
 
 - English-first README with Spanish documentation and MotoGP-style navigation and structure.

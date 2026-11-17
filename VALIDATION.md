@@ -1,3 +1,13 @@
+# Release 0.1.0
+
+Prepared on 17 November 2026 following the maintainer request for a non-prerelease in catalogue PR #14100. This changes version metadata and documentation from beta 7, not sporting runtime behavior. Existing domain, entity identity and dashboard configuration are retained.
+
+HACS, hassfest and packaging must pass on the exact release commit before publishing. Passing run links will be recorded in the release and catalogue request. Publishing a normal release does not claim real live-session validation or resolve third-party permissions.
+
+## Historical validation records
+
+The following entries describe their original versions and review state at the time.
+
 # Release 0.1.0b7 preparation
 
 This release updates documentation and packaging, including the bilingual README, project banner, contribution guide and issue templates. Runtime behavior is unchanged apart from the version identifier. The installer now includes only the project-owned `docs/studio-banner.png` from `docs/`; third-party screenshots and local/private media remain excluded. Packaging tests check that boundary and deterministic output.
