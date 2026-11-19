@@ -52,13 +52,15 @@ Photos and maps load from their original remote servers. F1 Bold is fetched once
 
 The repository is public. [Catalogue submission #14100](https://github.com/hacs/default/pull/14100) has been approved and merged. F1 Paddock can be found in the general Marketplace catalogue after it refreshes.
 
-1. In Home Assistant 2026.11 or later, open **Settings → Marketplace → Add from link** and connect GitHub if prompted.
-2. Add `https://github.com/GOG23-Software-Studio/f1-paddock`.
-3. Select release **0.1.1**. Pre-release versions do not need to be enabled for this release.
-4. Install F1 Paddock, restart HA and reload the browser/app.
-5. On first installation, add **F1 Paddock** from **Settings → Devices & services → Add integration**. Choose the season and driver.
+1. Open **Settings → Marketplace** and search for **F1 Paddock**.
+2. Open its page and select **Install**. Normal releases do not require enabling pre-release versions or connecting a GitHub account.
+3. Restart Home Assistant if prompted, then reload the browser/app.
+4. On first installation, add **F1 Paddock** from **Settings → Devices & services → Add integration**, then choose the season and driver. Keep an existing integration entry when updating.
+5. Add the bundled cards through **Edit dashboard → Add card → By card → F1 Paddock**, selecting your actual Dashboard sensor. No separate frontend download is needed.
 
-For older HACS installations, add the same URL under **Custom repositories**, category **Integration**, and select release **0.1.1**. Marketplace/HACS installs the tagged component source, not the manual ZIP attached to the release.
+If the catalogue has not refreshed yet, use **Add from link** with `https://github.com/GOG23-Software-Studio/f1-paddock`; only this fallback requires a GitHub connection. Older HACS installations can search for F1 Paddock too; use **Custom repositories → Integration** only as a fallback.
+
+Updates appear under **Settings → Updates**. Back up first, install the update, restart HA when requested and reload clients. An installed-version label alone does not confirm that the running integration has restarted. Preserve the existing integration, cards and favorite. Marketplace/HACS installs the tagged component source, not the manual ZIP attached to the release.
 
 ### Local installation
 
@@ -239,15 +241,15 @@ La temporada se elige al instalar; esta versión no cambia de año automáticame
 
 El repositorio es público y está incluido en el catálogo general tras la aprobación de la solicitud #14100. Puede tardar en aparecer hasta que se refresque el catálogo.
 
-1. En Home Assistant 2026.11 o posterior, abre **Ajustes → Marketplace → Añadir desde enlace** y conecta GitHub si se solicita.
-2. Añade `https://github.com/GOG23-Software-Studio/f1-paddock`.
-3. Selecciona la versión **0.1.1**. No requiere activar las versiones preliminares.
-4. Instala F1 Paddock, reinicia Home Assistant y recarga el navegador o la aplicación.
-5. En la primera instalación, añade **F1 Paddock** desde **Ajustes → Dispositivos y servicios**. Si ya estaba instalada manualmente, conserva la integración y sus entidades.
+1. Abre **Ajustes → Marketplace** y busca **F1 Paddock**.
+2. Abre su ficha y pulsa **Instalar**. Las versiones normales no necesitan activar betas ni conectar una cuenta de GitHub.
+3. Reinicia Home Assistant si se solicita y recarga el navegador o la aplicación.
+4. En la primera instalación, añade **F1 Paddock** desde **Ajustes → Dispositivos y servicios → Añadir integración** y elige temporada y piloto. Si ya existe la integración, consérvala.
+5. Añade las tarjetas desde **Editar panel → Añadir tarjeta → Por tarjeta → F1 Paddock**, seleccionando el sensor Dashboard real. No hay que instalar una tarjeta adicional.
 
-En instalaciones anteriores con HACS, añade el mismo enlace desde **Repositorios personalizados**, categoría **Integración**, y selecciona la versión **0.1.1**.
+Si el catálogo todavía no se ha refrescado, utiliza **Añadir desde enlace** con `https://github.com/GOG23-Software-Studio/f1-paddock`; solo esta alternativa requiere conectar GitHub. En HACS también puedes buscar F1 Paddock; **Repositorios personalizados → Integración** queda como alternativa.
 
-Las actualizaciones se ofrecen mediante la entidad de actualización del repositorio. Guarda una copia de seguridad antes de actualizar, reinicia HA y recarga el navegador. Se conservan el dominio `f1_paddock` y las preferencias.
+Las actualizaciones aparecen en **Ajustes → Actualizaciones**. Guarda una copia, instala la actualización, reinicia HA cuando lo solicite y recarga los clientes. Que figure una versión instalada no significa que la integración en ejecución ya se haya reiniciado. Conserva la integración, las tarjetas y el favorito existentes.
 
 Marketplace/HACS instala `custom_components/f1_paddock` desde la etiqueta publicada, sin utilizar el ZIP manual adjunto. No instales una segunda copia de las tarjetas.
 
