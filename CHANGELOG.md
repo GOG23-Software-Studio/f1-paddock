@@ -1,5 +1,11 @@
 # Changelog / Cambios
 
+## Unreleased
+
+- Per-card Automatic / Español / English selector in the visual editor. Automatic follows Home Assistant language, with English fallback.
+- Localized cards, table headings, session/result states, warnings, accessible labels, simulation, dates and data-age messages.
+- Language changes preserve shared favorite, provider readings, DOM nodes and table scroll; explicit choices remain independent across cards.
+
 ## 0.1.1 · 2026-11-19
 
 - Abort the options flow with a translated message when the entry is not loaded, instead of accessing missing runtime data after a startup failure. Also protects submissions received after unload; saved favorite and other preferences remain unchanged.

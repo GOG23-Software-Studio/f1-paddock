@@ -102,6 +102,14 @@ Use the complete dashboard or add any of these twelve blocks separately from HA'
 
 Use HA's visual editor and Sections layout to resize and position blocks. [Sections example](examples/sections-view.yaml): replace its example entity ID before importing it. It does not replace an existing dashboard.
 
+### Language
+
+Each card’s visual editor offers **Automatic / Español / English**. Automatic follows Home Assistant’s language (Spanish for `es` variants, English otherwise). Choose a language explicitly to override it for that card. Headings, tables, status messages, warnings, accessibility labels, simulation and dates follow the selected language. Provider names and sporting values are preserved; changing language never changes the shared favorite.
+
+```yaml
+language: auto  # auto, es, en
+```
+
 ## Screenshots
 
 ### Complete dashboard
@@ -296,6 +304,12 @@ El sensor descubre los selectores asociados mediante el registro de entidades de
 | Tiempos de sesión | `custom:f1-paddock-timing-card` |
 | Neumáticos y tandas | `custom:f1-paddock-tyres-card` |
 | Paradas | `custom:f1-paddock-pits-card` |
+
+### Idioma de las tarjetas
+
+El editor visual ofrece **Automático / Español / English** en cada tarjeta. Automático sigue el idioma de Home Assistant: español para las variantes `es` e inglés para los demás idiomas. Puedes fijar español o inglés en una tarjeta sin cambiar las otras. Se traducen títulos, tablas, estados, avisos, textos accesibles, simulación y fechas; se conservan nombres y datos deportivos. Cambiar de idioma no modifica el favorito compartido.
+
+En YAML: `language: auto`, `language: es` o `language: en`.
 
 ### Datos y consumo
 

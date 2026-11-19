@@ -16,7 +16,14 @@ const states={
  [favorite]:{entity_id:favorite,state:'Fernando Alonso',attributes:{options:snapshot.drivers.map(d=>d.name)}},
  [round]:{entity_id:round,state:`R${snapshot.result_round} · ${snapshot.calendar.find(c=>c.round===snapshot.result_round).name}`,attributes:{options:snapshot.calendar.map(c=>`R${c.round} · ${c.name}`)}}
 };
-const hass={states,async callService(domain,action,data){if(data.entity_id===favorite){states[favorite]={...states[favorite],state:data.option};states[entity]={...states[entity],attributes:{...states[entity].attributes,favorite_id:snapshot.drivers.find(d=>d.name===data.option).id}};}else{throw new Error('La vista previa solo incluye los resultados del GP capturado.');}card.hass=hass;}};
-card.setConfig({entity,card_type:params.has('simulation')?'simulation':'dashboard',table_height:430});card.hass=hass;
+const hass={language:"es",states,async callService(domain,action,data){if(data.entity_id===favorite){states[favorite]={...states[favorite],state:data.option};states[entity]={...states[entity],attributes:{...states[entity].attributes,favorite_id:snapshot.drivers.find(d=>d.name===data.option).id}};}else{throw new Error('La vista previa solo incluye los resultados del GP capturado.');}card.hass=hass;}};
+const previewConfig={entity,card_type:params.has('simulation')?'simulation':'dashboard',language:params.get("language")||"auto",table_height:430};
+card.setConfig(previewConfig);card.hass=hass;
+if(params.has('editor')){
+ const editor=document.createElement('f1-paddock-card-editor');
+ editor.style.cssText='display:block;max-width:620px;margin:0 auto 24px;padding:20px;background:#182430;border-radius:18px';
+ document.querySelector('main').prepend(editor);editor.setConfig(previewConfig);editor.hass=hass;
+ editor.addEventListener('config-changed',ev=>card.setConfig(ev.detail.config));
+}
 window.previewReady=true;
 </script></body></html>

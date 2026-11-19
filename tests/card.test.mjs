@@ -8,12 +8,12 @@ try { ({JSDOM}=createRequire(import.meta.url)('jsdom')); }
 catch { ({JSDOM}=createRequire(new URL('../../motogp-paddock/package.json',import.meta.url))('jsdom')); }
 const dom=new JSDOM('<!doctype html>',{url:'http://localhost'});
 for(const key of ['window','document','HTMLElement','customElements','CustomEvent'])globalThis[key]=dom.window[key];
-const {F1PaddockCard,safeAsset,countdown,nextSession,simulationTiming,ageText}=await import('../custom_components/f1_paddock/www/f1-paddock-card.js');
+const {F1PaddockCard,safeAsset,countdown,nextSession,simulationTiming,ageText,dateText,resolveLanguage,translate,F1PaddockEditor}=await import('../custom_components/f1_paddock/www/f1-paddock-card.js');
 const original=JSON.parse(fs.readFileSync(new URL('fixtures/snapshot.json',import.meta.url)));
 function setup(kind='dashboard'){
  const snapshot=structuredClone(original),id='sensor.f1',fav='select.fav',gp='select.gp';
  const states={[id]:{state:'Las Vegas',attributes:{snapshot,favorite_id:'alonso',favorite_entity:fav,round_entity:gp}},[fav]:{state:'Fernando Alonso',attributes:{options:snapshot.drivers.map(d=>d.name)}},[gp]:{state:'R20 · Brazilian Grand Prix',attributes:{options:snapshot.calendar.map(d=>`R${d.round} · ${d.name}`)}}};
- const card=new F1PaddockCard();card.setConfig({entity:id,card_type:kind});card.hass={states,callService:async()=>{}};return {card,states,snapshot};
+ const card=new F1PaddockCard();card.setConfig({entity:id,card_type:kind});card.hass={language:"es",states,callService:async()=>{}};return {card,states,snapshot};
 }
 test('all nine independent blocks and complete dashboard render actual data',()=>{
  for(const kind of ['dashboard','next','circuit','programme','driver','podium','standings','constructors','results','calendar']){
@@ -56,12 +56,12 @@ test('clock and real data refresh keep card, image, row and scroll nodes mounted
  const {card,snapshot,states}=setup('standings');const wrap=card.shadowRoot.querySelector('[data-scroll]');const panel=card.shadowRoot.querySelector('ha-card');const row=card.shadowRoot.querySelector('tbody tr');const image=card.shadowRoot.querySelector('img');wrap.scrollTop=170;
  for(let i=0;i<15;i++)card.render();
  assert.equal(card.shadowRoot.querySelector('ha-card'),panel);assert.equal(card.shadowRoot.querySelector('[data-scroll]'),wrap);assert.equal(card.shadowRoot.querySelector('tbody tr'),row);assert.equal(card.shadowRoot.querySelector('img'),image);assert.equal(wrap.scrollTop,170);
- snapshot.standings[0].points=391;states['sensor.f1']={...states['sensor.f1']};card.hass={states};assert.equal(card.shadowRoot.querySelector('tbody tr'),row);assert(row.textContent.includes('391'));
+ snapshot.standings[0].points=391;states['sensor.f1']={...states['sensor.f1']};card.hass={language:"es",states};assert.equal(card.shadowRoot.querySelector('tbody tr'),row);assert(row.textContent.includes('391'));
 });
 
 test('unrelated HA updates do not redraw a card',()=>{
  const {card,states}=setup('driver');const old=card.render;let count=0;card.render=()=>{count++;old.call(card);};
- for(let i=0;i<10;i++)card.hass={states:{...states,'sensor.unrelated':{state:String(i)}}};assert.equal(count,0);
+ for(let i=0;i<10;i++)card.hass={language:"es",states:{...states,'sensor.unrelated':{state:String(i)}}};assert.equal(count,0);
 });
 
 test('session cards show official timing, tyre stints and distinct pit durations',()=>{
@@ -93,7 +93,7 @@ test('simulation updates preserve tables, focus, scroll and original HA entities
 
 test('timing colors use feed flags and only compare published personal best laps',()=>{
  const {card,states,snapshot}=setup('timing');snapshot.timing.rows[0].last_lap='1:21.001';snapshot.timing.rows[0].last_lap_mark='personal';snapshot.timing.rows[0].sectors=['24.001','28.002',null];snapshot.timing.rows[0].sector_marks=['overall',null,'personal'];
- states['sensor.f1']={...states['sensor.f1']};card.hass={states};
+ states['sensor.f1']={...states['sensor.f1']};card.hass={language:"es",states};
  const row=card.shadowRoot.querySelector('tbody tr');assert(row.querySelector('[aria-label="1:21.001 · Mejora personal"]'));assert(row.querySelector('[aria-label="24.001 · Mejor de la sesión"]'));assert(!row.querySelector('[aria-label^="28.002"]'));assert(!row.querySelector('[aria-label^="null"]'));
  assert(card.shadowRoot.textContent.includes('Sin marca, el tiempo queda neutro'));
 });
@@ -103,4 +103,79 @@ test('favorite stands out and data source age stays separate from receipt time',
  assert(card.shadowRoot.querySelector('.favorite-row[aria-current="true"] .your-driver'));assert(card.shadowRoot.querySelector('.favorite-row').textContent.includes('Fernando'));
  assert(card.shadowRoot.querySelector('.freshness').textContent.includes('hace 1 d'));assert(card.shadowRoot.querySelector('.freshness').textContent.includes('Recibidos en HA:'));
  assert.equal(ageText(null,now),'Hora no disponible');assert.equal(ageText(new Date(now-65000).toISOString(),now),'hace 1 min');assert.equal(ageText(new Date(now+60000).toISOString(),now),'Hora no disponible');
+});
+
+test('automatic language follows HA and explicit choices remain independent across cards',()=>{
+ const en=setup('timing'),es=setup('timing');
+ en.card.setConfig({entity:'sensor.f1',card_type:'timing',language:'auto'});
+ const table=en.card.shadowRoot.querySelector('[data-scroll="timing"]');table.scrollTop=103;table.scrollLeft=61;
+ en.card.hass={language:'en-GB',states:en.states};
+ assert(en.card.shadowRoot.textContent.includes('Session timing'));
+ assert(en.card.shadowRoot.textContent.includes('Last session · finished'));
+ assert(en.card.shadowRoot.textContent.includes('Received in HA:'));
+ assert.equal(en.card.shadowRoot.querySelector('[data-scroll="timing"]'),table);
+ assert.equal(table.scrollTop,103);assert.equal(table.scrollLeft,61);
+ en.card.hass={language:'es-ES',states:en.states};assert(en.card.shadowRoot.textContent.includes('Tiempos de la sesión'));
+ es.card.setConfig({entity:'sensor.f1',card_type:'timing',language:'es'});es.card.hass={language:'en',states:es.states};
+ en.card.setConfig({entity:'sensor.f1',card_type:'timing',language:'en'});en.card.hass={language:'es',states:en.states};
+ assert(es.card.shadowRoot.textContent.includes('Tiempos de la sesión'));assert(en.card.shadowRoot.textContent.includes('Session timing'));
+ assert.equal(resolveLanguage({language:'auto'},{language:'es-MX'}),'es');assert.equal(resolveLanguage({}, {language:'fr'}),'en');
+});
+
+test('English dashboard translates tables, statuses, session labels, tyres and accessibility text',()=>{
+ const {card,states,snapshot}=setup();
+ snapshot.event.sessions=[{name:'Libres 1',start:new Date(Date.now()+3600000).toISOString()}];
+ snapshot.timing.rows[0].last_lap='1:21.001';snapshot.timing.rows[0].last_lap_mark='overall';
+ card.setConfig({entity:'sensor.f1',language:'en'});card.hass={language:'es',states};
+ const text=card.shadowRoot.textContent;
+ for(const label of ['NEXT SESSION','Practice 1','Circuit','Weekend programme','Driver standings','Constructor standings','Pit stops and pit lane','Your driver','Reported laps','Stopped','Session best','Lapped','Race','YOUR DRIVER'])assert(text.includes(label),label);
+ for(const label of ['PRÓXIMA SESIÓN','Tu piloto','Piloto','Neumáticos','CLASIFICACIONES PUBLICADAS','No tomó la salida','Retirado','SIMULACIÓN'])assert(!text.includes(label),label);
+ assert(card.shadowRoot.querySelector('[aria-label="Enlarge circuit map"]'));
+ assert(card.shadowRoot.querySelector('[aria-label="1:21.001 · Session best"]'));
+ assert(card.shadowRoot.querySelector('.favorite-row').textContent.includes('Fernando'));
+ const options=Array.from(card.shadowRoot.querySelector('[data-action="session"]').options);
+ assert.deepEqual(options.map(o=>o.value),['RAC','QUAL','SPR']);assert.deepEqual(options.map(o=>o.textContent),['Race','Qualifying','Sprint']);
+ assert.equal(states['select.fav'].state,'Fernando Alonso');
+});
+
+test('English warnings, empty data and simulation are localized without changing source readings',()=>{
+ for(const kind of ['dashboard','simulation','results','circuit','programme','driver']){
+  const {card,states,snapshot}=setup(kind);snapshot.warnings=['source:cached'];
+  if(kind==='circuit'||kind==='programme')snapshot.event=null;
+  if(kind==='driver')snapshot.drivers=[];
+  card.setConfig({entity:'sensor.f1',card_type:kind,language:'en'});card.hass={language:'es',states};
+  const text=card.shadowRoot.textContent;
+  assert(!text.includes('Información parcial'),kind);assert(!text.includes('Temporada finalizada'),kind);assert(!text.includes('Programa no disponible'),kind);
+  if(kind==='simulation'){assert(text.includes('SIMULATION'));assert(text.includes('Start simulation'));assert(text.includes('Test start'));card._simStep=8;card.render();assert(card.shadowRoot.textContent.includes('Stale reading'));}
+ }
+ const {card,states}=setup('pits');card.setConfig({entity:'sensor.f1',card_type:'pits',language:'en'});states['sensor.f1'].attributes.snapshot.timing.pits_error=true;card.render();assert(card.shadowRoot.textContent.includes('Pit history temporarily unavailable.'));
+});
+
+test('localized dates keep date-only days and freshness has an English fallback',()=>{
+ const now=Date.UTC(2026,10,19,12);
+ assert(dateText('2026-12-01',false,'en').includes('Dec'));assert(dateText('2026-12-01',false,'es').includes('dic'));
+ assert.equal(dateText(null,true,'en'),'To be confirmed');assert.equal(dateText('invalid',true,'en'),'To be confirmed');
+ assert.equal(ageText(new Date(now-65000).toISOString(),now,'en'),'1 min ago');assert.equal(ageText(null,now,'en'),'Time unavailable');
+ assert.equal(countdown(null,now,'en'),'Schedule pending');
+});
+
+test('editor language selector translates immediately and preserves all config options',()=>{
+ const {states}=setup();const editor=new F1PaddockEditor();
+ editor.setConfig({entity:'sensor.f1',card_type:'timing',table_height:530,custom_option:'keep'});editor.hass={language:'es',states};
+ let emitted;editor.addEventListener('config-changed',ev=>{emitted=ev.detail.config;});
+ let select=editor.shadowRoot.querySelector('[name="language"]');assert.equal(select.value,'auto');assert.deepEqual([...select.options].map(o=>o.textContent),['Automático','Español','English']);
+ select.value='en';select.dispatchEvent(new dom.window.Event('change',{bubbles:true}));
+ assert.equal(emitted.language,'en');assert.equal(emitted.custom_option,'keep');assert.equal(emitted.table_height,530);
+ assert(editor.shadowRoot.textContent.includes('Dashboard sensor'));assert(editor.shadowRoot.textContent.includes('Maximum table height'));assert(editor.shadowRoot.textContent.includes('Session timing'));
+ select=editor.shadowRoot.querySelector('[name="language"]');select.value='auto';select.dispatchEvent(new dom.window.Event('change',{bubbles:true}));
+ editor.hass={language:'en-US',states};assert(editor.shadowRoot.textContent.includes('Automatic'));assert.equal(editor._config.custom_option,'keep');
+});
+
+
+test('all independent cards support English without coercing unknown provider labels',()=>{
+ for(const kind of ['next','circuit','programme','driver','podium','standings','constructors','results','calendar','timing','tyres','pits']){
+  const {card,states}=setup(kind);card.setConfig({entity:'sensor.f1',card_type:kind,language:'en'});card.hass={language:'es',states};
+  assert(card.shadowRoot.querySelector('ha-card'),kind);assert(!/undefined|NaN|\[object Object\]/.test(card.shadowRoot.textContent),kind);
+ }
+ for(const text of ['constructor','toString','provider-specific session'])assert.equal(translate('en',text),text);
 });
