@@ -24,6 +24,13 @@ if(params.has('editor')){
  editor.style.cssText='display:block;max-width:620px;margin:0 auto 24px;padding:20px;background:#182430;border-radius:18px';
  document.querySelector('main').prepend(editor);editor.setConfig(previewConfig);editor.hass=hass;
  editor.addEventListener('config-changed',ev=>card.setConfig(ev.detail.config));
+ if(params.has('updates')){
+  const status=document.createElement('p');status.setAttribute('role','status');status.textContent='Local editor checks · 0 HA-like updates';editor.before(status);
+  let ticks=0;const timer=setInterval(()=>{ticks++;status.textContent=`Local editor checks · ${ticks} HA-like updates`;
+   editor.hass={...hass,states:{...states,'sensor.preview_tick':{state:String(ticks),attributes:{}}}};
+   editor.setConfig({...editor._config});if(ticks===30)clearInterval(timer);
+  },1000);window.addEventListener('pagehide',()=>clearInterval(timer),{once:true});
+ }
 }
 window.previewReady=true;
 </script></body></html>

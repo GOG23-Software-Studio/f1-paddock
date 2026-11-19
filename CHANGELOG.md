@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep editor dropdowns mounted and ignore unrelated HA/state updates, preventing the sensor selector from closing while choosing a card source.
+
 - Per-card Automatic / Español / English selector in the visual editor. Automatic follows Home Assistant language, with English fallback.
 - Localized cards, table headings, session/result states, warnings, accessible labels, simulation, dates and data-age messages.
 - Language changes preserve shared favorite, provider readings, DOM nodes and table scroll; explicit choices remain independent across cards.

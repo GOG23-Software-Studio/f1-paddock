@@ -12,7 +12,7 @@ const {F1PaddockCard,safeAsset,countdown,nextSession,simulationTiming,ageText,da
 const original=JSON.parse(fs.readFileSync(new URL('fixtures/snapshot.json',import.meta.url)));
 function setup(kind='dashboard'){
  const snapshot=structuredClone(original),id='sensor.f1',fav='select.fav',gp='select.gp';
- const states={[id]:{state:'Las Vegas',attributes:{snapshot,favorite_id:'alonso',favorite_entity:fav,round_entity:gp}},[fav]:{state:'Fernando Alonso',attributes:{options:snapshot.drivers.map(d=>d.name)}},[gp]:{state:'R20 · Brazilian Grand Prix',attributes:{options:snapshot.calendar.map(d=>`R${d.round} · ${d.name}`)}}};
+ const states={[id]:{entity_id:id,state:'Las Vegas',attributes:{snapshot,favorite_id:'alonso',favorite_entity:fav,round_entity:gp}},[fav]:{state:'Fernando Alonso',attributes:{options:snapshot.drivers.map(d=>d.name)}},[gp]:{state:'R20 · Brazilian Grand Prix',attributes:{options:snapshot.calendar.map(d=>`R${d.round} · ${d.name}`)}}};
  const card=new F1PaddockCard();card.setConfig({entity:id,card_type:kind});card.hass={language:"es",states,callService:async()=>{}};return {card,states,snapshot};
 }
 test('all nine independent blocks and complete dashboard render actual data',()=>{
@@ -178,4 +178,23 @@ test('all independent cards support English without coercing unknown provider la
   assert(card.shadowRoot.querySelector('ha-card'),kind);assert(!/undefined|NaN|\[object Object\]/.test(card.shadowRoot.textContent),kind);
  }
  for(const text of ['constructor','toString','provider-specific session'])assert.equal(translate('en',text),text);
+});
+
+test('editor dropdowns keep their nodes, focus and pending choice during HA updates',()=>{
+ const {states}=setup();const editor=new F1PaddockEditor();document.body.append(editor);
+ editor.setConfig({entity:'',card_type:'circuit',table_height:430});editor.hass={language:'es',states};
+ const sensor=editor.shadowRoot.querySelector('[name="entity"]'),content=editor.shadowRoot.querySelector('[name="card_type"]');
+ sensor.focus();sensor.value='sensor.f1';
+ for(let i=0;i<10;i++){
+  const next={...states,'sensor.unrelated':{state:String(i),attributes:{}},'sensor.f1':{...states['sensor.f1'],attributes:{...states['sensor.f1'].attributes,snapshot:{...original,updated_at:String(i)}}}};
+  editor.hass={language:'es',states:next};editor.setConfig({entity:'',card_type:'circuit',table_height:430});
+  assert.equal(editor.shadowRoot.querySelector('[name="entity"]'),sensor);assert.equal(editor.shadowRoot.activeElement,sensor);
+  assert.equal(sensor.value,'sensor.f1');assert.equal(editor.shadowRoot.querySelector('[name="card_type"]'),content);
+ }
+ let result;editor.addEventListener('config-changed',ev=>{result=ev.detail.config;});
+ sensor.dispatchEvent(new dom.window.Event('change',{bubbles:true}));assert.equal(result.entity,'sensor.f1');
+ // A real catalogue change updates options without replacing the select itself.
+ editor.hass={language:'es',states:{...states,'sensor.second':{entity_id:'sensor.second',attributes:{snapshot:original,friendly_name:'Second F1'}}}};
+ assert.equal(editor.shadowRoot.querySelector('[name="entity"]'),sensor);assert([...sensor.options].some(o=>o.value==='sensor.second'));
+ editor.remove();
 });
