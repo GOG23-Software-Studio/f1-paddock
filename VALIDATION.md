@@ -1,3 +1,13 @@
+# Release 0.1.2
+
+- Per-card Automatic / Español / English selection, with Home Assistant language changes reflected without losing table nodes or scroll.
+- Cards, editor, states, warnings, simulation and date/freshness formatting translated. Original sporting names and shared favorite remain intact.
+- Editor sensor dropdown retains its DOM node, focus and pending selection while unrelated HA states and sporting readings change.
+- 21 frontend tests cover localization, editor updates and existing timing/scroll behavior. Local browser checks covered the language selector and 30 simulated editor updates.
+- Exact release commit must pass HACS, hassfest and packaging before publication; the release notes link that validation run.
+
+## Historical validation
+
 # Release 0.1.1
 
 Options now abort with a translated message if the entry is not loaded, before reading runtime data. Regression coverage includes startup failure, unload and stale form submissions, plus the loaded form and preservation of other preferences.

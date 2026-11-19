@@ -1,6 +1,6 @@
 # Changelog / Cambios
 
-## Unreleased
+## 0.1.2 · 2026-11-19
 
 - Keep editor dropdowns mounted and ignore unrelated HA/state updates, preventing the sensor selector from closing while choosing a card source.
 
