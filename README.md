@@ -8,12 +8,12 @@ A project by [GOG23 Software Studio](https://github.com/GOG23-Software-Studio) �
 
 [Installation](#installation) · [Independent cards](#independent-cards) · [Screenshots](#screenshots) · [How it works](#how-it-works) · [Issues](https://github.com/GOG23-Software-Studio/f1-paddock/issues)
 
-**Release 0.1.0 · public repository · Marketplace catalogue submission pending.**
+**Release 0.1.1 · public repository · included in the Marketplace catalogue.**
 
 [![Validation](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml/badge.svg)](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml)
 [![Open in Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=GOG23-Software-Studio&repository=f1-paddock&category=integration)
 
-The installation button adds this repository by link while catalogue review is pending; it does not indicate catalogue acceptance.
+The installation button opens F1 Paddock in your Home Assistant Marketplace.
 
 A Home Assistant integration with twelve independent dashboard cards and an optional complete panel, following the visual style of MotoGP Paddock. Choose your favorite driver to follow their portrait, race number, team, championship position and session timing. The bundled cards register automatically; no separate frontend download is required.
 
@@ -50,19 +50,19 @@ Photos and maps load from their original remote servers. F1 Bold is fetched once
 
 ### Marketplace / HACS
 
-The repository is public. [Catalogue submission #14100](https://github.com/hacs/default/pull/14100) is pending review, so being on GitHub does not yet make it searchable in the general catalogue.
+The repository is public. [Catalogue submission #14100](https://github.com/hacs/default/pull/14100) has been approved and merged. F1 Paddock can be found in the general Marketplace catalogue after it refreshes.
 
 1. In Home Assistant 2026.11 or later, open **Settings → Marketplace → Add from link** and connect GitHub if prompted.
 2. Add `https://github.com/GOG23-Software-Studio/f1-paddock`.
-3. Select release **0.1.0**. Pre-release versions do not need to be enabled for this release.
+3. Select release **0.1.1**. Pre-release versions do not need to be enabled for this release.
 4. Install F1 Paddock, restart HA and reload the browser/app.
 5. On first installation, add **F1 Paddock** from **Settings → Devices & services → Add integration**. Choose the season and driver.
 
-For older HACS installations, add the same URL under **Custom repositories**, category **Integration**, and select release **0.1.0**. Marketplace/HACS installs the tagged component source, not the manual ZIP attached to the release.
+For older HACS installations, add the same URL under **Custom repositories**, category **Integration**, and select release **0.1.1**. Marketplace/HACS installs the tagged component source, not the manual ZIP attached to the release.
 
 ### Local installation
 
-Download [release 0.1.0](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0) and use **f1-paddock-0.1.0.zip**. The “Source code” downloads contain the whole repository.
+Download [release 0.1.1](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.1) and use **f1-paddock-0.1.1.zip**. The “Source code” downloads contain the whole repository.
 
 1. Back up your configuration.
 2. Extract the ZIP and copy only `custom_components/f1_paddock` into HA's `/config/custom_components/`.
@@ -144,7 +144,7 @@ python -m pytest
 python -m ruff check custom_components tests tools
 npm install --ignore-scripts
 npm test
-python tools/package_release.py --tag 0.1.0
+python tools/package_release.py --tag 0.1.1
 python -m unittest discover -s tests -p packaging_checks.py
 ```
 
@@ -167,7 +167,7 @@ Favorite rows use a highlighted background, a badge and `aria-current`. Explicit
 
 ## Publication status
 
-The owner authorized public publication and Marketplace submission. [Request #14100](https://github.com/hacs/default/pull/14100) remains subject to maintainer review; inclusion and timing are not guaranteed. Third-party permissions and real live-session validation remain open, as documented above. Release 0.1.0 is published as a normal GitHub release, with the documented limitations still applicable.
+The owner authorized public publication and Marketplace submission. [Request #14100](https://github.com/hacs/default/pull/14100) has been approved and merged into the catalogue. Third-party permissions and real live-session validation remain open, as documented above. Release 0.1.1 is published as a normal GitHub release, with the documented limitations still applicable.
 
 ## Support and contribution
 
@@ -189,7 +189,7 @@ F1 Paddock is free. If you find it useful and would like to support my developme
 
 [Back to English](#f1-paddock)
 
-Versión 0.1.0 de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
+Versión 0.1.1 de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
 
 Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de dorsales y planos detallados originales con sus zonas. Son recursos de terceros servidos por Formula1.com; el proyecto no es una integración oficial de Formula 1.
 
@@ -197,9 +197,9 @@ Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de do
 
 ### Descarga y estado
 
-[Descargar la release 0.1.0](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.0). Utiliza el archivo **f1-paddock-0.1.0.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
+[Descargar la release 0.1.1](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.1). Utiliza el archivo **f1-paddock-0.1.1.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
 
-Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **release normal 0.1.0**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La [solicitud de inclusión en el catálogo general #14100](https://github.com/hacs/default/pull/14100) está pendiente de revisión.
+Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **release normal 0.1.1**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La [solicitud de inclusión en el catálogo general #14100](https://github.com/hacs/default/pull/14100) ha sido aprobada e incorporada al catálogo.
 
 ### Capturas
 
@@ -237,15 +237,15 @@ La temporada se elige al instalar; esta versión no cambia de año automáticame
 
 ### Instalación y actualización desde Marketplace
 
-El repositorio es público. La inclusión en el catálogo general está pendiente de revisión; publicarlo en GitHub no lo incorpora automáticamente al buscador.
+El repositorio es público y está incluido en el catálogo general tras la aprobación de la solicitud #14100. Puede tardar en aparecer hasta que se refresque el catálogo.
 
 1. En Home Assistant 2026.11 o posterior, abre **Ajustes → Marketplace → Añadir desde enlace** y conecta GitHub si se solicita.
 2. Añade `https://github.com/GOG23-Software-Studio/f1-paddock`.
-3. Selecciona la versión **0.1.0**. No requiere activar las versiones preliminares.
+3. Selecciona la versión **0.1.1**. No requiere activar las versiones preliminares.
 4. Instala F1 Paddock, reinicia Home Assistant y recarga el navegador o la aplicación.
 5. En la primera instalación, añade **F1 Paddock** desde **Ajustes → Dispositivos y servicios**. Si ya estaba instalada manualmente, conserva la integración y sus entidades.
 
-En instalaciones anteriores con HACS, añade el mismo enlace desde **Repositorios personalizados**, categoría **Integración**, y selecciona la versión **0.1.0**.
+En instalaciones anteriores con HACS, añade el mismo enlace desde **Repositorios personalizados**, categoría **Integración**, y selecciona la versión **0.1.1**.
 
 Las actualizaciones se ofrecen mediante la entidad de actualización del repositorio. Guarda una copia de seguridad antes de actualizar, reinicia HA y recarga el navegador. Se conservan el dominio `f1_paddock` y las preferencias.
 
@@ -255,7 +255,7 @@ Documentación: [Marketplace](https://www.home-assistant.io/integrations/marketp
 
 ### Instalación manual en Home Assistant
 
-Paquete: `dist/f1-paddock-0.1.0.zip`.
+Paquete: `dist/f1-paddock-0.1.1.zip`.
 
 1. Guarda una copia de seguridad de tu configuración.
 2. Extrae el ZIP y copia **solo** `custom_components/f1_paddock` dentro de `/config/custom_components/`.
@@ -351,6 +351,6 @@ F1 Paddock es gratuito. Si te resulta útil y quieres apoyar el tiempo dedicado 
 
 1. Actualiza `manifest.json`, `const.py`, el encabezado de la tarjeta y las notas de versión.
 2. Ejecuta `python tools/package_release.py --tag VERSION` y las comprobaciones. La etiqueta debe coincidir exactamente con `manifest.version`; el empaquetador no necesita HA ni acceso de red.
-3. Publica una release con esa etiqueta; el flujo **Attach manual installer to release** construye y adjunta el ZIP y SHA256 desde el código etiquetado. Marca como pre-release únicamente las futuras versiones preliminares; la 0.1.0 es una release normal.
+3. Publica una release con esa etiqueta; el flujo **Attach manual installer to release** construye y adjunta el ZIP y SHA256 desde el código etiquetado. Marca como pre-release únicamente las futuras versiones preliminares; la 0.1.1 es una release normal.
 
 Las comprobaciones automáticas incluyen límites del paquete y hassfest. El trabajo de HACS se ejecuta sin omitir comprobaciones e incluye la comprobación de la marca local. El logo FP es propio de este proyecto; el logotipo oficial F1 de la cabecera conserva su atribución separada.

@@ -1,6 +1,6 @@
 # Changelog / Cambios
 
-## Unreleased
+## 0.1.1 · 2026-11-19
 
 - Abort the options flow with a translated message when the entry is not loaded, instead of accessing missing runtime data after a startup failure. Also protects submissions received after unload; saved favorite and other preferences remain unchanged.
 

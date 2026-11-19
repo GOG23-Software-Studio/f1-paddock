@@ -1,3 +1,11 @@
+# Release 0.1.1
+
+Options now abort with a translated message if the entry is not loaded, before reading runtime data. Regression coverage includes startup failure, unload and stale form submissions, plus the loaded form and preservation of other preferences.
+
+42 Python tests, Ruff and two packaging checks passed for the correction. HACS, hassfest and packaging will validate the exact release commit before publication; the release notes link that run. This release also updates README catalogue status following the merged submission. No household configuration or dashboard is changed by publishing.
+
+## Historical validation
+
 # Release 0.1.0
 
 Prepared on 17 November 2026 following the maintainer request for a non-prerelease in catalogue PR #14100. This changes version metadata and documentation from beta 7, not sporting runtime behavior. Existing domain, entity identity and dashboard configuration are retained.
