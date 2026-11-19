@@ -34,6 +34,9 @@
           "favorite_driver_id": "Piloto favorito"
         }
       }
+    },
+    "abort": {
+      "integration_not_loaded": "F1 Paddock no está cargada. Espera a que la integración se recupere o vuelve a cargarla y abre las opciones de nuevo."
     }
   }
 }

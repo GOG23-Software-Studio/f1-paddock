@@ -55,6 +55,8 @@ class F1Flow(config_entries.ConfigFlow, domain=DOMAIN):
 
 class F1OptionsFlow(config_entries.OptionsFlow):
     async def async_step_init(self, user_input=None):
+        if self.config_entry.state is not config_entries.ConfigEntryState.LOADED:
+            return self.async_abort(reason="integration_not_loaded")
         choices = {d["id"]: d["name"] for d in self.config_entry.runtime_data.coordinator.data["drivers"]}
         if user_input is not None and user_input.get(CONF_FAVORITE) in choices:
             return self.async_create_entry(title="", data={**self.config_entry.options, **user_input})

@@ -1,5 +1,9 @@
 # Changelog / Cambios
 
+## Unreleased
+
+- Abort the options flow with a translated message when the entry is not loaded, instead of accessing missing runtime data after a startup failure. Also protects submissions received after unload; saved favorite and other preferences remain unchanged.
+
 ## 0.1.0 · 2026-11-17
 
 - First normal (non-prerelease) GitHub release for installation with default Marketplace/HACS settings, as requested in catalogue review.

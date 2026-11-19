@@ -34,6 +34,9 @@
           "favorite_driver_id": "Favorite driver"
         }
       }
+    },
+    "abort": {
+      "integration_not_loaded": "F1 Paddock is not loaded. Wait for the integration to recover or reload it, then open the options again."
     }
   }
 }
