@@ -1,4 +1,4 @@
-/** F1 Paddock 0.1.5. HA provides data; cards never poll external providers. */
+/** F1 Paddock 0.1.6. HA provides data; cards never poll external providers. */
 export function resolveLanguage(config, hass) {
   const selected=config?.language;
   return String(selected==='es'||selected==='en'?selected:hass?.language||globalThis.navigator?.language||'en').toLowerCase().startsWith('es')?'es':'en';

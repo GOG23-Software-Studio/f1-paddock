@@ -64,6 +64,7 @@ def package(root=ROOT, tag=None):
             if any(part.startswith(".") for part in Path(name).parts):
                 raise ValueError(f"Hidden file excluded from release: {name}")
             item = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
+            item.create_system = 3
             item.compress_type = zipfile.ZIP_STORED
             item.external_attr = 0o100644 << 16
             data = path.read_bytes()
@@ -79,6 +80,7 @@ def package(root=ROOT, tag=None):
         for entry in source.infolist():
             if entry.filename.startswith(prefix):
                 item = zipfile.ZipInfo(entry.filename[len(prefix):], date_time=entry.date_time)
+                item.create_system = 3
                 item.compress_type = zipfile.ZIP_STORED
                 item.external_attr = entry.external_attr
                 target.writestr(item, source.read(entry))

@@ -1,5 +1,9 @@
 # Changelog / Cambios
 
+## 0.1.6
+
+- Normalize the ZIP creator-system header as well as ordering and compression. Verify release uploads against a draft before publication. Previous release assets remain untouched.
+
 ## 0.1.5
 
 - Make release archives byte-identical across Windows and Linux using explicit path ordering and ZIP stored entries. Avoid zlib implementation differences when validating existing immutable assets.

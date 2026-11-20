@@ -1,3 +1,7 @@
+## 0.1.6 · normalized ZIP system headers · 2026-11-20
+
+A second platform-dependent ZIP field (`create_system`) remained in 0.1.5. Both archive writers now set it explicitly to Unix (3), alongside fixed timestamps, modes, ordering, normalized text and stored entries. Packaging checks enforce all entry creator-system fields. The new release is validated as a draft before publication; previous assets are preserved.
+
 ## 0.1.5 · cross-platform release reproducibility · 2026-11-20
 
 The 0.1.4 published assets matched their local checksums, but the Linux release workflow correctly refused to overwrite them because Windows Path ordering and zlib compression differed. No existing assets were replaced. This corrective version sorts archive paths explicitly and uses stored ZIP entries, ensuring the same bytes on both systems. The three package checks include ordering/compression invariants and preservation of download counters. README images show the 0.1.4 preview; sporting content and language selection are unchanged in 0.1.5.
