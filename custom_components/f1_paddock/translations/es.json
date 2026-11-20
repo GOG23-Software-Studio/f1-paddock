@@ -4,10 +4,8 @@
     "step": {
       "user": {
         "title": "F1 Paddock",
-        "description": "Resultados publicados, calendario y campeonato de F1. Tiempos y neumáticos mediante la fuente pública de F1; los tiempos detallados de boxes se muestran cuando están publicados.",
-        "data": {
-          "season": "Temporada"
-        }
+        "description": "Una única configuración para la temporada actual y las anteriores desde 2023. Cambia de año con el selector Temporada, sin añadir otro servicio.",
+        "data": {}
       },
       "driver": {
         "title": "Elige tu piloto",
@@ -23,7 +21,7 @@
       "invalid_driver": "Selecciona un piloto de la lista."
     },
     "abort": {
-      "already_configured": "Esta temporada ya está configurada."
+      "already_configured": "F1 Paddock ya está configurada. Cambia la temporada desde el selector Temporada de la integración o de la tarjeta."
     }
   },
   "options": {
@@ -37,6 +35,16 @@
     },
     "abort": {
       "integration_not_loaded": "F1 Paddock no está cargada. Espera a que la integración se recupere o vuelve a cargarla y abre las opciones de nuevo."
+    }
+  },
+  "entity": {
+    "select": {
+      "season": {
+        "name": "Temporada",
+        "state": {
+          "current": "Temporada actual (automática)"
+        }
+      }
     }
   }
 }

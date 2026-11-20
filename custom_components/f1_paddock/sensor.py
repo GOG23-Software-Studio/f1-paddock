@@ -14,7 +14,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
 
 class F1Sensor(F1Entity, SensorEntity):
-    _unrecorded_attributes = frozenset({"snapshot", "favorite_id", "favorite_entity", "round_entity"})
+    _unrecorded_attributes = frozenset({"snapshot", "favorite_id", "favorite_entity", "round_entity", "season_entity"})
 
     def __init__(self, coordinator, key, name):
         super().__init__(coordinator, key)
@@ -47,4 +47,5 @@ class F1Sensor(F1Entity, SensorEntity):
         prefix = self.coordinator.entry.entry_id
         return {"snapshot": self.coordinator.data, "favorite_id": self.coordinator.entry.options.get(CONF_FAVORITE),
                 "favorite_entity": registry.async_get_entity_id("select", "f1_paddock", f"{prefix}_favorite_driver"),
+                "season_entity": registry.async_get_entity_id("select", "f1_paddock", f"{prefix}_season"),
                 "round_entity": registry.async_get_entity_id("select", "f1_paddock", f"{prefix}_result_gp")}

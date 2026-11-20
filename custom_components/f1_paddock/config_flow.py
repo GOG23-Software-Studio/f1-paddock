@@ -12,13 +12,15 @@ from .models import driver_standings, races
 
 
 class F1Flow(config_entries.ConfigFlow, domain=DOMAIN):
-    VERSION = 1
+    VERSION = 2
 
     async def async_step_user(self, user_input=None):
+        if self._async_current_entries():
+            return self.async_abort(reason="already_configured")
         errors = {}
         if user_input is not None:
-            season = user_input[CONF_SEASON]
-            await self.async_set_unique_id(f"{DOMAIN}_{season}")
+            season = datetime.now().year
+            await self.async_set_unique_id(DOMAIN)
             self._abort_if_unique_id_configured()
             client = F1Client(async_get_clientsession(self.hass))
             try:
@@ -34,16 +36,14 @@ class F1Flow(config_entries.ConfigFlow, domain=DOMAIN):
                         return await self.async_step_driver()
             except F1Error:
                 errors["base"] = "cannot_connect"
-        return self.async_show_form(step_id="user", data_schema=vol.Schema({
-            vol.Required(CONF_SEASON, default=datetime.now().year): vol.All(vol.Coerce(int), vol.Range(min=2023, max=2100))
-        }), errors=errors)
+        return self.async_show_form(step_id="user", data_schema=vol.Schema({}), errors=errors)
 
     async def async_step_driver(self, user_input=None):
         choices = {d["id"]: d["name"] for d in self._drivers}
         errors = {}
         if user_input is not None:
             if user_input.get(CONF_FAVORITE) in choices:
-                return self.async_create_entry(title=f"{NAME} · {self._season}", data={CONF_SEASON: self._season}, options={CONF_FAVORITE: user_input[CONF_FAVORITE]})
+                return self.async_create_entry(title=NAME, data={CONF_SEASON: self._season}, options={CONF_FAVORITE: user_input[CONF_FAVORITE], CONF_SEASON: "current"})
             errors["base"] = "invalid_driver"
         return self.async_show_form(step_id="driver", data_schema=vol.Schema({vol.Required(CONF_FAVORITE): vol.In(choices)}), errors=errors)
 

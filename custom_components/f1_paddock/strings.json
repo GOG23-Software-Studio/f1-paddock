@@ -4,10 +4,8 @@
     "step": {
       "user": {
         "title": "F1 Paddock",
-        "description": "Published F1 results, calendar and standings. Public F1 timing and tyres; detailed pit times are shown when published.",
-        "data": {
-          "season": "Season"
-        }
+        "description": "One configuration for the current season and previous seasons from 2023. Use the Season selector to switch years without adding another service.",
+        "data": {}
       },
       "driver": {
         "title": "Choose your driver",
@@ -23,7 +21,7 @@
       "invalid_driver": "Choose a listed driver."
     },
     "abort": {
-      "already_configured": "This season is already configured."
+      "already_configured": "F1 Paddock is already configured. Use its Season selector in the integration or card to switch years."
     }
   },
   "options": {
@@ -37,6 +35,16 @@
     },
     "abort": {
       "integration_not_loaded": "F1 Paddock is not loaded. Wait for the integration to recover or reload it, then open the options again."
+    }
+  },
+  "entity": {
+    "select": {
+      "season": {
+        "name": "Season",
+        "state": {
+          "current": "Current season (automatic)"
+        }
+      }
     }
   }
 }

@@ -2,12 +2,13 @@
 from homeassistant.components.select import SelectEntity
 from homeassistant.exceptions import HomeAssistantError
 
-from .const import CONF_FAVORITE, CONF_ROUND
+from .const import CONF_FAVORITE, CONF_ROUND, CONF_SEASON
 from .entity import F1Entity
+from .season import CURRENT_SEASON, season_choices
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
-    async_add_entities([F1Select(entry.runtime_data.coordinator, False), F1Select(entry.runtime_data.coordinator, True)])
+    async_add_entities([F1Select(entry.runtime_data.coordinator, False), F1Select(entry.runtime_data.coordinator, True), F1SeasonSelect(entry.runtime_data.coordinator)])
 
 
 class F1Select(F1Entity, SelectEntity):
@@ -38,3 +39,35 @@ class F1Select(F1Entity, SelectEntity):
             raise HomeAssistantError("Unknown selection")
         entry = self.coordinator.entry
         self.hass.config_entries.async_update_entry(entry, options={**entry.options, (CONF_ROUND if self.rounds else CONF_FAVORITE): selected})
+
+
+class F1SeasonSelect(F1Entity, SelectEntity):
+    _attr_name = "Season"
+    _attr_icon = "mdi:calendar-range"
+    _attr_translation_key = "season"
+
+    def __init__(self, coordinator):
+        super().__init__(coordinator, "season")
+
+    @property
+    def available(self):
+        # A missing historical calendar must not prevent returning to the current season.
+        return True
+
+    @property
+    def options(self):
+        return season_choices()
+
+    @property
+    def current_option(self):
+        return self.coordinator.entry.options.get(CONF_SEASON, CURRENT_SEASON)
+
+    async def async_select_option(self, option):
+        if option not in self.options:
+            raise HomeAssistantError("Unknown season")
+        entry = self.coordinator.entry
+        if option == self.current_option:
+            return
+        options = {**entry.options, CONF_SEASON: option}
+        options.pop(CONF_ROUND, None)
+        self.hass.config_entries.async_update_entry(entry, options=options)

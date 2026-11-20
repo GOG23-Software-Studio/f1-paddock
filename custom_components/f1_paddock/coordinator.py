@@ -4,9 +4,10 @@ from datetime import datetime, timedelta, timezone
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import F1Error
-from .const import CONF_ROUND, CONF_SEASON, DOMAIN
+from .const import CONF_ROUND, DOMAIN
 from .live import F1LiveClient
 from .models import constructors, driver_standings, event, next_event, races, result
+from .season import selected_season
 
 
 class F1Coordinator(DataUpdateCoordinator):
@@ -28,13 +29,13 @@ class F1Coordinator(DataUpdateCoordinator):
         return False
 
     def _publish_live(self, state):
-        if self.data:
-            timing = state.snapshot(self.data["drivers"], int(self.entry.data[CONF_SEASON]))
+        if self.data and self.data["season"] == selected_season(self.entry):
+            timing = state.snapshot(self.data["drivers"], selected_season(self.entry))
             self.async_set_updated_data({**self.data, "timing": timing,
                                         "capabilities": {**self.data["capabilities"], "live": timing["live"]}})
 
     async def _async_update_data(self):
-        season = int(self.entry.data[CONF_SEASON])
+        season = selected_season(self.entry)
         warnings = []
         payloads = {}
         async def read(key, path, ttl=900):
@@ -72,6 +73,8 @@ class F1Coordinator(DataUpdateCoordinator):
                 results.append({"code": code, "available": False, "rows": [], "round": selected_round, "season": season})
                 warnings.append(f"result_{code}:identity_mismatch")
         podium = result(latest_payload, "RAC", self.assets, season, last_round) if last_round else None
+        if season != selected_season(self.entry):
+            raise UpdateFailed("Season changed while reading; waiting for the selected season")
         return {"schema_version": 1, "season": season, "updated_at": datetime.now(timezone.utc).isoformat(),
                 "calendar": calendar, "event": next_event(calendar), "standings": standings,
                 "standings_round": standing_payload.get("MRData", {}).get("StandingsTable", {}).get("round"),
@@ -79,5 +82,5 @@ class F1Coordinator(DataUpdateCoordinator):
                 "results": results, "result_round": selected_round, "last_race": podium,
                 "warnings": warnings, "sources": dict(self.client.sources),
                 "timing": self.live.state.snapshot(standings, season) if hasattr(self, "live") else {},
-                "capabilities": {"live": bool(hasattr(self, "live") and self.live.state.snapshot(standings, season)["live"]), "live_timing": True, "tyres": True, "pit_counts": True, "pit_times_live": False, "practice_results": False, "history": False},
+                "capabilities": {"live": bool(hasattr(self, "live") and self.live.state.snapshot(standings, season)["live"]), "live_timing": True, "tyres": True, "pit_counts": True, "pit_times_live": False, "practice_results": False, "history": True},
                 "logo": self.assets.get("logo", {}).get("url"), "font": self.assets.get("font", {}).get("url")}

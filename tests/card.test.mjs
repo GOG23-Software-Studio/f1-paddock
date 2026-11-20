@@ -181,7 +181,7 @@ test('all independent cards support English without coercing unknown provider la
 });
 
 test('editor dropdowns keep their nodes, focus and pending choice during HA updates',()=>{
- const {states}=setup();const editor=new F1PaddockEditor();document.body.append(editor);
+ const {states}=setup();states['sensor.other']={entity_id:'sensor.other',attributes:{snapshot:structuredClone(original)}};const editor=new F1PaddockEditor();document.body.append(editor);
  editor.setConfig({entity:'',card_type:'circuit',table_height:430});editor.hass={language:'es',states};
  const sensor=editor.shadowRoot.querySelector('[name="entity"]'),content=editor.shadowRoot.querySelector('[name="card_type"]');
  sensor.focus();sensor.value='sensor.f1';
@@ -197,4 +197,68 @@ test('editor dropdowns keep their nodes, focus and pending choice during HA upda
  editor.hass={language:'es',states:{...states,'sensor.second':{entity_id:'sensor.second',attributes:{snapshot:original,friendly_name:'Second F1'}}}};
  assert.equal(editor.shadowRoot.querySelector('[name="entity"]'),sensor);assert([...sensor.options].some(o=>o.value==='sensor.second'));
  editor.remove();
+});
+
+
+test('independent cards default to their own content and honor changes from the visual editor',()=>{
+ const {states}=setup();
+ const kinds=['next','circuit','programme','driver','podium','standings','constructors','results','calendar','timing','tyres','pits'];
+ for(const kind of kinds){
+  const type=`custom:f1-paddock-${kind}-card`;
+  const card=document.createElement(type.slice(7));
+  const config={type,entity:'sensor.f1',language:'es',table_height:530,custom_option:'keep'};
+  card.setConfig(config);card.hass={language:'es',states};
+  assert.equal(card._config.card_type,kind);
+  const editor=new F1PaddockEditor();editor.setConfig(config);editor.hass={language:'es',states};
+  const select=editor.shadowRoot.querySelector('[name="card_type"]');
+  assert.equal(select.value,kind);
+  let emitted;editor.addEventListener('config-changed',ev=>{emitted=ev.detail.config;card.setConfig(emitted);editor.setConfig(emitted);});
+  for(const choice of [...kinds,'dashboard']){
+   select.value=choice;select.dispatchEvent(new dom.window.Event('change',{bubbles:true}));
+   assert.equal(emitted.card_type,choice);assert.equal(emitted.type,type);
+   assert.equal(emitted.custom_option,'keep');assert.equal(emitted.table_height,530);
+   assert.equal(card._config.card_type,choice);
+   const expected=setup(choice).card;
+   assert.deepEqual([...card.shadowRoot.querySelectorAll('h1,h2')].map(n=>n.textContent),[...expected.shadowRoot.querySelectorAll('h1,h2')].map(n=>n.textContent));
+  }
+ }
+});
+
+
+test('new cards automatically choose the sole dashboard and preserve explicit or ambiguous choices',()=>{
+ const {states}=setup();const hass={language:'es',states};
+ const kinds=['dashboard','next','circuit','programme','driver','podium','standings','constructors','results','calendar','timing','tyres','pits'];
+ for(const kind of kinds){
+  const ctor=kind==='dashboard'?F1PaddockCard:customElements.get(`f1-paddock-${kind}-card`);
+  const stub=ctor.getStubConfig(hass);assert.equal(stub.entity,'sensor.f1');assert.equal(stub.card_type,kind);
+  const card=new ctor();card.setConfig(stub);card.hass=hass;assert(card.shadowRoot.querySelector('ha-card'));
+ }
+ const editor=new F1PaddockEditor();let updates=[];editor.addEventListener('config-changed',ev=>updates.push(ev.detail.config));
+ editor.setConfig({entity:'',card_type:'standings',language:'en',custom_option:'keep'});editor.hass={language:'es',states:{}};assert.equal(updates.length,0);
+ editor.hass=hass;assert.equal(updates.length,1);assert.equal(updates[0].entity,'sensor.f1');assert.equal(updates[0].custom_option,'keep');
+ assert.equal(editor.shadowRoot.querySelector('[name="entity"]').value,'sensor.f1');
+ for(let i=0;i<3;i++)editor.hass={...hass};assert.equal(updates.length,1);
+ editor.setConfig({...updates[0],entity:'sensor.explicit'});editor.hass=hass;assert.equal(editor._config.entity,'sensor.explicit');
+ const two={...hass,states:{...states,'sensor.second':{attributes:{snapshot:original}}}};
+ assert.equal(F1PaddockCard.getStubConfig(two).entity,'');assert.equal(F1PaddockCard.getStubConfig().entity,'');
+ editor.hass=two;editor.setConfig({entity:'',card_type:'calendar'});assert.equal(editor._config.entity,'');assert.equal(updates.length,1);
+});
+
+
+test('shared season selector localizes current and prevents old-season readings being shown as the new year',async()=>{
+ const {card,states}=setup('next');
+ states['select.season']={state:'current',attributes:{options:['current','2026','2025','2024','2023']}};
+ states['sensor.f1'].attributes.season_entity='select.season';
+ card.hass={language:'es',states};
+ let picker=card.shadowRoot.querySelector('[aria-label="Temporada"]');
+ assert(picker);assert.equal(picker.value,'current');assert(picker.textContent.includes('Temporada actual (automática)'));
+ let called;card.hass={language:'es',states,callService:async(...args)=>{called=args;}};
+ picker.value='2023';picker.dispatchEvent(new dom.window.Event('change',{bubbles:true}));
+ await Promise.resolve();assert.deepEqual(called,['select','select_option',{entity_id:'select.season',option:'2023'}]);
+ states['select.season']={...states['select.season'],state:'2023'};card.hass={language:'es',states};
+ assert(card.shadowRoot.textContent.includes('Cargando la temporada seleccionada'));assert(!card.shadowRoot.textContent.includes('CAMPEONATO DEL MUNDO'));
+ states['sensor.f1']={...states['sensor.f1'],state:'unavailable'};card.hass={language:'es',states};
+ assert(card.shadowRoot.textContent.includes('No se pudo cargar la temporada'));assert(card.shadowRoot.querySelector('[aria-label="Temporada"]'));
+ card.setConfig({entity:'sensor.f1',card_type:'next',language:'en'});
+ assert(card.shadowRoot.textContent.includes('Current season (automatic)'));assert(card.shadowRoot.textContent.includes('Unable to load the season'));
 });

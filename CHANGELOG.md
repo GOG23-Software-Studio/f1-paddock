@@ -1,5 +1,16 @@
 # Changelog / Cambios
 
+## 0.1.3 · 2026-11-20
+
+- One configuration now serves current and historical seasons from 2023 through a shared Season selector. Current season follows the calendar year. Prevent additional entries; migrate existing entries without changing IDs, favorites or cards.
+- Changing season clears the previous GP choice and prevents old-year readings or current live timing from appearing as historical results.
+
+- Automatically select the Dashboard sensor when exactly one is available, including new-card previews and sensors that appear after the editor loads. Keep explicit choices and require a choice when several dashboards exist.
+
+- Constrain the table-height number field to a compact width and keep editor controls within the available column.
+
+- Independent cards now honor the content selected in the visual editor; existing cards keep their original default. The editor also displays that default correctly before an explicit choice is saved.
+
 ## 0.1.2 · 2026-11-19
 
 - Keep editor dropdowns mounted and ignore unrelated HA/state updates, preventing the sensor selector from closing while choosing a card source.

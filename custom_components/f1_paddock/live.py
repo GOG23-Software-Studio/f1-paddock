@@ -267,7 +267,7 @@ class F1LiveClient:
                                 await self._historical_pits()
                                 await self._notify(True)
                                 failures = 0
-                                state = self.state.snapshot([], season)
+                                state = self.state.snapshot([], season or datetime.now(timezone.utc).year)
                                 if state["phase"] not in {"live", "stale"} and not self.watch():
                                     # Recheck every five minutes off-session; no permanent idle socket.
                                     idle = True
@@ -277,7 +277,7 @@ class F1LiveClient:
                                 if len(args) >= 2:
                                     self.state.apply(args[0], args[1], args[2] if len(args) > 2 else None)
                                     await self._notify()
-                                    if args[0] == "SessionStatus" and self.state.snapshot([], season)["phase"] == "finished":
+                                    if args[0] == "SessionStatus" and self.state.snapshot([], season or datetime.now(timezone.utc).year)["phase"] == "finished":
                                         await self._historical_pits()
                                         await self._notify(True)
                                         idle = True

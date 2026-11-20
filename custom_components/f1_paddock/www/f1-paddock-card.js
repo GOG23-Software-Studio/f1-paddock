@@ -1,9 +1,9 @@
-/** F1 Paddock 0.1.2. HA provides data; cards never poll external providers. */
+/** F1 Paddock 0.1.3. HA provides data; cards never poll external providers. */
 export function resolveLanguage(config, hass) {
   const selected=config?.language;
   return String(selected==='es'||selected==='en'?selected:hass?.language||globalThis.navigator?.language||'en').toLowerCase().startsWith('es')?'es':'en';
 }
-const ENGLISH = {
+const ENGLISH = {"Cargando la temporada seleccionada…":"Loading the selected season…","No se pudo cargar la temporada. Puedes elegir otra o volver a intentarlo.":"Unable to load the season. Choose another season or try again.","Temporada":"Season","Temporada actual (automática)":"Current season (automatic)",
   "Imagen no disponible en la fuente": "Image unavailable from the source",
   "Selecciona el sensor Dashboard de F1 Paddock": "Select the F1 Paddock Dashboard sensor",
   "Información parcial: se conservan las últimas lecturas disponibles.": "Partial data: the last available readings are retained.",
@@ -296,6 +296,9 @@ const val=x=>x===null||x===undefined?'—':e(x);
 const bodyPhoto=(d,cls='',language='es')=>safeAsset(d?.photo)?`<img class="portrait ${cls}" src="${e(safeAsset(d.photo))}" alt="${e(d.name)}" loading="lazy" referrerpolicy="no-referrer"><span class="initials" hidden>${e(d.code||'F1')}</span>`:`<span class="initials ${cls}" aria-label="${e(translate(language,'Foto no disponible'))}">${e(d?.code||'F1')}</span>`;
 const photo=(d,cls='',language='es')=>cls==='small'?`<span class="headshot">${bodyPhoto(d,cls,language)}</span>`:bodyPhoto(d,cls,language);
 
+function dashboardSensors(hass){return Object.entries(hass?.states||{}).filter(([id,s])=>id.startsWith('sensor.')&&s.attributes?.snapshot?.schema_version===1&&s.attributes.snapshot.capabilities);}
+function onlyDashboard(hass){const sensors=dashboardSensors(hass);return sensors.length===1?sensors[0][0]:'';}
+
 export class F1PaddockCard extends HTMLElement {
   get _language(){return resolveLanguage(this._config,this._hass);}
   _t(text){return translate(this._language,text);}
@@ -305,20 +308,20 @@ export class F1PaddockCard extends HTMLElement {
     this.shadowRoot.addEventListener('error',ev=>{if(ev.target.tagName==='IMG'){const image=ev.target;image.hidden=true;if(image.nextElementSibling?.classList.contains('initials'))image.nextElementSibling.hidden=false;else{const p=document.createElement('p');p.className='muted';p.textContent=this._t("Imagen no disponible en la fuente");image.after(p);}}},true);
   }
   setConfig(config){if(!config.entity)throw new Error(this._t("Selecciona el sensor Dashboard de F1 Paddock"));this._config={card_type:'dashboard',table_height:430,language:"auto",...config};this.render();}
-  set hass(hass){this._hass=hass;if(!this._config)return;const entity=hass.states[this._config.entity];const f=this._config.favorite_entity||entity?.attributes?.favorite_entity;const r=this._config.round_entity||entity?.attributes?.round_entity;const refs=[this._language,entity,hass.states[f],hass.states[r]];if(this._refs&&refs.every((v,i)=>v===this._refs[i]))return;this._refs=refs;this.render();}
+  set hass(hass){this._hass=hass;if(!this._config)return;const entity=hass.states[this._config.entity];const f=this._config.favorite_entity||entity?.attributes?.favorite_entity;const r=this._config.round_entity||entity?.attributes?.round_entity;const refs=[this._language,entity,hass.states[f],hass.states[r],hass.states[entity?.attributes?.season_entity]];if(this._refs&&refs.every((v,i)=>v===this._refs[i]))return;this._refs=refs;this.render();}
   connectedCallback(){if(!this._clock)this._clock=setInterval(()=>{if(this.shadowRoot.activeElement?.tagName!=='SELECT'&&!this.shadowRoot.querySelector('dialog[open]'))this.render();},10000);}
   disconnectedCallback(){clearInterval(this._clock);this._clock=null;this._stopSimulation();}
   getCardSize(){return this._config?.card_type==='dashboard'?18:6;}
   getGridOptions(){return {columns:12,rows:'auto',min_columns:6};}
   static getConfigElement(){return document.createElement('f1-paddock-card-editor');}
-  static getStubConfig(){return {entity:'',card_type:'dashboard',table_height:430};}
+  static getStubConfig(hass){return {entity:onlyDashboard(hass),card_type:'dashboard',table_height:430};}
   _card(key,content,kicker){if(this._data?.warnings?.length||this._entity?.state==='unavailable')content+=`<p class="tiny muted" role="status">${this._t("Información parcial: se conservan las últimas lecturas disponibles.")}</p>`;return `<ha-card class="panel ${key}"><div class="kicker">${e(kicker||'F1 PADDOCK')}</div><h2>${e(this._t(BLOCKS[key]||key))}</h2>${content}</ha-card>`;}
   _picker(attribute,label){const id=this._config[attribute]||this._entity?.attributes?.[attribute],s=this._hass?.states[id];
     if(!id||!s)return `<span class="muted">${e(label)}: ${this._t("selector no disponible")}</span>`;
-    return `<label class="picker">${e(label)}<select data-entity="${e(id)}" aria-label="${e(label)}">${(s.attributes.options||[]).map(x=>`<option${x===s.state?' selected':''}>${e(x)}</option>`).join('')}</select></label>`;
+    return `<label class="picker">${e(label)}<select data-entity="${e(id)}" aria-label="${e(label)}">${(s.attributes.options||[]).map(x=>`<option value="${e(x)}"${x===s.state?' selected':''}>${e(x==='current'?this._t("Temporada actual (automática)"):x)}</option>`).join('')}</select></label>`;
   }
   _next(){const s=this._data,n=nextSession(s);const updated=Date.parse(s.updated_at),age=Date.now()-updated;const warning=this._entity.state==='unavailable'||!Number.isFinite(age)||age>900000||s.warnings?.length;
-    return `<ha-card class="hero"><div><div class="kicker">${this._t("CAMPEONATO DEL MUNDO")} · ${val(s.season)}</div><h1 aria-label="F1 Paddock">${safeAsset(s.logo)?`<img class="f1-logo" src="${e(safeAsset(s.logo))}" alt="${this._t("F1 · logotipo oficial")}">`:'F1'} <small>Paddock</small></h1><span class="badge">${warning?this._t("Datos pendientes de actualizar"):this._t("Resultados publicados")}</span></div><div><div class="kicker">${n?this._t('PRÓXIMA SESIÓN')+' · '+e(this._t(n.name)):s.event?this._t("PROGRAMA DEL GRAN PREMIO"):this._t("TEMPORADA FINALIZADA")}</div><div class="count">${n?e(countdown(n.start,Date.now(),this._language)):s.event?this._t("Consulta los horarios"):this._t("Hasta la próxima temporada")}</div><div>${e(s.event?.name||'')}</div><p class="muted">${n?e(dateText(n.start,true,this._language)):this._t("Hora local de tu dispositivo")}</p></div><div>${this._picker('favorite_entity',this._t("Tu piloto"))}</div><div class="health">${warning?this._t("● Información parcial o antigua"):this._t("● Última consulta")} · ${e(dateText(s.updated_at,true,this._language))}<span>${e(this._t(PHASE[timingPhase(s.timing)]||PHASE.waiting))} · F1 Timing · ${this._t("Neumáticos y contador de paradas. Tiempos de boxes publicados: OpenF1.")}</span></div></ha-card>`;
+    return `<ha-card class="hero"><div><div class="kicker">${this._t("CAMPEONATO DEL MUNDO")} · ${val(s.season)}</div><h1 aria-label="F1 Paddock">${safeAsset(s.logo)?`<img class="f1-logo" src="${e(safeAsset(s.logo))}" alt="${this._t("F1 · logotipo oficial")}">`:'F1'} <small>Paddock</small></h1><span class="badge">${warning?this._t("Datos pendientes de actualizar"):this._t("Resultados publicados")}</span></div><div><div class="kicker">${n?this._t('PRÓXIMA SESIÓN')+' · '+e(this._t(n.name)):s.event?this._t("PROGRAMA DEL GRAN PREMIO"):this._t("TEMPORADA FINALIZADA")}</div><div class="count">${n?e(countdown(n.start,Date.now(),this._language)):s.event?this._t("Consulta los horarios"):this._t("Hasta la próxima temporada")}</div><div>${e(s.event?.name||'')}</div><p class="muted">${n?e(dateText(n.start,true,this._language)):this._t("Hora local de tu dispositivo")}</p></div><div>${this._entity?.attributes?.season_entity?this._picker('season_entity',this._t("Temporada")):''}${this._picker('favorite_entity',this._t("Tu piloto"))}</div><div class="health">${warning?this._t("● Información parcial o antigua"):this._t("● Última consulta")} · ${e(dateText(s.updated_at,true,this._language))}<span>${e(this._t(PHASE[timingPhase(s.timing)]||PHASE.waiting))} · F1 Timing · ${this._t("Neumáticos y contador de paradas. Tiempos de boxes publicados: OpenF1.")}</span></div></ha-card>`;
   }
   _circuit(){const c=this._data.event;
     if(!c)return this._card('circuit',`<p>${this._t("Temporada finalizada. Consulta los circuitos en el calendario.")}</p>`,this._t("EL GRAN PREMIO"));
@@ -361,6 +364,11 @@ export class F1PaddockCard extends HTMLElement {
   render(){if(!this._config||!this._hass)return;
     if(this.shadowRoot.querySelector('dialog[open]'))return;
     this._entity=this._hass.states[this._config.entity];this._data=this._entity?.attributes?.snapshot;
+    const seasonChoice=this._hass.states[this._entity?.attributes?.season_entity]?.state;
+    const requestedSeason=seasonChoice==='current'?new Date().getFullYear():Number(seasonChoice);
+    if(this._data&&Number.isFinite(requestedSeason)&&requestedSeason>0&&requestedSeason!==this._data.season){
+      this._patch(`<ha-card style="padding:24px">${this._picker('season_entity',this._t("Temporada"))}<p role="status">${this._t(this._entity.state==='unavailable'?"No se pudo cargar la temporada. Puedes elegir otra o volver a intentarlo.":"Cargando la temporada seleccionada…")}</p></ha-card>`);return;
+    }
     if(!this._data){this._patch(`<ha-card style="padding:24px">${this._t("F1 Paddock · Selecciona el sensor Dashboard de la integración. Datos todavía no disponibles.")}</ha-card>`);return;}
     if(this._config.card_type==='simulation'){this._simBase??=structuredClone(this._data);this._data={...this._simBase,timing:simulationTiming(this._simBase.timing||{},this._simStep)};}
     this._favorite=this._data.drivers?.find(d=>d.id===this._entity.attributes.favorite_id);
@@ -399,12 +407,17 @@ export class F1PaddockCard extends HTMLElement {
   }
 }
 
+function editorConfig(config){
+  const kind=Object.keys(BLOCKS).find(key=>config.type===`custom:f1-paddock-${key}-card`)||'dashboard';
+  return {...config,card_type:config.card_type??kind};
+}
+
 export class F1PaddockEditor extends HTMLElement {
   get _language(){return resolveLanguage(this._config,this._hass);}
   _t(text){return translate(this._language,text);}
   constructor(){super();this.attachShadow({mode:'open'});this.shadowRoot.addEventListener('change',ev=>{const t=ev.target;if(!t.name)return;const value=t.name==='table_height'?Number(t.value):t.value;this._config={...this._config,[t.name]:value};this.dispatchEvent(new CustomEvent('config-changed',{detail:{config:this._config},bubbles:true,composed:true}));if(t.name==='language')this.render();});}
-  setConfig(c){const changed=JSON.stringify(c)!==JSON.stringify(this._config);this._config={...c};if(changed)this.render();}
-  _sensors(){return Object.entries(this._hass?.states||{}).filter(([,s])=>s.attributes?.snapshot?.schema_version===1&&s.attributes.snapshot.capabilities&&s.entity_id?.startsWith('sensor.'));}
+  setConfig(c){const next=editorConfig(c);const changed=JSON.stringify(next)!==JSON.stringify(this._config);this._config=next;if(changed)this.render();}
+  _sensors(){return dashboardSensors(this._hass);}
   set hass(h){
     this._hass=h;
     // Sporting readings and unrelated HA states do not change the editor's controls.
@@ -413,8 +426,11 @@ export class F1PaddockEditor extends HTMLElement {
     this._editorSignature=signature;this.render();
   }
   render(){if(!this._config||!this._hass)return;const sensors=this._sensors();
-    const html=`<style>label{display:block;margin:16px 0}select,input{display:block;width:100%;padding:12px;margin-top:8px;background:var(--card-background-color,#202830);color:var(--primary-text-color,#fff);border:1px solid #888;border-radius:8px}</style><label>${this._t("Sensor Dashboard")}<select name="entity"><option value="">${this._t("Selecciona el sensor")}</option>${sensors.map(([id,s])=>`<option value="${e(id)}"${id===this._config.entity?' selected':''}>${e(s.attributes.friendly_name||id)}</option>`).join('')}</select></label><label>${this._t("Idioma")}<select name="language">${[["auto",this._t("Automático")],["es","Español"],["en","English"]].map(([key,label])=>`<option value="${key}"${key===(this._config.language||"auto")?" selected":""}>${e(label)}</option>`).join("")}</select></label><label>${this._t("Contenido")}<select name="card_type">${Object.entries({dashboard:this._t("Panel completo"),simulation:this._t("Simulación de sesión · prueba"),...BLOCKS}).map(([key,name])=>`<option value="${key}"${key===(this._config.card_type||'dashboard')?' selected':''}>${e(this._t(name))}</option>`).join('')}</select></label><label>${this._t("Altura máxima de las tablas")}<input type="number" name="table_height" min="200" max="1000" value="${e(this._config.table_height||430)}"></label><p>${this._t("Los selectores de piloto y gran premio se detectan automáticamente. Diseño y visibilidad se ajustan desde Home Assistant.")}</p>`;
+    const automatic=!this._config.entity&&sensors.length===1;
+    if(automatic)this._config={...this._config,entity:sensors[0][0]};
+    const html=`<style>:host{display:block;min-width:0}*{box-sizing:border-box}label{display:block;min-width:0;margin:16px 0}select,input{display:block;width:100%;max-width:100%;padding:12px;margin-top:8px;background:var(--card-background-color,#202830);color:var(--primary-text-color,#fff);border:1px solid #888;border-radius:8px}input[type="number"]{width:120px}</style><label>${this._t("Sensor Dashboard")}<select name="entity"><option value="">${this._t("Selecciona el sensor")}</option>${sensors.map(([id,s])=>`<option value="${e(id)}"${id===this._config.entity?' selected':''}>${e(s.attributes.friendly_name||id)}</option>`).join('')}</select></label><label>${this._t("Idioma")}<select name="language">${[["auto",this._t("Automático")],["es","Español"],["en","English"]].map(([key,label])=>`<option value="${key}"${key===(this._config.language||"auto")?" selected":""}>${e(label)}</option>`).join("")}</select></label><label>${this._t("Contenido")}<select name="card_type">${Object.entries({dashboard:this._t("Panel completo"),simulation:this._t("Simulación de sesión · prueba"),...BLOCKS}).map(([key,name])=>`<option value="${key}"${key===(this._config.card_type||'dashboard')?' selected':''}>${e(this._t(name))}</option>`).join('')}</select></label><label>${this._t("Altura máxima de las tablas")}<input type="number" name="table_height" min="200" max="1000" value="${e(this._config.table_height||430)}"></label><p>${this._t("Los selectores de piloto y gran premio se detectan automáticamente. Diseño y visibilidad se ajustan desde Home Assistant.")}</p>`;
     const template=document.createElement('template');template.innerHTML=html;patchDOM(this.shadowRoot,template.content);
+    if(automatic)this.dispatchEvent(new CustomEvent('config-changed',{detail:{config:{...this._config}},bubbles:true,composed:true}));
   }
 }
 if(!customElements.get('f1-paddock-card'))customElements.define('f1-paddock-card',F1PaddockCard);
@@ -424,6 +440,6 @@ const pickerLanguage=resolveLanguage(null,{language:document.documentElement.lan
 window.customCards.push({type:'f1-paddock-card',name:'F1 Paddock · '+translate(pickerLanguage,'Panel completo'),description:pickerLanguage==='es'?'Fórmula 1 con el estilo de MotoGP Paddock':'Formula 1 in the style of MotoGP Paddock',preview:true});
 for(const [key,name] of Object.entries(BLOCKS)){
   const tag=`f1-paddock-${key}-card`;
-  if(!customElements.get(tag))customElements.define(tag,class extends F1PaddockCard{setConfig(c){super.setConfig({...c,card_type:key});}static getStubConfig(){return {entity:'',card_type:key};}});
+  if(!customElements.get(tag))customElements.define(tag,class extends F1PaddockCard{setConfig(c){super.setConfig({card_type:key,...c});}static getStubConfig(hass){return {entity:onlyDashboard(hass),card_type:key};}});
   window.customCards.push({type:tag,name:'F1 Paddock · '+translate(pickerLanguage,name),description:translate(pickerLanguage,name)+(pickerLanguage==='es'?' · Tarjeta independiente':' · Independent card'),preview:true});
 }

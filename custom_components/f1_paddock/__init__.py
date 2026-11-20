@@ -6,9 +6,10 @@ from pathlib import Path
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import F1Client
-from .const import CONF_ROUND, PLATFORMS
+from .const import CONF_ROUND, CONF_SEASON, NAME, PLATFORMS
 from .coordinator import F1Coordinator
 from .frontend import async_prepare_font, async_register_frontend
+from .season import selected_season
 
 
 @dataclass
@@ -29,7 +30,7 @@ async def async_setup_entry(hass, entry):
     await async_register_frontend(hass)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     coordinator.async_set_updated_data(coordinator.data)
-    entry.async_create_background_task(hass, coordinator.live.run(int(entry.data['season'])), "F1 Paddock public timing")
+    entry.async_create_background_task(hass, coordinator.live.run(None), "F1 Paddock public timing")
     entry.async_on_unload(entry.add_update_listener(async_options_updated))
     return True
 
@@ -43,8 +44,24 @@ async def async_unload_entry(hass, entry):
 
 async def async_options_updated(hass, entry):
     coordinator = entry.runtime_data.coordinator
+    if selected_season(entry) != coordinator.data.get("season"):
+        await coordinator.async_refresh()
+        return
     requested = entry.options.get(CONF_ROUND)
     if requested and requested != coordinator.data.get("result_round"):
         await coordinator.async_request_refresh()
     else:
         coordinator.async_set_updated_data(coordinator.data)
+
+
+async def async_migrate_entry(hass, entry):
+    """Retain IDs, favorites and existing historical choices without deleting entries."""
+    if entry.version > 2:
+        return False
+    if entry.version == 1:
+        from datetime import datetime
+        season = int(entry.data[CONF_SEASON])
+        choice = "current" if season == datetime.now().year else str(season)
+        hass.config_entries.async_update_entry(entry, version=2, title=NAME,
+            options={CONF_SEASON: choice, **entry.options})
+    return True

@@ -1,3 +1,12 @@
+## 0.1.3 · single entry and shared seasons · 2026-11-20
+
+- 47 backend tests, 24 frontend tests and two package checks passed; Ruff passed.
+- UI in the existing HA installation: selected 2023, checked historical calendar/standings/results, returned to automatic current season (2026). Alonso and the entry ID remain unchanged; the original result GP (R21 Las Vegas) was restored after testing.
+- F1 view configuration matches the previously verified baseline exactly (SHA256 `1532d665701938760aa773b2172ae28a5997b1662d3974fe041c43cc7032cdab`). No dashboard writes were made.
+- Integration page shows one configuration, eight entities (including the new Season selector), and no Add service control. Existing entry migrated to schema version 2 without changing entity identities.
+- Default current season, migration, singleton guard, explicit historical requests, concurrent season change, failed historical recovery and automatic year rollover have regression coverage. Actual January rollover remains a clock-controlled test.
+- Historical photos/maps are only shown when their assets match the year; current media is not substituted for historical media. Historical timing replay is not provided.
+
 # Release 0.1.2
 
 - Per-card Automatic / Español / English selection, with Home Assistant language changes reflected without losing table nodes or scroll.

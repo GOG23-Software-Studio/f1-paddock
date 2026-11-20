@@ -45,3 +45,30 @@ async def test_loaded_options_preserve_current_favorite_and_other_preferences():
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert result["data"] == {CONF_FAVORITE: "norris", "result_round": 20}
     assert entry.options[CONF_FAVORITE] == "alonso"
+
+
+async def test_second_entry_is_rejected_before_season_form_or_network():
+    from custom_components.f1_paddock.config_flow import F1Flow
+    flow = F1Flow()
+    flow._async_current_entries = Mock(return_value=[SimpleNamespace(entry_id="existing")])
+    result = await flow.async_step_user()
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "already_configured"
+
+
+async def test_migration_preserves_ids_favorite_and_round_and_enables_current(monkeypatch):
+    from datetime import datetime
+
+    from custom_components.f1_paddock import async_migrate_entry
+    entry = SimpleNamespace(version=1, entry_id="keep-id", unique_id="f1_paddock_2026",
+                            data={"season": datetime.now().year}, options={CONF_FAVORITE:"alonso", "result_round":20})
+    update = Mock()
+    hass = SimpleNamespace(config_entries=SimpleNamespace(async_update_entry=update))
+    assert await async_migrate_entry(hass, entry)
+    args = update.call_args.kwargs
+    assert args["version"] == 2
+    assert args["options"] == {"season":"current", CONF_FAVORITE:"alonso", "result_round":20}
+    assert "data" not in args and "unique_id" not in args and entry.entry_id == "keep-id"
+    entry.data["season"] = 2023
+    await async_migrate_entry(hass, entry)
+    assert update.call_args.kwargs["options"]["season"] == "2023"

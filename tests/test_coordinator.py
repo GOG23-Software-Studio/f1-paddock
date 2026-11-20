@@ -40,3 +40,32 @@ async def test_outage_keeps_cached_values_and_explicit_warning(fixture, assets):
     data = await F1Coordinator._async_update_data(c)
     assert len(data["standings"]) == 25
     assert "standings:cached" in data["warnings"]
+
+
+async def test_historical_season_uses_only_that_year_and_cannot_publish_after_another_choice(fixture, assets):
+    import json
+
+    import pytest
+    from homeassistant.helpers.update_coordinator import UpdateFailed
+    class HistoricalClient(Client):
+        async def get(self, path, ttl=900):
+            payload = await super().get(path.replace("2023", "2026"), ttl)
+            self.calls[-1] = path
+            return json.loads(json.dumps(payload).replace('2026', '2023'))
+
+    client = HistoricalClient(fixture)
+    c = SimpleNamespace(entry=SimpleNamespace(data={"season":2026}, options={"season":"2023"}), client=client, assets=assets)
+    data = await F1Coordinator._async_update_data(c)
+    assert data["season"] == 2023 and data["last_race"]["season"] == 2023
+    assert all(path.startswith("2023") for path in client.calls)
+    assert all(result["season"] == 2023 for result in data["results"])
+    assert data["capabilities"]["live"] is False
+    assert not any(driver["photo"] for driver in data["drivers"])
+    original_get = client.get
+    async def switch_mid_fetch(path, ttl=900):
+        payload = await original_get(path, ttl)
+        c.entry.options["season"] = "2025"
+        return payload
+    client.get = switch_mid_fetch
+    with pytest.raises(UpdateFailed, match="Season changed"):
+        await F1Coordinator._async_update_data(c)
