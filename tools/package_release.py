@@ -56,13 +56,15 @@ def package(root=ROOT, tag=None):
     dist = root / "dist"
     dist.mkdir(exist_ok=True)
     archive = dist / f"f1-paddock-{version}.zip"
-    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as target:
-        for path in sorted(files):
+    # Explicit string ordering and stored entries are identical on Windows/Linux,
+    # independent of Path's platform ordering and the installed zlib variant.
+    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_STORED) as target:
+        for path in sorted(files, key=lambda p: p.relative_to(root).as_posix()):
             name = path.relative_to(root).as_posix()
             if any(part.startswith(".") for part in Path(name).parts):
                 raise ValueError(f"Hidden file excluded from release: {name}")
             item = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
-            item.compress_type = zipfile.ZIP_DEFLATED
+            item.compress_type = zipfile.ZIP_STORED
             item.external_attr = 0o100644 << 16
             data = path.read_bytes()
             if path.suffix in {".py", ".js", ".json", ".yaml", ".yml", ".md", ".txt", ".css"} or path.name == "LICENSE":
@@ -73,11 +75,11 @@ def package(root=ROOT, tag=None):
     # HACS extracts this asset directly into the integration directory.
     runtime = dist / "f1_paddock.zip"
     prefix = "custom_components/f1_paddock/"
-    with zipfile.ZipFile(archive) as source, zipfile.ZipFile(runtime, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as target:
+    with zipfile.ZipFile(archive) as source, zipfile.ZipFile(runtime, "w", compression=zipfile.ZIP_STORED) as target:
         for entry in source.infolist():
             if entry.filename.startswith(prefix):
                 item = zipfile.ZipInfo(entry.filename[len(prefix):], date_time=entry.date_time)
-                item.compress_type = zipfile.ZIP_DEFLATED
+                item.compress_type = zipfile.ZIP_STORED
                 item.external_attr = entry.external_attr
                 target.writestr(item, source.read(entry))
     digest = hashlib.sha256(runtime.read_bytes()).hexdigest()

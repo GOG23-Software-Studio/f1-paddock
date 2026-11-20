@@ -8,7 +8,7 @@ A project by [GOG23 Software Studio](https://github.com/GOG23-Software-Studio) �
 
 [Installation](#installation) · [Independent cards](#independent-cards) · [Screenshots](#screenshots) · [How it works](#how-it-works) · [Issues](https://github.com/GOG23-Software-Studio/f1-paddock/issues)
 
-**Release 0.1.4 · public repository · included in the Marketplace catalogue.**
+**Release 0.1.5 · public repository · included in the Marketplace catalogue.**
 
 [![Validation](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml/badge.svg)](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml)
 [![Open in Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=GOG23-Software-Studio&repository=f1-paddock&category=integration)
@@ -64,7 +64,7 @@ Updates appear under **Settings → Updates**. Back up first, install the update
 
 ### Local installation
 
-Download [release 0.1.4](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.4) and use **f1-paddock-0.1.4.zip**. The “Source code” downloads contain the whole repository.
+Download [release 0.1.5](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.5) and use **f1-paddock-0.1.5.zip**. The “Source code” downloads contain the whole repository.
 
 1. Back up your configuration.
 2. Extract the ZIP and copy only `custom_components/f1_paddock` into HA's `/config/custom_components/`.
@@ -154,7 +154,7 @@ python -m pytest
 python -m ruff check custom_components tests tools
 npm install --ignore-scripts
 npm test
-python tools/package_release.py --tag 0.1.4
+python tools/package_release.py --tag 0.1.5
 python -m unittest discover -s tests -p packaging_checks.py
 ```
 
@@ -177,7 +177,7 @@ Favorite rows use a highlighted background, a badge and `aria-current`. Explicit
 
 ## Publication status
 
-The owner authorized public publication and Marketplace submission. [Request #14100](https://github.com/hacs/default/pull/14100) has been approved and merged into the catalogue. Third-party permissions and real live-session validation remain open, as documented above. Release 0.1.4 is published as a normal GitHub release, with the documented limitations still applicable.
+The owner authorized public publication and Marketplace submission. [Request #14100](https://github.com/hacs/default/pull/14100) has been approved and merged into the catalogue. Third-party permissions and real live-session validation remain open, as documented above. Release 0.1.5 is published as a normal GitHub release, with the documented limitations still applicable.
 
 ## Support and contribution
 
@@ -199,7 +199,7 @@ F1 Paddock is free. If you find it useful and would like to support my developme
 
 [Back to English](#f1-paddock)
 
-Versión 0.1.4 de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
+Versión 0.1.5 de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
 
 Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de dorsales y planos detallados originales con sus zonas. Son recursos de terceros servidos por Formula1.com; el proyecto no es una integración oficial de Formula 1.
 
@@ -207,9 +207,9 @@ Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de do
 
 ### Descarga y estado
 
-[Descargar la release 0.1.4](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.4). Utiliza el archivo **f1-paddock-0.1.4.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
+[Descargar la release 0.1.5](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.5). Utiliza el archivo **f1-paddock-0.1.5.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
 
-Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **release normal 0.1.4**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La [solicitud de inclusión en el catálogo general #14100](https://github.com/hacs/default/pull/14100) ha sido aprobada e incorporada al catálogo.
+Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **release normal 0.1.5**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La [solicitud de inclusión en el catálogo general #14100](https://github.com/hacs/default/pull/14100) ha sido aprobada e incorporada al catálogo.
 
 ### Capturas
 
@@ -267,7 +267,7 @@ Documentación: [Marketplace](https://www.home-assistant.io/integrations/marketp
 
 ### Instalación manual en Home Assistant
 
-Paquete: `dist/f1-paddock-0.1.4.zip`.
+Paquete: `dist/f1-paddock-0.1.5.zip`.
 
 1. Guarda una copia de seguridad de tu configuración.
 2. Extrae el ZIP y copia **solo** `custom_components/f1_paddock` dentro de `/config/custom_components/`.
@@ -369,6 +369,6 @@ F1 Paddock es gratuito. Si te resulta útil y quieres apoyar el tiempo dedicado 
 
 1. Actualiza `manifest.json`, `const.py`, el encabezado de la tarjeta y las notas de versión.
 2. Ejecuta `python tools/package_release.py --tag VERSION` y las comprobaciones. La etiqueta debe coincidir exactamente con `manifest.version`; el empaquetador no necesita HA ni acceso de red.
-3. Publica una release con esa etiqueta; el flujo **Attach Marketplace and manual installers to release** construye y adjunta los dos ZIP (Marketplace y manual) y sus SHA256 desde el código etiquetado. Marca como pre-release únicamente las futuras versiones preliminares; la 0.1.4 es una release normal.
+3. Publica una release con esa etiqueta; el flujo **Attach Marketplace and manual installers to release** construye y adjunta los dos ZIP (Marketplace y manual) y sus SHA256 desde el código etiquetado. Marca como pre-release únicamente las futuras versiones preliminares; la 0.1.5 es una release normal.
 
 Las comprobaciones automáticas incluyen límites del paquete y hassfest. El trabajo de HACS se ejecuta sin omitir comprobaciones e incluye la comprobación de la marca local. El logo FP es propio de este proyecto; el logotipo oficial F1 de la cabecera conserva su atribución separada.

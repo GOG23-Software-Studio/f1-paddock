@@ -1,3 +1,7 @@
+## 0.1.5 · cross-platform release reproducibility · 2026-11-20
+
+The 0.1.4 published assets matched their local checksums, but the Linux release workflow correctly refused to overwrite them because Windows Path ordering and zlib compression differed. No existing assets were replaced. This corrective version sorts archive paths explicitly and uses stored ZIP entries, ensuring the same bytes on both systems. The three package checks include ordering/compression invariants and preservation of download counters. README images show the 0.1.4 preview; sporting content and language selection are unchanged in 0.1.5.
+
 ## 0.1.4 · Marketplace release assets and bilingual screenshots · 2026-11-20
 
 - 25 frontend tests and three offline packaging checks passed, including flat runtime extraction, repeated update preserving external HA settings, deterministic output and manual/runtime layout separation.

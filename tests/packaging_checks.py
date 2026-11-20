@@ -68,6 +68,8 @@ class PackagingChecks(unittest.TestCase):
             runtime = root / "dist" / "f1_paddock.zip"
             runtime_previous = runtime.read_bytes()
             with zipfile.ZipFile(runtime) as result:
+                self.assertEqual(result.namelist(), sorted(result.namelist()))
+                self.assertTrue(all(entry.compress_type == zipfile.ZIP_STORED for entry in result.infolist()))
                 self.assertIn("manifest.json", result.namelist())
                 self.assertIn("www/f1-paddock-card.js", result.namelist())
                 self.assertIn("translations/es.json", result.namelist())

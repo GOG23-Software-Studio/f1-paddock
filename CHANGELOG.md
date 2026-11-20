@@ -1,5 +1,10 @@
 # Changelog / Cambios
 
+## 0.1.5
+
+- Make release archives byte-identical across Windows and Linux using explicit path ordering and ZIP stored entries. Avoid zlib implementation differences when validating existing immutable assets.
+- Retain 0.1.4 assets and download counters unchanged; this is a separate corrective release.
+
 ## 0.1.4
 
 - Marketplace installations and updates now use the stable `f1_paddock.zip` release asset; GitHub records download requests, not unique users.
