@@ -1,4 +1,4 @@
-name: Attach manual installer to release
+name: Attach Marketplace and manual installers to release
 on:
   release:
     types: [published]
@@ -22,13 +22,15 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.14'
-      - name: Build installer for exact published version
+      - name: Build and validate installers for exact published version
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
-        run: python tools/package_release.py --tag "$RELEASE_TAG"
-      - name: Upload installer and checksum
+        run: |
+          python tools/package_release.py --tag "$RELEASE_TAG"
+          python -m unittest discover -s tests -p packaging_checks.py
+      - name: Upload installers and checksums
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
-        run: gh release upload "$RELEASE_TAG" "dist/f1-paddock-${RELEASE_TAG}.zip" "dist/f1-paddock-${RELEASE_TAG}.zip.sha256" --clobber
+        run: python tools/upload_release_assets.py --tag "$RELEASE_TAG"

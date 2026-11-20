@@ -1,3 +1,12 @@
+## 0.1.4 · Marketplace release assets and bilingual screenshots · 2026-11-20
+
+- 25 frontend tests and three offline packaging checks passed, including flat runtime extraction, repeated update preserving external HA settings, deterministic output and manual/runtime layout separation.
+- The stable `f1_paddock.zip` asset contains runtime files at its root, matching the Marketplace extraction contract. The versioned manual ZIP retains `custom_components/f1_paddock/`. Both include SHA256 checksums.
+- Release uploads preserve existing identical assets instead of replacing them and resetting download counts; mismatched assets fail closed.
+- English preview: Max Verstappen, 2026 British GP (Silverstone). Spanish preview: Fernando Alonso, 2026 Spanish GP (Madrid). Results and round-specific standings retrieved from Jolpica on 2026-11-20. Four separate screenshots were visually reviewed; timing screenshots are explicitly fictional simulations.
+- No HA settings, favorites or dashboards changed. Real-session validation remains pending; Las Vegas monitoring is scheduled separately.
+- GitHub packaging, HACS and hassfest validate the exact release commit before publication.
+
 ## 0.1.3 · single entry and shared seasons · 2026-11-20
 
 - 47 backend tests, 24 frontend tests and two package checks passed; Ruff passed.

@@ -1,5 +1,12 @@
 # Changelog / Cambios
 
+## 0.1.4
+
+- Marketplace installations and updates now use the stable `f1_paddock.zip` release asset; GitHub records download requests, not unique users.
+- Keep the separate versioned manual installer; validate both archive layouts and checksums.
+- Separate English (Max Verstappen, British GP) and Spanish (Fernando Alonso, Spanish GP) README screenshots, captured from a private historical preview.
+- No integration settings, favorites or household dashboards are changed.
+
 ## 0.1.3 · 2026-11-20
 
 - One configuration now serves current and historical seasons from 2023 through a shared Season selector. Current season follows the calendar year. Prevent additional entries; migrate existing entries without changing IDs, favorites or cards.

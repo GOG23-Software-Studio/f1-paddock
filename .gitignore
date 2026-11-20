@@ -13,6 +13,11 @@ docs/screenshots/*
 !docs/screenshots/overview.png
 !docs/screenshots/timing-simulation.png
 preview/snapshot.json
+preview/snapshot-*.json
+!docs/screenshots/overview-en.jpg
+!docs/screenshots/overview-es.jpg
+!docs/screenshots/timing-simulation-en.jpg
+!docs/screenshots/timing-simulation-es.jpg
 # Paquetes generados: se distribuyen como adjuntos de las releases
 dist/
 

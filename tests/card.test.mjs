@@ -262,3 +262,15 @@ test('shared season selector localizes current and prevents old-season readings 
  card.setConfig({entity:'sensor.f1',card_type:'next',language:'en'});
  assert(card.shadowRoot.textContent.includes('Current season (automatic)'));assert(card.shadowRoot.textContent.includes('Unable to load the season'));
 });
+
+
+test('English simulation translates fictional event, race and leader labels',()=>{
+ const {card,states}=setup('simulation');
+ card.setConfig({entity:'sensor.f1',card_type:'simulation',language:'en'});
+ card.hass={language:'en',states};
+ const text=card.shadowRoot.textContent;
+ assert(text.includes('Test Grand Prix'));
+ assert(text.includes('Simulated race'));
+ assert(!text.includes('Gran Premio de prueba'));
+ assert(!text.includes('Carrera simulada'));
+});

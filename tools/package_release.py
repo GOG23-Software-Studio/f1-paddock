@@ -1,7 +1,7 @@
 """Package a release without HA, fixtures, network access or private assets.
 
-HACS installs custom_components/f1_paddock from the release's source tree.
-The attached ZIP is the separate manual installer, not a HACS zip_release.
+Marketplace installs the flat runtime ZIP into custom_components/f1_paddock.
+The versioned manual installer retains its repository-relative layout.
 """
 import argparse
 import hashlib
@@ -31,8 +31,8 @@ def validate(root=ROOT, tag=None):
     for key in ("documentation", "issue_tracker", "codeowners", "name"):
         if not manifest.get(key):
             raise ValueError(f"Missing manifest field: {key}")
-    if hacs.get("zip_release") or hacs.get("content_in_root"):
-        raise ValueError("HACS must use the standard custom_components source layout")
+    if hacs.get("zip_release") is not True or hacs.get("filename") != "f1_paddock.zip" or hacs.get("content_in_root"):
+        raise ValueError("HACS must use the reviewed f1_paddock.zip release asset")
     integrations = [p.name for p in (root / "custom_components").iterdir() if p.is_dir() and not p.name.startswith(".")]
     if integrations != ["f1_paddock"]:
         raise ValueError("Exactly one integration per repository is required")
@@ -70,6 +70,18 @@ def package(root=ROOT, tag=None):
             target.writestr(item, data)
     digest = hashlib.sha256(archive.read_bytes()).hexdigest()
     archive.with_name(archive.name + ".sha256").write_text(f"{digest}  {archive.name}\n", encoding="utf-8", newline="\n")
+    # HACS extracts this asset directly into the integration directory.
+    runtime = dist / "f1_paddock.zip"
+    prefix = "custom_components/f1_paddock/"
+    with zipfile.ZipFile(archive) as source, zipfile.ZipFile(runtime, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as target:
+        for entry in source.infolist():
+            if entry.filename.startswith(prefix):
+                item = zipfile.ZipInfo(entry.filename[len(prefix):], date_time=entry.date_time)
+                item.compress_type = zipfile.ZIP_DEFLATED
+                item.external_attr = entry.external_attr
+                target.writestr(item, source.read(entry))
+    digest = hashlib.sha256(runtime.read_bytes()).hexdigest()
+    runtime.with_name(runtime.name + ".sha256").write_text(f"{digest}  {runtime.name}\n", encoding="utf-8", newline="\n")
     return archive
 
 
