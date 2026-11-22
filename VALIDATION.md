@@ -1,3 +1,7 @@
+## 0.1.11 · complete comment cleanup · 2026-11-22
+
+All visible cards were inspected in the existing HA dashboard: no explanatory `.tiny`, freshness or color-legend elements remain outside collapsed details; the finished-session road stays hidden and Alonso is retained. Empty podium and missing standing labels are simplified. Repeat the 31 frontend checks, syntax and three packaging checks before publishing; GitHub validates the exact release commit with package, HACS and hassfest jobs.
+
 ## 0.1.10 · simplified cards and live-only road · 2026-11-22
 
 - Verified all visible F1 cards in HA: explanatory text and provider warnings are inside closed information panels, the finished-session road is hidden and Alonso remains selected. Dashboard configuration is retained.

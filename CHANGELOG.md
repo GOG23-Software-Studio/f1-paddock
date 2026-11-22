@@ -1,5 +1,11 @@
 # Changelog / Cambios
 
+## 0.1.11 · 2026-11-22
+
+- Complete the information cleanup across all cards: collapse inline car-selection help and the programme timezone explanation under the information icon.
+- Remove repeated pending podium placeholders, the missing team dash and invalid ordinal/round labels when standings are unavailable. Keep one clear unavailable-result message.
+- Preserve the live-only race/sprint road, existing dashboard cards, favorite and sporting data.
+
 ## 0.1.10 · 2026-11-22
 
 - Simplify every card: collapse repeated source warnings, explanatory notes, timing-color legends and detailed timestamps behind the information icon. Keep the session state, sporting readings and unavailable-data messages visible.
