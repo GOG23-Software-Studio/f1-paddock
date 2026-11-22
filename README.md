@@ -8,14 +8,14 @@ A project by [GOG23 Software Studio](https://github.com/GOG23-Software-Studio) �
 
 [Installation](#installation) · [Independent cards](#independent-cards) · [Screenshots](#screenshots) · [How it works](#how-it-works) · [Issues](https://github.com/GOG23-Software-Studio/f1-paddock/issues)
 
-**Release 0.1.6 · public repository · included in the Marketplace catalogue.**
+**Release 0.1.7 · public repository · included in the Marketplace catalogue.**
 
 [![Validation](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml/badge.svg)](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml)
 [![Open in Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=GOG23-Software-Studio&repository=f1-paddock&category=integration)
 
 The installation button opens F1 Paddock in your Home Assistant Marketplace.
 
-A Home Assistant integration with twelve independent dashboard cards and an optional complete panel, following the visual style of MotoGP Paddock. Choose your favorite driver to follow their portrait, race number, team, championship position and session timing. The bundled cards register automatically; no separate frontend download is required.
+A Home Assistant integration with thirteen independent dashboard cards and an optional complete panel, following the visual style of MotoGP Paddock. Choose your favorite driver to follow their portrait, race number, team, championship position and session timing. The bundled cards register automatically; no separate frontend download is required.
 
 > **Third-party permissions remain unresolved.** The project uses official F1 fonts, photographs, number artwork, circuit maps and data services. The original FP project logo does not grant rights to these resources. Read the [publication review](PUBLICATION_REVIEW.md) and [data notices](custom_components/f1_paddock/DATA_LICENSE.md). This is an independent community project, with no official Formula 1 affiliation or endorsement.
 
@@ -34,13 +34,13 @@ A Home Assistant integration with twelve independent dashboard cards and an opti
 - Separate timestamps for the sporting data and HA timing reception. Connection heartbeats do not make old timing look fresh.
 - Incremental table updates preserving DOM nodes, focus and scroll position.
 - A shared coordinator and cache: adding cards does not multiply provider requests.
-- A local fictional simulation for testing updates, tyres, stops, colors and driver reordering without writing to HA.
+- Position road with official 2026 team car images, two staggered rows, published gaps and selectable driver details. Only real provider readings are displayed.
 
-This release does not include animated track positions, Race Control, championship evolution or points-by-GP cards. Real live-session validation remains pending. A single integration provides the current season automatically and historical seasons from 2023 through a shared Season selector. Historical data is fetched from the provider; there is no persistent local archive.
+The road is schematic, without GPS positions or spacing proportional to time. It does not include Race Control, championship evolution or points-by-GP cards. Real live-session validation remains pending. A single integration provides the current season automatically and historical seasons from 2023 through a shared Season selector. Historical data is fetched from the provider; there is no persistent local archive.
 
 ## How it works
 
-Jolpica supplies calendars, standings and published results. Requests are spaced at least 1.1 seconds apart; calendars are cached for six hours and standings/results for fifteen minutes. The coordinator checks every five minutes, reuses cached data and backs off on errors and rate limits.
+Jolpica supplies calendars, standings and published results. If it is unreachable, the calendar automatically falls back to FastF1’s published schedule, visibly marked as a backup. Unavailable standings and results remain unavailable; no values are generated. Requests are spaced at least 1.1 seconds apart; calendars are cached for six hours and standings/results for fifteen minutes. The coordinator checks every five minutes, reuses cached data and backs off on errors and rate limits.
 
 A shared public F1 SignalR connection supplies available session timing. No account credentials or F1TV-only streams are requested. Outside session windows, the last reading is retained and checked every five minutes; around sessions the client listens for updates. An active session and recent data are required for the live label. A finished session is never relabelled live because HA just fetched it. Public accessibility does not establish reuse permission.
 
@@ -64,7 +64,7 @@ Updates appear under **Settings → Updates**. Back up first, install the update
 
 ### Local installation
 
-Download [release 0.1.6](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.6) and use **f1-paddock-0.1.6.zip**. The “Source code” downloads contain the whole repository.
+Download [release 0.1.7](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.7) and use **f1-paddock-0.1.7.zip**. The “Source code” downloads contain the whole repository.
 
 1. Back up your configuration.
 2. Extract the ZIP and copy only `custom_components/f1_paddock` into HA's `/config/custom_components/`.
@@ -82,7 +82,7 @@ Entity IDs are examples. Related selectors are discovered through HA's entity re
 
 ## Independent cards
 
-Use the complete dashboard or add any of these twelve blocks separately from HA's card picker. All share the same sensor, coordinator and favorite selection.
+Use the complete dashboard or add any of these thirteen blocks separately from HA's card picker. All share the same sensor, coordinator and favorite selection.
 
 | Card | Type |
 | --- | --- |
@@ -96,6 +96,7 @@ Use the complete dashboard or add any of these twelve blocks separately from HA'
 | Constructor standings | `custom:f1-paddock-constructors-card` |
 | Results | `custom:f1-paddock-results-card` |
 | Calendar | `custom:f1-paddock-calendar-card` |
+| Position road | `custom:f1-paddock-road-card` |
 | Session timing | `custom:f1-paddock-timing-card` |
 | Tyres and stints | `custom:f1-paddock-tyres-card` |
 | Pit stops | `custom:f1-paddock-pits-card` |
@@ -104,7 +105,7 @@ Use HA's visual editor and Sections layout to resize and position blocks. [Secti
 
 ### Language
 
-Each card’s visual editor offers **Automatic / Español / English**. Automatic follows Home Assistant’s language (Spanish for `es` variants, English otherwise). Choose a language explicitly to override it for that card. Headings, tables, status messages, warnings, accessibility labels, simulation and dates follow the selected language. Provider names and sporting values are preserved; changing language never changes the shared favorite.
+Each card’s visual editor offers **Automatic / Español / English**. Automatic follows Home Assistant’s language (Spanish for `es` variants, English otherwise). Choose a language explicitly to override it for that card. Headings, tables, status messages, warnings, accessibility labels, and dates follow the selected language. Provider names and sporting values are preserved; changing language never changes the shared favorite.
 
 ```yaml
 language: auto  # auto, es, en
@@ -117,12 +118,6 @@ language: auto  # auto, es, en
 ![F1 Paddock overview](docs/screenshots/overview-en.jpg)
 
 English preview with Max Verstappen and the British Grand Prix (Silverstone), using dated sporting data, not a live session. No household dashboard navigation or private configuration is shown.
-
-### Timing, colors and favorite driver
-
-![F1 Paddock fictional timing simulation](docs/screenshots/timing-simulation-en.jpg)
-
-Clearly labelled **fictional simulation** used to demonstrate colors, favorite highlighting and table layout. It is not evidence of real race-day operation. Screenshots contain third-party artwork whose permissions remain under review; it is not covered by the code's MIT license.
 
 ## Updating an existing installation
 
@@ -141,7 +136,7 @@ Jolpica data is attributed separately under its noncommercial CC BY-NC-SA terms.
 
 ## Validation
 
-Installation and basic operation were checked on HA OS / Core 2026.11.1: seven entities, automatic resource registration, locally served font, favorite selection and GP results. Simulation checks cover timing/tyre/pit updates, colors, reordering and retained page position. **Validation during an actual live sporting session is still pending.**
+Installation and basic operation were checked on HA OS / Core 2026.11.1: seven entities, automatic resource registration, locally served font, favorite selection and GP results. Automated regression checks cover timing/tyre/pit updates, colors, road reordering and retained page position. **Validation during an actual live sporting session is still pending.**
 
 [HACS, hassfest and packaging validation](https://github.com/GOG23-Software-Studio/f1-paddock/actions/runs/43470052377) passed without ignored checks before release 0.1.0b6. Technical validation does not establish third-party usage rights. See [validation notes](VALIDATION.md).
 
@@ -154,7 +149,7 @@ python -m pytest
 python -m ruff check custom_components tests tools
 npm install --ignore-scripts
 npm test
-python tools/package_release.py --tag 0.1.6
+python tools/package_release.py --tag 0.1.7
 python -m unittest discover -s tests -p packaging_checks.py
 ```
 
@@ -162,22 +157,13 @@ The standard-library packager requires neither HA nor network access. It builds 
 
 `tools/audit_sources.py`, `tools/check_assets.py` and `tools/check_official_drivers.py` contact public sources and record audit evidence. `tools/build.py` generates examples, a normalized snapshot and the installer. `tools/serve_preview.py` serves a dated local sample, using ignored `.local/assets` files; it never connects to HA. A fresh clone does not include that private preview cache or snapshot.
 
-### Local simulation and table behavior
-
-```yaml
-type: custom:f1-paddock-card
-entity: sensor.f1_paddock_dashboard
-card_type: simulation
-table_height: 430
-```
-
-The simulation copies received drivers and generates fictional data only in the browser, without sensor writes or service calls. It runs ten steps every four seconds, with pause, step and reset controls. It simulates sectors, tyres, stops, driver ordering, signal loss and recovery, stops automatically and clears its timer when the view is left. No permanent test tab is required.
+### Table behavior
 
 Favorite rows use a highlighted background, a badge and `aria-current`. Explicit `OverallFastest` / `PersonalFastest` flags control purple (session best), green (personal improvement) and yellow (no personal improvement) sectors and last laps. Missing flags remain neutral; sectors from different laps are not combined into invented records. The best-lap column highlights the lowest valid published best lap. Table portraits use a 48 × 58 px face crop; large cards retain full photographs.
 
 ## Publication status
 
-The owner authorized public publication and Marketplace submission. [Request #14100](https://github.com/hacs/default/pull/14100) has been approved and merged into the catalogue. Third-party permissions and real live-session validation remain open, as documented above. Release 0.1.6 is published as a normal GitHub release, with the documented limitations still applicable.
+The owner authorized public publication and Marketplace submission. [Request #14100](https://github.com/hacs/default/pull/14100) has been approved and merged into the catalogue. Third-party permissions and real live-session validation remain open, as documented above. Release 0.1.7 is published as a normal GitHub release, with the documented limitations still applicable.
 
 ## Support and contribution
 
@@ -199,7 +185,7 @@ F1 Paddock is free. If you find it useful and would like to support my developme
 
 [Back to English](#f1-paddock)
 
-Versión 0.1.6 de GOG23 Software Studio. Una integración propia de Home Assistant y doce tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
+Versión 0.1.7 de GOG23 Software Studio. Una integración propia de Home Assistant y trece tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
 
 Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de dorsales y planos detallados originales con sus zonas. Son recursos de terceros servidos por Formula1.com; el proyecto no es una integración oficial de Formula 1.
 
@@ -207,9 +193,9 @@ Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de do
 
 ### Descarga y estado
 
-[Descargar la release 0.1.6](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.6). Utiliza el archivo **f1-paddock-0.1.6.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
+[Descargar la release 0.1.7](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.7). Utiliza el archivo **f1-paddock-0.1.7.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
 
-Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **release normal 0.1.6**: la instalación, los datos publicados y la simulación están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La [solicitud de inclusión en el catálogo general #14100](https://github.com/hacs/default/pull/14100) ha sido aprobada e incorporada al catálogo.
+Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **release normal 0.1.7**: la instalación, los datos publicados y las actualizaciones visuales están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La [solicitud de inclusión en el catálogo general #14100](https://github.com/hacs/default/pull/14100) ha sido aprobada e incorporada al catálogo.
 
 ### Capturas
 
@@ -219,12 +205,9 @@ Vista en castellano con Fernando Alonso y el Gran Premio de España (Madrid), ut
 
 ![Vista general de F1 Paddock](docs/screenshots/overview-es.jpg)
 
-Tiempos, sectores y piloto favorito en una **simulación con datos inventados**. Sirve para mostrar los colores y el diseño; no acredita funcionamiento en carrera.
-
-![Colores y piloto favorito en la simulación](docs/screenshots/timing-simulation-es.jpg)
-
 ### Qué funciona
 
+- Carretera de posiciones con fotografías oficiales de los 11 equipos de 2026, dos filas en zigzag, diferencias publicadas y detalle del piloto fuera del asfalto. Solo muestra lecturas reales.
 - Calendario y programa completo del GP, con horarios locales y cuenta atrás de la próxima sesión.
 - Plano ampliable: conserva curvas, sectores y zonas presentes en el gráfico original de la temporada.
 - Selector persistente de cualquier piloto publicado en el campeonato.
@@ -233,13 +216,13 @@ Tiempos, sectores y piloto favorito en una **simulación con datos inventados**.
 - Mundial completo de pilotos y constructores.
 - Resultados por GP: carrera, clasificación con Q1/Q2/Q3 y sprint cuando la fuente lo publique.
 - Tablas con desplazamiento, ampliación de columnas y acceso a la fila del favorito.
-- Panel completo adaptable a móvil; las doce tarjetas también pueden colocarse individualmente con el editor visual de HA.
+- Panel completo adaptable a móvil; las trece tarjetas también pueden colocarse individualmente con el editor visual de HA.
 - Un coordinador y una caché compartida: añadir tarjetas no multiplica las consultas.
 - Registro automático del recurso de las tarjetas. No necesita button-card, card-mod ni ayudantes domésticos.
 
 ### Límites de esta versión
 
-Incluye tiempos de sesión, sectores, vueltas, neumáticos y tandas, y el contador de paradas mediante el flujo público F1 SignalR. Los tiempos detallados de boxes se consultan en OpenF1 después de la sesión y se separan en tiempo detenido y tiempo de paso por el pit lane. No incluye tiempos detallados de paradas en directo, posiciones animadas, Race Control, evolución del Mundial ni puntos por GP. El indicador de directo exige una sesión activa y datos recientes; una lectura de una sesión finalizada nunca se presenta como directo.
+Incluye tiempos de sesión, sectores, vueltas, neumáticos y tandas, y el contador de paradas mediante el flujo público F1 SignalR. Los tiempos detallados de boxes se consultan en OpenF1 después de la sesión y se separan en tiempo detenido y tiempo de paso por el pit lane. No incluye tiempos detallados de paradas en directo, Race Control, evolución del Mundial ni puntos por GP. El indicador de directo exige una sesión activa y datos recientes; una lectura de una sesión finalizada nunca se presenta como directo.
 
 El índice estático consultado en la primera beta devolvió HTTP 401. En beta 2 se ha verificado el servicio público SignalR Core, que negocia la conexión sin cuenta. Solo se solicitan flujos públicos: no se introducen credenciales ni se solicitan flujos reservados a F1TV. El cliente comparte una conexión y espera entre reintentos. Fuera de las ventanas de sesión se conserva la última lectura y se revisa cada cinco minutos; cerca de las sesiones permanece atento al flujo.
 
@@ -267,7 +250,7 @@ Documentación: [Marketplace](https://www.home-assistant.io/integrations/marketp
 
 ### Instalación manual en Home Assistant
 
-Paquete: `dist/f1-paddock-0.1.6.zip`.
+Paquete: `dist/f1-paddock-0.1.7.zip`.
 
 1. Guarda una copia de seguridad de tu configuración.
 2. Extrae el ZIP y copia **solo** `custom_components/f1_paddock` dentro de `/config/custom_components/`.
@@ -309,7 +292,7 @@ El sensor descubre los selectores asociados mediante el registro de entidades de
 
 ### Idioma de las tarjetas
 
-El editor visual ofrece **Automático / Español / English** en cada tarjeta. Automático sigue el idioma de Home Assistant: español para las variantes `es` e inglés para los demás idiomas. Puedes fijar español o inglés en una tarjeta sin cambiar las otras. Se traducen títulos, tablas, estados, avisos, textos accesibles, simulación y fechas; se conservan nombres y datos deportivos. Cambiar de idioma no modifica el favorito compartido.
+El editor visual ofrece **Automático / Español / English** en cada tarjeta. Automático sigue el idioma de Home Assistant: español para las variantes `es` e inglés para los demás idiomas. Puedes fijar español o inglés en una tarjeta sin cambiar las otras. Se traducen títulos, tablas, estados, avisos, textos accesibles, y fechas; se conservan nombres y datos deportivos. Cambiar de idioma no modifica el favorito compartido.
 
 En YAML: `language: auto`, `language: es` o `language: en`.
 
@@ -336,19 +319,6 @@ Consulta `SOURCES.md`, `THIRD_PARTY_NOTICES.md` y `VALIDATION.md` antes de redis
 Las tarjetas conservan sus nodos, imágenes, tablas y foco al recibir nuevos datos. Los cambios de otras entidades de Home Assistant no reconstruyen el panel. El reloj se actualiza sin vaciar el contenido, evitando que el navegador reduzca la altura de la página y salte al principio.
 
 
-#### Simulación local
-
-La tarjeta `custom:f1-paddock-card` admite `card_type: simulation` con el sensor Dashboard habitual. Copia los pilotos recibidos y genera datos de prueba exclusivamente en el navegador, sin escribir sensores ni llamar servicios. No necesita una sesión deportiva activa.
-
-«Iniciar simulación» reproduce diez pasos cada cuatro segundos; permite pausar, avanzar manualmente y reiniciar. Simula tiempos/sectores, paradas y compuestos, reordenación de pilotos, pérdida de señal y recuperación. Finaliza automáticamente y detiene su temporizador al abandonar la vista. Todas las tarjetas muestran la etiqueta SIMULACIÓN. Los tiempos detallados de boxes no se presentan como datos recibidos.
-
-```yaml
-type: custom:f1-paddock-card
-entity: sensor.f1_paddock_dashboard
-card_type: simulation
-table_height: 430
-```
-
 Los retratos de las tablas utilizan ahora un encuadre de la cara, de 48 × 58 px, manteniendo las fotografías oficiales completas en las tarjetas grandes.
 
 
@@ -369,6 +339,16 @@ F1 Paddock es gratuito. Si te resulta útil y quieres apoyar el tiempo dedicado 
 
 1. Actualiza `manifest.json`, `const.py`, el encabezado de la tarjeta y las notas de versión.
 2. Ejecuta `python tools/package_release.py --tag VERSION` y las comprobaciones. La etiqueta debe coincidir exactamente con `manifest.version`; el empaquetador no necesita HA ni acceso de red.
-3. Publica una release con esa etiqueta; el flujo **Attach Marketplace and manual installers to release** construye y adjunta los dos ZIP (Marketplace y manual) y sus SHA256 desde el código etiquetado. Marca como pre-release únicamente las futuras versiones preliminares; la 0.1.6 es una release normal.
+3. Publica una release con esa etiqueta; el flujo **Attach Marketplace and manual installers to release** construye y adjunta los dos ZIP (Marketplace y manual) y sus SHA256 desde el código etiquetado. Marca como pre-release únicamente las futuras versiones preliminares; la 0.1.7 es una release normal.
 
 Las comprobaciones automáticas incluyen límites del paquete y hassfest. El trabajo de HACS se ejecuta sin omitir comprobaciones e incluye la comprobación de la marca local. El logo FP es propio de este proyecto; el logotipo oficial F1 de la cabecera conserva su atribución separada.
+
+
+
+## Position road / Carretera de posiciones
+
+`custom:f1-paddock-road-card` is available independently and in the complete dashboard. Cars face right in two staggered rows on one road. Published order and intervals drive movement only during fresh active sessions; finished or stale sessions stay still. Select a car for its detail panel without changing your favorite. Unknown teams, other seasons and failed image loads use a neutral number placeholder. Team reference photos can carry another driver's number or launch tyres; the badge and detail panel show the selected driver's published number and compound. The view is schematic, without GPS or proportional physical spacing. No simulation mode or controls are included.
+
+La carretera se incluye en el panel completo y como tarjeta independiente. Los coches miran a la derecha en dos filas en zigzag sobre una sola carretera. Se mueven según el orden y los intervalos publicados únicamente durante sesiones activas con datos recientes. Al terminar o quedar antiguos, permanecen quietos. Seleccionar un coche abre sus detalles sin cambiar el favorito. Las fotografías son referencias del equipo: el dorsal y los neumáticos reales del piloto se indican aparte. No representa posiciones GPS ni distancias proporcionales. No incluye modos ni controles de simulación.
+
+Si Jolpica no responde, el calendario se recupera automáticamente desde el calendario publicado de FastF1, con un aviso de fuente alternativa. Los resultados o clasificaciones no disponibles permanecen vacíos. Actualizar conserva las tarjetas, las entidades y el piloto favorito.

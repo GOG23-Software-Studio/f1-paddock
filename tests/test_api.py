@@ -30,9 +30,11 @@ class Response:
 class Session:
     def __init__(self, response):
         self.response, self.calls = response, 0
+        self.requests = []
 
     def get(self, *args, **kwargs):
         self.calls += 1
+        self.requests.append((args, kwargs))
         return self.response
 
 
@@ -62,3 +64,27 @@ async def test_incomplete_classification_rejected():
     client = F1Client(Session(Response({"MRData": {"total": "101", "limit": "100"}})))
     with pytest.raises(F1Error, match="truncated"):
         await client.get("2026")
+
+
+async def test_identifies_application_on_every_upstream_request(fixture):
+    from custom_components.f1_paddock.const import VERSION
+    session = Session(Response(fixture("calendar")))
+    client = F1Client(session)
+    await client.get("2026")
+    headers = session.requests[0][1]["headers"]
+    assert headers["User-Agent"].startswith(f"F1Paddock/{VERSION} ")
+    assert "github.com/GOG23-Software-Studio/f1-paddock" in headers["User-Agent"]
+    assert headers["Accept"] == "application/json"
+
+
+async def test_http_rejection_and_network_timeout_remain_distinguishable():
+    import asyncio
+    response = Response({})
+    response.status = 403
+    with pytest.raises(F1Error, match="HTTP 403"):
+        await F1Client(Session(response)).get("2026")
+    class TimeoutResponse(Response):
+        async def __aenter__(self):
+            raise asyncio.TimeoutError()
+    with pytest.raises(F1Error, match="TimeoutError"):
+        await F1Client(Session(TimeoutResponse({}))).get("2026")

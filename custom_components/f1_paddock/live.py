@@ -163,7 +163,7 @@ class F1LiveState:
             sector_marks = [timing_mark(sector_data.get(i)) for i in range(3)]
             rows.append({**identity, "id": identity.get("id", f"session-{info.get('Key')}-{number}"),
                          "name": person.get("FullName") or identity.get("name") or f"#{number}", "number": int(number),
-                         "code": person.get("Tla"), "team": person.get("TeamName") or identity.get("team"),
+                         "code": person.get("Tla"), "team_color": person.get("TeamColour"), "team": person.get("TeamName") or identity.get("team"),
                          "position": numeric(line.get("Position")), "laps": numeric(line.get("NumberOfLaps")),
                          "gap": line.get("GapToLeader") or None, "interval": (line.get("IntervalToPositionAhead") or {}).get("Value") or None,
                          "last_lap": (line.get("LastLapTime") or {}).get("Value") or None,

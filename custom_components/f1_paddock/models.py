@@ -102,6 +102,23 @@ def constructors(payload):
             for r in standings_list(payload, "ConstructorStandings")]
 
 
+def roster(assets, season):
+    """Verified portrait identities keep favorites usable; never supply championship figures."""
+    ids = {"NOR": "norris", "VER": "max_verstappen", "BOR": "bortoleto", "HAD": "hadjar", "GAS": "gasly",
+           "PER": "perez", "ANT": "antonelli", "ALO": "alonso", "LEC": "leclerc", "STR": "stroll", "ALB": "albon",
+           "HUL": "hulkenberg", "LAW": "lawson", "LIN": "lindblad", "COL": "colapinto", "HAM": "hamilton",
+           "SAI": "sainz", "RUS": "russell", "BOT": "bottas", "PIA": "piastri", "BEA": "bearman", "CAM": "camara"}
+    rows = []
+    for code, asset in assets.get("drivers", {}).items():
+        if asset.get("season") != season or code not in ids or not asset.get("name"):
+            continue
+        first, _, last = asset["name"].partition(" ")
+        rows.append({**driver({"driverId": ids[code], "code": code, "givenName": first, "familyName": last,
+                             "permanentNumber": asset.get("number")}, assets, season),
+                     "position": None, "points": None, "wins": None, "team": None, "team_id": None, "deficit": None})
+    return rows
+
+
 def result(payload, code, assets, season, expected_round):
     entries = races(payload)
     if not entries:

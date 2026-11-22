@@ -1,3 +1,11 @@
+## 0.1.7 · calendar recovery and real-data road · 2026-11-22
+
+- 56 backend tests, 28 frontend tests and three deterministic packaging checks passed; Ruff and JavaScript syntax checks passed.
+- Calendar fallback validates published year, rounds and session timezones; tests cover primary failures and missing data without generating sporting results.
+- Road checks cover actual-feed reordering, shrinking intervals, stable nodes/scroll, favorite selection, stale/finished states and all 11 verified 2026 team images. No in-app simulation generators or controls ship in this version.
+- Local HA checks during development confirmed the recovered 23-round 2026 calendar and finished-session road with Fernando Alonso retained. Real active-session end-to-end validation remains pending.
+- No Home Assistant configuration changes are made by publishing this release. Existing entities, cards and favorites are kept on upgrade.
+
 ## 0.1.6 · normalized ZIP system headers · 2026-11-20
 
 A second platform-dependent ZIP field (`create_system`) remained in 0.1.5. Both archive writers now set it explicitly to Unix (3), alongside fixed timestamps, modes, ordering, normalized text and stored entries. Packaging checks enforce all entry creator-system fields. The new release is validated as a draft before publication; previous assets are preserved.

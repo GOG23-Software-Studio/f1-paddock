@@ -2,6 +2,12 @@
 
 ## Datos deportivos
 
+- Respaldo del calendario (desarrollo, comprobado el 22 de noviembre de 2026): https://github.com/theOehrly/f1schedule, fuente de horarios de FastF1. Solo se usa si el calendario de Jolpica falla. Se validan temporada, rondas y zona horaria; se excluyen los test. No aporta clasificaciones ni resultados. Su procedencia se muestra en las tarjetas. La consulta desde HA devolvió HTTP 200.
+
+## Monoplazas de referencia de 2026
+
+Las páginas oficiales de los once equipos en https://www.formula1.com/en/teams proporcionan las vistas laterales `2026…carright.webp`, con transparencia original. Se verificaron el 22 de noviembre de 2026: equipo, temporada, orientación, transparencia y respuesta HTTP. El catálogo y la procedencia están en `team-cars-2026-audit.json`. Las tarjetas referencian versiones de 768 píxeles servidas por el mismo CDN oficial, sin incluir los archivos gráficos en el repositorio o ZIP. Son imágenes representativas de cada equipo; el dorsal del piloto y sus neumáticos publicados se muestran por separado en la etiqueta y la ficha. No se reutilizan estos coches para otras temporadas.
+
 - Jolpica: https://api.jolpi.ca/ergast/f1/ — calendario, clasificación de pilotos y equipos, carrera, clasificación y sprint. Se comprobó la temporada 2026 mediante peticiones reales. La documentación del proyecto está en https://github.com/jolpica/jolpica-f1.
 - OpenF1: https://openf1.org/docs/ — se comprobó el catálogo histórico de sesiones y de pilotos. Sus URLs de fotos sirvieron en la exploración inicial. La versión final de este catálogo prefiere fotos actuales descubiertas en las páginas oficiales de los pilotos. OpenF1 no es dependencia de ejecución de esta beta. El directo requiere autenticación y una suscripción según https://openf1.org/auth.html.
 - F1 timing: https://livetiming.formula1.com/static/2026/Index.json — respuesta HTTP 401. No implementado como proveedor en esta beta.

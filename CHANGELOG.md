@@ -1,5 +1,14 @@
 # Changelog / Cambios
 
+## 0.1.7 · 2026-11-22
+
+- Recover the calendar from FastF1's published schedule when Jolpica is unreachable; validate season, rounds and timezones, identify the backup and retain verified driver identities without inventing standings or results.
+- Identify Jolpica requests correctly, distinguish network/HTTP failures and register the frontend before the first provider fetch.
+- Add an independent position road and include it in the dashboard: official reference images for all 11 teams of 2026, two staggered rows on one road, leader on the right, published gaps and selectable driver details outside the asphalt.
+- Move cars using actual published order and intervals only during fresh active sessions. Preserve driver nodes, focus and scroll; keep finished or stale sessions still. No GPS or proportional spacing is claimed.
+- Preserve favorite highlighting and driver-specific number/tyre details separately from team reference photographs. Unknown teams, other years or failed images use neutral placeholders.
+- Remove all in-app simulation modes, generators and controls. Legacy test-card configurations fall back to actual session timing. Existing dashboards and favorite selections are preserved.
+
 ## 0.1.6
 
 - Normalize the ZIP creator-system header as well as ordering and compression. Verify release uploads against a draft before publication. Previous release assets remain untouched.

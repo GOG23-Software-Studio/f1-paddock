@@ -69,3 +69,37 @@ async def test_historical_season_uses_only_that_year_and_cannot_publish_after_an
     client.get = switch_mid_fetch
     with pytest.raises(UpdateFailed, match="Season changed"):
         await F1Coordinator._async_update_data(c)
+
+
+async def test_network_failure_is_not_reported_as_unpublished_calendar(fixture, assets):
+    import pytest
+    from homeassistant.helpers.update_coordinator import UpdateFailed
+    client = Client(fixture, "2026")
+    c = SimpleNamespace(entry=SimpleNamespace(data={"season":2026}, options={"season":"2026"}), client=client, assets=assets)
+    with pytest.raises(UpdateFailed, match="Calendar source unavailable: offline"):
+        await F1Coordinator._async_update_data(c)
+    # A valid cache is still usable with an explicit warning; never invent a calendar.
+    client.cache["2026"] = (0, fixture("calendar"))
+    data = await F1Coordinator._async_update_data(c)
+    assert data["season"] == 2026 and data["calendar"]
+    assert "calendar:cached" in data["warnings"]
+
+
+async def test_backup_calendar_loads_when_primary_is_offline_without_fake_results(fixture, assets):
+    from custom_components.f1_paddock.models import event, races
+    class OfflineClient(Client):
+        async def get(self, path, ttl=900):
+            raise F1Error("timeout")
+        async def calendar_fallback(self, season, assets):
+            return [event(r, assets) for r in races(fixture("calendar"))]
+    client = OfflineClient(fixture)
+    c = SimpleNamespace(entry=SimpleNamespace(data={"season":2026}, options={"favorite_driver_id":"alonso"}), client=client, assets=assets)
+    data = await F1Coordinator._async_update_data(c)
+    assert data["calendar"] and "calendar:backup" in data["warnings"]
+    assert not data["standings"] and not data["constructors"] and data["last_race"] is None
+    assert not any(r["available"] for r in data["results"])
+    assert next(d for d in data["drivers"] if d["id"] == "alonso")["name"] == "Fernando Alonso"
+    # A routine refresh must use the same roster to identify timing rows as live updates do.
+    c.live = SimpleNamespace(state=SimpleNamespace(snapshot=lambda drivers, season: {"live":False, "ids":[d["id"] for d in drivers]}))
+    refreshed = await F1Coordinator._async_update_data(c)
+    assert "alonso" in refreshed["timing"]["ids"]

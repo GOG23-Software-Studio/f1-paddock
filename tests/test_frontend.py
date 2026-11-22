@@ -117,3 +117,23 @@ async def test_real_ha_resource_collection_persists_and_updates_in_place(tmp_pat
         assert reloaded.async_items() == [created]
     finally:
         await hass.async_stop()
+
+
+async def test_cards_are_registered_even_if_first_calendar_fetch_fails(monkeypatch):
+    import pytest
+    from homeassistant.exceptions import ConfigEntryNotReady
+
+    import custom_components.f1_paddock as integration
+    assets = {"font":{}}
+    hass = SimpleNamespace(async_add_executor_job=AsyncMock(return_value=assets))
+    register = AsyncMock()
+    coordinator = SimpleNamespace(async_config_entry_first_refresh=AsyncMock(side_effect=ConfigEntryNotReady("offline")))
+    monkeypatch.setattr(integration, "async_prepare_font", AsyncMock(return_value=None))
+    monkeypatch.setattr(integration, "async_register_frontend", register)
+    monkeypatch.setattr(integration, "async_get_clientsession", Mock(return_value=object()))
+    monkeypatch.setattr(integration, "F1Coordinator", Mock(return_value=coordinator))
+    entry = SimpleNamespace()
+    with pytest.raises(ConfigEntryNotReady):
+        await integration.async_setup_entry(hass, entry)
+    register.assert_awaited_once_with(hass)
+    assert not hasattr(entry, "runtime_data")

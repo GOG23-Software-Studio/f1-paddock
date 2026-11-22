@@ -10,9 +10,13 @@ Jolpica, the direct F1 feed and OpenF1 supply sporting data under separate condi
 
 The resource-registration logic was adapted from GOG23 Software Studio's MIT-licensed MotoGP Paddock. FormulaOne Card was consulted for URLs and behavior, without copying its implementation. The FP project logo was prepared with generative assistance and is distinct from the official Formula 1 logo; its original is in `docs/branding`. No trademark clearance is claimed.
 
+The position road references the official 2026 team-car images served by Formula1.com's media CDN. These images are team reference artwork, not driver-specific or live tyre illustrations; driver numbers and current data are displayed separately. Image files are not bundled. Their source pages and verification dates are recorded in `team-cars-2026-audit.json`, and the existing third-party artwork notices apply.
+
 ## Castellano
 
 # Recursos de terceros
+
+La carretera referencia las imágenes oficiales de los monoplazas de 2026 desde el CDN de Formula1.com. Son imágenes de referencia por equipo, no fotos individuales de cada piloto ni de sus neumáticos en directo. Los dorsales y datos actuales se muestran por separado. Los archivos gráficos no se incluyen en el paquete; su procedencia y fecha de comprobación constan en `team-cars-2026-audit.json` y se mantienen los avisos de recursos de terceros existentes.
 
 F1 Paddock es un proyecto comunitario independiente. No está afiliado ni respaldado por Formula 1, la FIA o Home Assistant.
 

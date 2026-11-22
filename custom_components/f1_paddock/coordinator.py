@@ -6,7 +6,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from .api import F1Error
 from .const import CONF_ROUND, DOMAIN
 from .live import F1LiveClient
-from .models import constructors, driver_standings, event, next_event, races, result
+from .models import constructors, driver_standings, event, next_event, races, result, roster
 from .season import selected_season
 
 
@@ -41,21 +41,33 @@ class F1Coordinator(DataUpdateCoordinator):
         async def read(key, path, ttl=900):
             try:
                 payloads[key] = await self.client.get(path, ttl)
-            except F1Error:
+            except F1Error as exc:
                 if path in self.client.cache:
                     payloads[key] = self.client.cache[path][1]
                     warnings.append(f"{key}:cached")
                 else:
+                    if key == "calendar":
+                        raise UpdateFailed(f"Calendar source unavailable: {exc}") from exc
                     warnings.append(f"{key}:unavailable")
                     payloads[key] = {}
             return payloads[key]
-        raw_calendar = await read("calendar", str(season), 21600)
-        if not races(raw_calendar):
-            raise UpdateFailed("Calendar unavailable or season not yet published")
-        calendar = [event(r, self.assets) for r in races(raw_calendar)]
+        try:
+            raw_calendar = await read("calendar", str(season), 21600)
+            if not races(raw_calendar):
+                raise UpdateFailed("Calendar unavailable or season not yet published")
+            calendar = [event(r, self.assets) for r in races(raw_calendar)]
+        except UpdateFailed as exc:
+            if not hasattr(self.client, "calendar_fallback"):
+                raise
+            try:
+                calendar = await self.client.calendar_fallback(season, self.assets)
+            except F1Error as backup_error:
+                raise UpdateFailed(f"{exc}; {backup_error}") from backup_error
+            warnings.append("calendar:backup")
         calendar.sort(key=lambda e: e["round"])
         standing_payload = await read("standings", f"{season}/driverStandings")
         standings = driver_standings(standing_payload, self.assets, season)
+        drivers = standings or roster(self.assets, season)
         team_payload = await read("constructors", f"{season}/constructorStandings")
         latest_payload = await read("last_race", f"{season}/last/results")
         latest = races(latest_payload)
@@ -78,9 +90,9 @@ class F1Coordinator(DataUpdateCoordinator):
         return {"schema_version": 1, "season": season, "updated_at": datetime.now(timezone.utc).isoformat(),
                 "calendar": calendar, "event": next_event(calendar), "standings": standings,
                 "standings_round": standing_payload.get("MRData", {}).get("StandingsTable", {}).get("round"),
-                "constructors": constructors(team_payload), "drivers": standings,
+                "constructors": constructors(team_payload), "drivers": drivers,
                 "results": results, "result_round": selected_round, "last_race": podium,
                 "warnings": warnings, "sources": dict(self.client.sources),
-                "timing": self.live.state.snapshot(standings, season) if hasattr(self, "live") else {},
-                "capabilities": {"live": bool(hasattr(self, "live") and self.live.state.snapshot(standings, season)["live"]), "live_timing": True, "tyres": True, "pit_counts": True, "pit_times_live": False, "practice_results": False, "history": True},
+                "timing": self.live.state.snapshot(drivers, season) if hasattr(self, "live") else {},
+                "capabilities": {"live": bool(hasattr(self, "live") and self.live.state.snapshot(drivers, season)["live"]), "live_timing": True, "tyres": True, "pit_counts": True, "pit_times_live": False, "practice_results": False, "history": True},
                 "logo": self.assets.get("logo", {}).get("url"), "font": self.assets.get("font", {}).get("url")}

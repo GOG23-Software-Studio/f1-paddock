@@ -1,0 +1,4 @@
+# Position road: real published timing only.
+type: custom:f1-paddock-road-card
+entity: sensor.f1_paddock_dashboard
+language: auto

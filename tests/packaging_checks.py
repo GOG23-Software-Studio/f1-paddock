@@ -46,7 +46,7 @@ class PackagingChecks(unittest.TestCase):
             root = Path(directory)
             for name in ("custom_components", "examples"):
                 shutil.copytree(ROOT / name, root / name, ignore=shutil.ignore_patterns("__pycache__"))
-            for name in ("README.md", "SOURCES.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "VALIDATION.md", "PUBLICATION_REVIEW.md", "CONTRIBUTING.md", "hacs.json", "docs/studio-banner.png"):
+            for name in ("README.md", "SOURCES.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "VALIDATION.md", "PUBLICATION_REVIEW.md", "CONTRIBUTING.md", "hacs.json", "team-cars-2026-audit.json", "docs/studio-banner.png"):
                 (root / name).parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(ROOT / name, root / name)
             (root / ".local").mkdir()

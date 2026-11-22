@@ -8,7 +8,7 @@ try { ({JSDOM}=createRequire(import.meta.url)('jsdom')); }
 catch { ({JSDOM}=createRequire(new URL('../../motogp-paddock/package.json',import.meta.url))('jsdom')); }
 const dom=new JSDOM('<!doctype html>',{url:'http://localhost'});
 for(const key of ['window','document','HTMLElement','customElements','CustomEvent'])globalThis[key]=dom.window[key];
-const {F1PaddockCard,safeAsset,countdown,nextSession,simulationTiming,ageText,dateText,resolveLanguage,translate,F1PaddockEditor}=await import('../custom_components/f1_paddock/www/f1-paddock-card.js');
+const {F1PaddockCard,safeAsset,countdown,nextSession,ageText,dateText,resolveLanguage,translate,F1PaddockEditor,TEAM_CARS_2026,teamCarImage}=await import('../custom_components/f1_paddock/www/f1-paddock-card.js');
 const original=JSON.parse(fs.readFileSync(new URL('fixtures/snapshot.json',import.meta.url)));
 function setup(kind='dashboard'){
  const snapshot=structuredClone(original),id='sensor.f1',fav='select.fav',gp='select.gp';
@@ -70,27 +70,6 @@ test('session cards show official timing, tyre stints and distinct pit durations
 });
 
 
-test('simulation changes timing, tyres, pits, order and signal without changing source data',()=>{
- const base=structuredClone(original.timing),before=JSON.stringify(base),now=Date.now();
- const first=simulationTiming(base,0,now),lap=simulationTiming(base,1,now),pit=simulationTiming(base,2,now),tyre=simulationTiming(base,3,now);
- assert.notEqual(first.rows[0].last_lap,lap.rows[0].last_lap);assert(pit.rows[0].in_pit);
- assert.equal(tyre.rows[0].pit_count,1);assert.equal(tyre.rows[0].tyre.compound,'HARD');assert.equal(tyre.rows[0].tyre.age,0);
- assert.equal(simulationTiming(base,6,now).rows[1].tyre.compound,'SOFT');
- assert.equal(simulationTiming(base,7,now).rows[1].id,base.rows[2].id);
- assert.deepEqual(simulationTiming(base,8,now).rows,simulationTiming(base,7,now).rows);assert.equal(simulationTiming(base,8,now).connected,false);assert.equal(simulationTiming(base,9,now).connected,true);
- assert.equal(simulationTiming(base,10,now).phase,'finished');assert.equal(JSON.stringify(base),before);
-});
-
-test('simulation updates preserve tables, focus, scroll and original HA entities',()=>{
- const {card,states}=setup('simulation'),before=JSON.stringify(states);let calls=0;card._hass.callService=()=>{calls++;};
- const wrap=card.shadowRoot.querySelector('[data-scroll="timing"]'),tyres=card.shadowRoot.querySelector('[data-scroll="tyres"]'),button=card.shadowRoot.querySelector('[data-action="sim-next"]');
- wrap.scrollTop=168;wrap.scrollLeft=93;tyres.scrollTop=112;
- for(let i=0;i<10;i++){button.click();assert.equal(card.shadowRoot.querySelector('[data-scroll="timing"]'),wrap);assert.equal(card.shadowRoot.querySelector('[data-scroll="tyres"]'),tyres);assert.equal(card.shadowRoot.querySelector('[data-action="sim-next"]'),button);assert.equal(wrap.scrollTop,168);assert.equal(wrap.scrollLeft,93);assert.equal(tyres.scrollTop,112);}
- assert.equal(card._simStep,10);assert.equal(calls,0);assert.equal(JSON.stringify(states),before);assert(card.shadowRoot.textContent.includes('SIMULACIÓN'));assert(!card.shadowRoot.textContent.includes('En directo'));
- card.shadowRoot.querySelector('[data-action="sim-toggle"]').click();assert(card._simRunning);card.disconnectedCallback();assert(!card._simRunning);assert.equal(card._simTimer,null);
-});
-
-
 test('timing colors use feed flags and only compare published personal best laps',()=>{
  const {card,states,snapshot}=setup('timing');snapshot.timing.rows[0].last_lap='1:21.001';snapshot.timing.rows[0].last_lap_mark='personal';snapshot.timing.rows[0].sectors=['24.001','28.002',null];snapshot.timing.rows[0].sector_marks=['overall',null,'personal'];
  states['sensor.f1']={...states['sensor.f1']};card.hass={language:"es",states};
@@ -138,15 +117,14 @@ test('English dashboard translates tables, statuses, session labels, tyres and a
  assert.equal(states['select.fav'].state,'Fernando Alonso');
 });
 
-test('English warnings, empty data and simulation are localized without changing source readings',()=>{
- for(const kind of ['dashboard','simulation','results','circuit','programme','driver']){
+test('English warnings and empty data are localized without changing source readings',()=>{
+ for(const kind of ['dashboard','results','circuit','programme','driver']){
   const {card,states,snapshot}=setup(kind);snapshot.warnings=['source:cached'];
   if(kind==='circuit'||kind==='programme')snapshot.event=null;
   if(kind==='driver')snapshot.drivers=[];
   card.setConfig({entity:'sensor.f1',card_type:kind,language:'en'});card.hass={language:'es',states};
   const text=card.shadowRoot.textContent;
   assert(!text.includes('Información parcial'),kind);assert(!text.includes('Temporada finalizada'),kind);assert(!text.includes('Programa no disponible'),kind);
-  if(kind==='simulation'){assert(text.includes('SIMULATION'));assert(text.includes('Start simulation'));assert(text.includes('Test start'));card._simStep=8;card.render();assert(card.shadowRoot.textContent.includes('Stale reading'));}
  }
  const {card,states}=setup('pits');card.setConfig({entity:'sensor.f1',card_type:'pits',language:'en'});states['sensor.f1'].attributes.snapshot.timing.pits_error=true;card.render();assert(card.shadowRoot.textContent.includes('Pit history temporarily unavailable.'));
 });
@@ -264,13 +242,87 @@ test('shared season selector localizes current and prevents old-season readings 
 });
 
 
-test('English simulation translates fictional event, race and leader labels',()=>{
- const {card,states}=setup('simulation');
- card.setConfig({entity:'sensor.f1',card_type:'simulation',language:'en'});
- card.hass={language:'en',states};
- const text=card.shadowRoot.textContent;
- assert(text.includes('Test Grand Prix'));
- assert(text.includes('Simulated race'));
- assert(!text.includes('Gran Premio de prueba'));
- assert(!text.includes('Carrera simulada'));
+test('position road keeps driver nodes and scroll across overtakes and only moves with fresh data',()=>{
+ const {card,states,snapshot}=setup('road');document.body.append(card);
+ const alonso=snapshot.drivers.find(d=>d.id==='alonso'),other=snapshot.drivers.find(d=>d.id!=='alonso');
+ const now=new Date().toISOString();
+ snapshot.timing={phase:'live',live:true,connected:true,source_time:now,rows:[{...alonso,position:2,interval:'+0.250',gap:'+0.250',team_color:'229971'},{...other,position:1}]};card.render();
+ const root=card.shadowRoot,marker=root.querySelector('[data-road-driver="alonso"]'),road=root.querySelector('[data-scroll="road"]');
+ assert(marker.getAttribute('aria-current'));assert(root.querySelector('.road-detail').textContent.includes('+0.250'));assert(marker.style.cssText.includes('#229971'));assert(root.querySelector('.road-live'));
+ const before=marker.style.transform;road.scrollLeft=120;road.focus();
+ snapshot.timing.rows[0].position=1;snapshot.timing.rows[1].position=2;card.render();
+ assert.equal(root.querySelector('[data-road-driver="alonso"]'),marker);assert.notEqual(marker.style.transform,before);assert.equal(road.scrollLeft,120);assert.equal(root.activeElement,road);
+ snapshot.timing.rows.push({id:'aaa-new',name:'New',number:99,position:3,gap:'+1 LAP',team_color:'red;position:fixed'});card.render();
+ assert.equal(root.querySelector('[data-road-driver="alonso"]'),marker);assert(root.querySelector('[data-road-driver="aaa-new"] button').title.includes('+1 LAP'));assert(!root.querySelector('[style*="position:fixed"]'));
+ snapshot.timing.source_time=new Date(Date.now()-180000).toISOString();card.render();assert(!root.querySelector('.road-live'));
+ snapshot.timing.phase='finished';card.render();assert(!root.querySelector('.road-live'));
+ card.setConfig({entity:'sensor.f1',card_type:'road',language:'en'});assert(root.textContent.includes('Position road'));assert(root.textContent.includes('To car ahead'));assert(root.textContent.includes('not proportional'));card.remove();
+});
+
+test('position road shows unavailable gaps without inventing values or cars',()=>{
+ const {card,snapshot}=setup('road');snapshot.timing={rows:[]};card.render();
+ assert(!card.shadowRoot.querySelector('.road-marker'));assert(card.shadowRoot.textContent.includes('Sin posiciones publicadas'));
+ const ctor=customElements.get('f1-paddock-road-card');assert.equal(ctor.getStubConfig().card_type,'road');
+ snapshot.timing.rows=[{id:'test',name:'<img onerror=alert(1)>',position:2,number:7,interval:null,gap:null,retired:true}];card.render();
+ const marker=card.shadowRoot.querySelector('.road-marker');assert(marker.querySelector('button').title.includes('Al anterior: —'));assert(card.shadowRoot.querySelector('.road-detail').textContent.includes('Retirado'));assert(!marker.querySelector('img'));
+});
+
+test('two-lane road moves a car forward when its published interval shrinks without changing rank',()=>{
+ const {card,snapshot}=setup('road');
+ const now=new Date().toISOString();
+ snapshot.timing={phase:'live',live:true,connected:true,source_time:now,rows:[
+  {id:'leader',name:'Leader',position:1,number:1},
+  {id:'alonso',name:'Alonso',position:2,number:14,interval:'+2.000'},
+  {id:'third',name:'Third',position:3,number:3,interval:'+0.500'}]};card.render();
+ const root=card.shadowRoot,car=root.querySelector('[data-road-driver="alonso"]');
+ const position=node=>node.style.transform.match(/translate\(([-\d.]+)px,([-\d.]+)px\)/).slice(1).map(Number);
+ const original=position(car);
+ assert.notEqual(original[1],position(root.querySelector('[data-road-driver="leader"]'))[1]);
+ assert(position(root.querySelector('[data-road-driver="leader"]'))[0]>original[0]);
+ snapshot.timing.rows[1].interval='+0.200';card.render();
+ const closer=position(car);assert(closer[0]>original[0]);assert.equal(closer[1],original[1]);
+ snapshot.timing.rows[1].interval='+3.000';card.render();assert(position(car)[0]<closer[0]);
+ snapshot.timing.rows[1].interval='1L';card.render();assert(!car.getAttribute('style').includes('NaN'));
+ assert.equal(root.querySelector('[data-road-driver="alonso"]'),car);
+ snapshot.timing.phase='finished';card.render();assert(!root.querySelector('.road-live'));
+});
+
+test('road car selection shows one detail panel and never changes the HA favorite',()=>{
+ const {card,states,snapshot}=setup('road');
+ snapshot.timing={phase:'finished',rows:[snapshot.drivers.find(d=>d.id==='alonso'),snapshot.drivers.find(d=>d.id!=='alonso')].map((d,i)=>({...d,position:i+1,interval:'+0.200',gap:'+0.200'}))};card.render();
+ const root=card.shadowRoot,road=root.querySelector('.road-scroll');road.scrollLeft=-100;road.scrollTo=()=>{};
+ const other=root.querySelector('.road-marker:not(.road-favorite) .road-pick'),id=other.dataset.driver;
+ other.click();assert.equal(root.querySelectorAll('.road-detail').length,1);
+ assert.equal(root.querySelector('[aria-pressed="true"]').dataset.driver,id);
+ assert(root.querySelector('.road-detail').textContent.includes(snapshot.timing.rows.find(d=>String(d.id||d.number)===id).name));
+ assert.equal(road.scrollLeft,-100);assert.equal(states['sensor.f1'].attributes.favorite_id,'alonso');
+ assert(!root.querySelector('.road-marker strong'));assert(!root.querySelector('.road-marker small'));
+ root.querySelector('[data-action="road-favorite"]').click();
+ assert.equal(root.querySelector('[aria-pressed="true"]').dataset.driver,'alonso');
+});
+
+test('real car photos match verified 2026 teams and never borrow a future-season car',()=>{
+ assert.equal(TEAM_CARS_2026.length,11);
+ for(const asset of TEAM_CARS_2026){
+  assert.equal(teamCarImage(2026,asset.team),asset);
+  assert(safeAsset(asset.url));assert(asset.url.includes('/common/f1/2026/'));assert(asset.url.endsWith('carright.webp'));
+ }
+ const {card,snapshot}=setup('road');
+ snapshot.timing={phase:'finished',rows:[{id:'alonso',code:'ALO',name:'Fernando Alonso',number:14,team:'Aston Martin',position:1}]};card.render();
+ const root=card.shadowRoot,img=root.querySelector('.road-car');
+ assert(img.src.includes('2026astonmartincarright.webp'));assert(root.querySelector('.road-rank').textContent.includes('#14'));assert(!root.querySelector('svg'));
+ img.dispatchEvent(new dom.window.Event('error'));assert(img.hidden);assert(!img.nextElementSibling.hidden);
+ card.render();assert(!root.querySelector('img.road-car'));assert(root.querySelector('.road-missing').textContent.includes('#14'));
+ snapshot.season=2023;card.render();assert(!root.querySelector('img.road-car'));
+ assert.equal(teamCarImage(2026,'unknown-team'),null);assert.equal(teamCarImage(2025,'Aston Martin'),null);
+});
+
+
+test('only real-data cards are available and old test configuration cannot generate readings',()=>{
+ const {card,states,snapshot}=setup('simulation');
+ assert.equal(card._config.card_type,'timing');assert.equal(card._data.timing,snapshot.timing);
+ assert(!card.shadowRoot.querySelector('[data-action="road-demo"]'));
+ const editor=new F1PaddockEditor();editor.setConfig({entity:'sensor.f1'});editor.hass={language:'en',states};
+ assert(!Array.from(editor.shadowRoot.querySelector('[name="card_type"]').options).some(o=>o.value==='simulation'));
+ assert(!card.shadowRoot.textContent.includes('SIMULACIÓN'));assert(!card.shadowRoot.textContent.includes('Probar simulación'));
 });

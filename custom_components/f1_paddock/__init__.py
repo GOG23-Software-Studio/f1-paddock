@@ -24,10 +24,11 @@ def load_assets():
 async def async_setup_entry(hass, entry):
     assets = await hass.async_add_executor_job(load_assets)
     assets["font"]["url"] = await async_prepare_font(hass)
+    # Serve the cards even when the data provider is temporarily unreachable.
+    await async_register_frontend(hass)
     coordinator = F1Coordinator(hass, entry, F1Client(async_get_clientsession(hass)), assets)
     await coordinator.async_config_entry_first_refresh()
     entry.runtime_data = RuntimeData(coordinator)
-    await async_register_frontend(hass)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     coordinator.async_set_updated_data(coordinator.data)
     entry.async_create_background_task(hass, coordinator.live.run(None), "F1 Paddock public timing")
