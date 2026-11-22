@@ -326,3 +326,14 @@ test('only real-data cards are available and old test configuration cannot gener
  assert(!Array.from(editor.shadowRoot.querySelector('[name="card_type"]').options).some(o=>o.value==='simulation'));
  assert(!card.shadowRoot.textContent.includes('SIMULACIÓN'));assert(!card.shadowRoot.textContent.includes('Probar simulación'));
 });
+
+ test('favorite card uses explicit finished race retirement when results are unavailable, without footer warnings',()=>{
+ const {card,snapshot}=setup('driver');snapshot.last_race=null;snapshot.warnings=['calendar:backup'];
+ snapshot.timing={phase:'finished',session_type:'Race',name:'Race',event:'Las Vegas Grand Prix',start:'2026-11-22T04:00:00Z',rows:[{id:'alonso',retired:true}]};card.render();
+ assert(card.shadowRoot.querySelector('.result-summary h3').textContent.includes('Abandono'));
+ assert(card.shadowRoot.querySelector('.result-summary').textContent.includes('Las Vegas'));
+ assert(!card.shadowRoot.querySelector('.driver [role="status"]'));
+ card.hass={language:'en',states:card._hass.states};assert(card.shadowRoot.querySelector('.result-summary h3').textContent.includes('Retired'));
+ snapshot.timing.rows[0].retired=false;card.render();assert(!card.shadowRoot.querySelector('.result-summary h3').textContent.includes('Retired'));
+ snapshot.timing.rows[0].retired=true;snapshot.timing.name='Sprint';card.render();assert(!card.shadowRoot.querySelector('.result-summary h3').textContent.includes('Retired'));
+ });

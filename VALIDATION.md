@@ -1,3 +1,9 @@
+## 0.1.9 · clean header and explicit retirement · 2026-11-22
+
+- Verified in the existing HA dashboard: collapsed header details, the exact MotoGP information SVG, Alonso retained and explicit “Abandono” with Las Vegas/date. No dashboard card configuration changes.
+- 29 frontend tests cover existing cards and a retirement regression: explicit finished-race retirement is translated, missing retirement flags and sprint data cannot generate a retirement, and the driver footer is removed.
+- Syntax and deterministic packaging checks are repeated before publication. GitHub packaging, HACS and hassfest validate the release commit.
+
 ## 0.1.8 · visible upcoming GP · 2026-11-22
 
 The calendar highlight was visually verified in the existing Home Assistant dashboard: Qatar shows a tinted row, accent border and contrasting “PRÓXIMO GP” badge. The change preserves the existing card configuration and Alonso as favorite. Frontend and packaging checks are repeated before publication; HACS and hassfest validate the exact release commit.

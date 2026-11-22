@@ -1,5 +1,11 @@
 # Changelog / Cambios
 
+## 0.1.9 · 2026-11-22
+
+- Clean the header: remove the redundant update badge and collapse source/status details behind the same information SVG used by MotoGP Paddock. Retain an unobtrusive status dot, accessible label and keyboard operation.
+- Show “Abandono” / “Retired” on the favorite-driver card when the published result says Retired, or a finished race timing feed explicitly confirms retirement while the result is unavailable. Do not infer retirement from missing results, a sprint or a lap deficit.
+- Keep the event and date with the retirement reading and remove the redundant provider-warning footer from the driver card. Preserve existing cards, entities, favorite and the upcoming-GP highlight.
+
 ## 0.1.8 · 2026-11-22
 
 - Make the upcoming Grand Prix clearly visible in the calendar with a tinted row, accent border and contrasting checkered-flag badge.
