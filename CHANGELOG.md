@@ -1,5 +1,10 @@
 # Changelog / Cambios
 
+## 0.1.8 · 2026-11-22
+
+- Make the upcoming Grand Prix clearly visible in the calendar with a tinted row, accent border and contrasting checkered-flag badge.
+- Localize the badge as “PRÓXIMO GP” / “NEXT GP” and mark the current event accessibly. Calendar data, dashboard cards and favorite selection remain unchanged.
+
 ## 0.1.7 · 2026-11-22
 
 - Recover the calendar from FastF1's published schedule when Jolpica is unreachable; validate season, rounds and timezones, identify the backup and retain verified driver identities without inventing standings or results.

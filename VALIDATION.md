@@ -1,3 +1,7 @@
+## 0.1.8 · visible upcoming GP · 2026-11-22
+
+The calendar highlight was visually verified in the existing Home Assistant dashboard: Qatar shows a tinted row, accent border and contrasting “PRÓXIMO GP” badge. The change preserves the existing card configuration and Alonso as favorite. Frontend and packaging checks are repeated before publication; HACS and hassfest validate the exact release commit.
+
 ## 0.1.7 · calendar recovery and real-data road · 2026-11-22
 
 - 56 backend tests, 28 frontend tests and three deterministic packaging checks passed; Ruff and JavaScript syntax checks passed.
