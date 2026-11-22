@@ -8,7 +8,7 @@ A project by [GOG23 Software Studio](https://github.com/GOG23-Software-Studio) �
 
 [Installation](#installation) · [Independent cards](#independent-cards) · [Screenshots](#screenshots) · [How it works](#how-it-works) · [Issues](https://github.com/GOG23-Software-Studio/f1-paddock/issues)
 
-**Release 0.1.9 · public repository · included in the Marketplace catalogue.**
+**Release 0.1.10 · public repository · included in the Marketplace catalogue.**
 
 [![Validation](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml/badge.svg)](https://github.com/GOG23-Software-Studio/f1-paddock/actions/workflows/validate.yml)
 [![Open in Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=GOG23-Software-Studio&repository=f1-paddock&category=integration)
@@ -64,7 +64,7 @@ Updates appear under **Settings → Updates**. Back up first, install the update
 
 ### Local installation
 
-Download [release 0.1.9](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.9) and use **f1-paddock-0.1.9.zip**. The “Source code” downloads contain the whole repository.
+Download [release 0.1.10](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.10) and use **f1-paddock-0.1.10.zip**. The “Source code” downloads contain the whole repository.
 
 1. Back up your configuration.
 2. Extract the ZIP and copy only `custom_components/f1_paddock` into HA's `/config/custom_components/`.
@@ -149,7 +149,7 @@ python -m pytest
 python -m ruff check custom_components tests tools
 npm install --ignore-scripts
 npm test
-python tools/package_release.py --tag 0.1.9
+python tools/package_release.py --tag 0.1.10
 python -m unittest discover -s tests -p packaging_checks.py
 ```
 
@@ -163,7 +163,7 @@ Favorite rows use a highlighted background, a badge and `aria-current`. Explicit
 
 ## Publication status
 
-The owner authorized public publication and Marketplace submission. [Request #14100](https://github.com/hacs/default/pull/14100) has been approved and merged into the catalogue. Third-party permissions and real live-session validation remain open, as documented above. Release 0.1.9 is published as a normal GitHub release, with the documented limitations still applicable.
+The owner authorized public publication and Marketplace submission. [Request #14100](https://github.com/hacs/default/pull/14100) has been approved and merged into the catalogue. Third-party permissions and real live-session validation remain open, as documented above. Release 0.1.10 is published as a normal GitHub release, with the documented limitations still applicable.
 
 ## Support and contribution
 
@@ -185,7 +185,7 @@ F1 Paddock is free. If you find it useful and would like to support my developme
 
 [Back to English](#f1-paddock)
 
-Versión 0.1.9 de GOG23 Software Studio. Una integración propia de Home Assistant y trece tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
+Versión 0.1.10 de GOG23 Software Studio. Una integración propia de Home Assistant y trece tarjetas independientes, más un panel completo, con el estilo de MotoGP Paddock.
 
 Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de dorsales y planos detallados originales con sus zonas. Son recursos de terceros servidos por Formula1.com; el proyecto no es una integración oficial de Formula 1.
 
@@ -193,9 +193,9 @@ Incluye la tipografía F1 Bold, fotografías actuales, gráficos oficiales de do
 
 ### Descarga y estado
 
-[Descargar la release 0.1.9](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.9). Utiliza el archivo **f1-paddock-0.1.9.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
+[Descargar la release 0.1.10](https://github.com/GOG23-Software-Studio/f1-paddock/releases/tag/0.1.10). Utiliza el archivo **f1-paddock-0.1.10.zip** de los adjuntos; los archivos «Source code» son el repositorio completo.
 
-Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **release normal 0.1.9**: la instalación, los datos publicados y las actualizaciones visuales están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La [solicitud de inclusión en el catálogo general #14100](https://github.com/hacs/default/pull/14100) ha sido aprobada e incorporada al catálogo.
+Es una integración instalable, con configuración, entidades y tarjetas incluidas. Se distribuye como **release normal 0.1.10**: la instalación, los datos publicados y las actualizaciones visuales están comprobados; falta validar el flujo durante una sesión deportiva real. Los tiempos detallados de boxes llegan después de la sesión. El repositorio es público y está preparado para Marketplace/HACS. La [solicitud de inclusión en el catálogo general #14100](https://github.com/hacs/default/pull/14100) ha sido aprobada e incorporada al catálogo.
 
 ### Capturas
 
@@ -250,7 +250,7 @@ Documentación: [Marketplace](https://www.home-assistant.io/integrations/marketp
 
 ### Instalación manual en Home Assistant
 
-Paquete: `dist/f1-paddock-0.1.9.zip`.
+Paquete: `dist/f1-paddock-0.1.10.zip`.
 
 1. Guarda una copia de seguridad de tu configuración.
 2. Extrae el ZIP y copia **solo** `custom_components/f1_paddock` dentro de `/config/custom_components/`.
@@ -339,7 +339,7 @@ F1 Paddock es gratuito. Si te resulta útil y quieres apoyar el tiempo dedicado 
 
 1. Actualiza `manifest.json`, `const.py`, el encabezado de la tarjeta y las notas de versión.
 2. Ejecuta `python tools/package_release.py --tag VERSION` y las comprobaciones. La etiqueta debe coincidir exactamente con `manifest.version`; el empaquetador no necesita HA ni acceso de red.
-3. Publica una release con esa etiqueta; el flujo **Attach Marketplace and manual installers to release** construye y adjunta los dos ZIP (Marketplace y manual) y sus SHA256 desde el código etiquetado. Marca como pre-release únicamente las futuras versiones preliminares; la 0.1.9 es una release normal.
+3. Publica una release con esa etiqueta; el flujo **Attach Marketplace and manual installers to release** construye y adjunta los dos ZIP (Marketplace y manual) y sus SHA256 desde el código etiquetado. Marca como pre-release únicamente las futuras versiones preliminares; la 0.1.10 es una release normal.
 
 Las comprobaciones automáticas incluyen límites del paquete y hassfest. El trabajo de HACS se ejecuta sin omitir comprobaciones e incluye la comprobación de la marca local. El logo FP es propio de este proyecto; el logotipo oficial F1 de la cabecera conserva su atribución separada.
 
@@ -347,8 +347,8 @@ Las comprobaciones automáticas incluyen límites del paquete y hassfest. El tra
 
 ## Position road / Carretera de posiciones
 
-`custom:f1-paddock-road-card` is available independently and in the complete dashboard. Cars face right in two staggered rows on one road. Published order and intervals drive movement only during fresh active sessions; finished or stale sessions stay still. Select a car for its detail panel without changing your favorite. Unknown teams, other seasons and failed image loads use a neutral number placeholder. Team reference photos can carry another driver's number or launch tyres; the badge and detail panel show the selected driver's published number and compound. The view is schematic, without GPS or proportional physical spacing. No simulation mode or controls are included.
+`custom:f1-paddock-road-card` is available independently and in the complete dashboard. Cars face right in two staggered rows on one road. Published order and intervals drive movement only during fresh active sessions; the road is hidden outside fresh live races or sprints. Select a car for its detail panel without changing your favorite. Unknown teams, other seasons and failed image loads use a neutral number placeholder. Team reference photos can carry another driver's number or launch tyres; the badge and detail panel show the selected driver's published number and compound. The view is schematic, without GPS or proportional physical spacing. No simulation mode or controls are included.
 
-La carretera se incluye en el panel completo y como tarjeta independiente. Los coches miran a la derecha en dos filas en zigzag sobre una sola carretera. Se mueven según el orden y los intervalos publicados únicamente durante sesiones activas con datos recientes. Al terminar o quedar antiguos, permanecen quietos. Seleccionar un coche abre sus detalles sin cambiar el favorito. Las fotografías son referencias del equipo: el dorsal y los neumáticos reales del piloto se indican aparte. No representa posiciones GPS ni distancias proporcionales. No incluye modos ni controles de simulación.
+La carretera se incluye en el panel completo y como tarjeta independiente. Los coches miran a la derecha en dos filas en zigzag sobre una sola carretera. Se mueven según el orden y los intervalos publicados únicamente durante sesiones activas con datos recientes. La carretera solo aparece durante una carrera o sprint en directo con datos recientes; se oculta en libres, clasificación, sesiones terminadas o con lecturas antiguas. Seleccionar un coche abre sus detalles sin cambiar el favorito. Las fotografías son referencias del equipo: el dorsal y los neumáticos reales del piloto se indican aparte. No representa posiciones GPS ni distancias proporcionales. No incluye modos ni controles de simulación.
 
 Si Jolpica no responde, el calendario se recupera automáticamente desde el calendario publicado de FastF1, con un aviso de fuente alternativa. Los resultados o clasificaciones no disponibles permanecen vacíos. Actualizar conserva las tarjetas, las entidades y el piloto favorito.

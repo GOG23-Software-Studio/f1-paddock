@@ -1,5 +1,12 @@
 # Changelog / Cambios
 
+## 0.1.10 · 2026-11-22
+
+- Simplify every card: collapse repeated source warnings, explanatory notes, timing-color legends and detailed timestamps behind the information icon. Keep the session state, sporting readings and unavailable-data messages visible.
+- Preserve expanded information panels during refreshes, alongside table scroll and focus.
+- Show the position road only for a fresh live Race or Sprint with published positions. Hide it during practice, qualifying, waiting, finished sessions or stale readings, and restore it automatically when eligible live data arrives. Keep the existing road-card configuration.
+- Preserve dashboard cards, entity identities, favorite and upcoming-GP highlighting. No simulation included.
+
 ## 0.1.9 · 2026-11-22
 
 - Clean the header: remove the redundant update badge and collapse source/status details behind the same information SVG used by MotoGP Paddock. Retain an unobtrusive status dot, accessible label and keyboard operation.

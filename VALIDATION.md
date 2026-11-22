@@ -1,3 +1,9 @@
+## 0.1.10 · simplified cards and live-only road · 2026-11-22
+
+- Verified all visible F1 cards in HA: explanatory text and provider warnings are inside closed information panels, the finished-session road is hidden and Alonso remains selected. Dashboard configuration is retained.
+- 31 frontend checks cover card rendering, localization, retirement, stable table nodes/scroll, preserved information-panel expansion and road eligibility for fresh live races/sprints versus practice, qualifying, stale and finished sessions.
+- JavaScript syntax and three deterministic packaging checks are repeated before publication. GitHub packaging, HACS and hassfest validate the exact release commit. Real active-session end-to-end validation remains pending.
+
 ## 0.1.9 · clean header and explicit retirement · 2026-11-22
 
 - Verified in the existing HA dashboard: collapsed header details, the exact MotoGP information SVG, Alonso retained and explicit “Abandono” with Las Vegas/date. No dashboard card configuration changes.
