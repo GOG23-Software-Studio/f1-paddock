@@ -1,10 +1,6 @@
-<p align="center">
-  <img src="custom_components/f1_paddock/brand/icon@2x.png" alt="F1 Paddock" width="128">
-</p>
-
 ![F1 Paddock · GOG23 Software Studio](docs/studio-banner.png)
 
-# F1 Paddock
+# <img src="custom_components/f1_paddock/brand/icon@2x.png" width="48" height="48" align="middle" alt=""> F1 Paddock
 
 **English** · [🇪🇸 Leer en castellano](#castellano)
 
